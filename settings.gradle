@@ -2,6 +2,5 @@ rootProject.name = 'ps'
 
 include 'lexer'
 include 'parser'
-
 include 'interpreter'
 

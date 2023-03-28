@@ -1,6 +1,28 @@
-plugins{
+buildscript {
+    repositories {
+        maven {
+            url = uri("https://plugins.gradle.org/m2/")
+        }
+    }
+    dependencies {
+        classpath("com.diffplug.spotless:spotless-plugin-gradle:6.17.0")
+    }
+}
+
+plugins {
     id 'java'
     id 'application'
+    id "checkstyle"
+    id("com.diffplug.spotless") version "6.17.0"
+}
+
+checkstyle {
+    configFile = file("${project.rootDir}/checkstyle.xml")
+    toolVersion = '8.42' // Checkstyle version - Update this to the version you downloaded
+}
+
+tasks.withType(Checkstyle) {
+    ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
 }
 
 application{
