@@ -1,12 +1,24 @@
 import java.util.ArrayList;
-import java.util.Arrays;
-
 public class LexerImpl implements Lexer{
     @Override
     public ArrayList<Token> lex(String input) {
-        String[] words = input.split("  *");
-        System.out.println(Arrays.toString(words));
-        return new ArrayList<Token>();
+        ArrayList<Token> tokens = new ArrayList<>();
+        int length = input.length();
+        // Vamos a ir armando los tokens en esta lista
+
+        // Necesitamos un 'puntero' para saber a dónde vamos
+        for (int i = 0, col = 0, row = 0; i < length; i++ ){
+            char current = input.charAt(i);
+            col++;
+
+            // Iniciamos los ifs para ir separando
+            while (i < length){
+                if (!Character.isLetterOrDigit(current)
+                )
+                    break;
+            }
+        }
+        return tokens;
     }
 
 
