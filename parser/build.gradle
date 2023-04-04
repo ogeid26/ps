@@ -25,22 +25,17 @@ tasks.withType(Checkstyle) {
     ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
 }
 
-application{
-    mainClass = "Main"
-}
+group 'org.example'
+version 'unspecified'
 
 repositories {
     mavenCentral()
 }
 
-
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 }
-
 
 test {
     useJUnitPlatform()

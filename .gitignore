@@ -1,3 +1,4 @@
 .gradle
 lexer/build
 .idea
+parser/build
