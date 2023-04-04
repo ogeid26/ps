@@ -1,3 +1,5 @@
+package org.austral.edu;
+
 public enum Token {
     IDENTIFIER,
     KEYWORD,
