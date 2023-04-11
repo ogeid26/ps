@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AbstractSyntaxTree {
 
     Node root;
-
+    
     public AbstractSyntaxTree() {
         root = new Node("root");
     }
