@@ -1,3 +1,5 @@
+package org.austral.edu;
+
 import java.util.ArrayList;
 
 public interface Lexer {

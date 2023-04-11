@@ -1,18 +1,11 @@
 package org.austral.edu;
+public class Token {
 
-public enum Token {
-    IDENTIFIER,
-    KEYWORD,
-    DECLARATION,
-    STRINGTYPE,
-    NUMBERTYPE,
-    STRING,
-    NUMBER,
-    ASSIGNATION,
-    SEMICOLON,
-    PLUS,
-    MINUS,
-    MULTIPLY,
-    DIVIDE,
-    PRINTLN
+    public TokenType tokenType;
+    public String content;
+
+    public Token(TokenType tokenType, String content) {
+        this.tokenType = tokenType;
+        this.content = content;
+    }
 }

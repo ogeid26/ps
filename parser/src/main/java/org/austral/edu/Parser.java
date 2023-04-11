@@ -18,7 +18,7 @@ public class Parser {
         ArrayList<Token> temp = new ArrayList<>();
         for (Token token : tokens) {
             temp.add(token);
-            if (token.equals(Token.SEMICOLON)) {
+            if (token.tokenType.equals(TokenType.SEMICOLON)) {
                 body.add(temp);
                 temp = new ArrayList<>();
             }

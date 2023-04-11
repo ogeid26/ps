@@ -6,7 +6,7 @@ public class AbstractSyntaxTree {
 
     Node root;
 
-    AbstractSyntaxTree() {
+    public AbstractSyntaxTree() {
         root = new Node("root");
     }
 
