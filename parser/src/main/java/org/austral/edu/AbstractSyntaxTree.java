@@ -4,13 +4,13 @@ import java.util.ArrayList;
 
 public class AbstractSyntaxTree {
 
-    Node root;
+    public Node root;
     
     public AbstractSyntaxTree() {
-        root = new Node("root");
+        root = new RootNode("root");
     }
 
-    public void addSentence(String token, ArrayList<Node> children) {
-        root.children.add(new Node(token, children));
+    public void addSentence(Node node) {
+        root.children.add(node);
     }
 }

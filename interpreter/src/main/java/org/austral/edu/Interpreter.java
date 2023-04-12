@@ -16,7 +16,9 @@ public class Interpreter {
 
         for (AbstractSyntaxTree tree: trees) {
             for (InterpreterStrategy interpreter: interpreters) {
-                if (interpreter.validate(tree)) {interpreter.interpret(tree,types,values);
+                Node node = tree.root.children.get(0);
+                if (interpreter.validate(node)) {
+                    interpreter.interpret(node,types,values);
                 }
             }
         }

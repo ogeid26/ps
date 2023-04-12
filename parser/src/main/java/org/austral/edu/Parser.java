@@ -32,7 +32,7 @@ public class Parser {
                     sentence.add(parser.parse(list));
                 }
             }
-            output.addSentence("Sentence", sentence);
+            //output.addSentence("Sentence", sentence);
         }
 
         return body.size();
