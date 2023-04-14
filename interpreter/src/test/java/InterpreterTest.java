@@ -22,6 +22,6 @@ public class InterpreterTest {
         HashMap<String,String> types = new HashMap<>();
         HashMap<String,String> values = new HashMap<>();
 
-        assertTrue(i.validate(tree.root));
+        assertEquals("Success",i.interpret(tree.getFirstNode(), types,values));
     }
 }

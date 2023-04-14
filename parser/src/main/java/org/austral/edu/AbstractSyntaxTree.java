@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class AbstractSyntaxTree {
 
-    public Node root;
+    public RootNode root;
     
     public AbstractSyntaxTree() {
         root = new RootNode("root");
@@ -12,5 +12,9 @@ public class AbstractSyntaxTree {
 
     public void addSentence(Node node) {
         root.children.add(node);
+    }
+
+    public Node getFirstNode(){
+        return root.children.get(0);
     }
 }

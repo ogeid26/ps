@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class MathInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(this ,new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
