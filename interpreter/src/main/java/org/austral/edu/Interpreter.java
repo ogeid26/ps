@@ -13,12 +13,16 @@ public class Interpreter {
         interpreters.add(new FunctionInterpreter());
         interpreters.add(new IdentifierInterpreter());
         interpreters.add(new KeywordInterpreter());
+        String result = "";
 
         for (AbstractSyntaxTree tree: trees) {
             for (InterpreterStrategy interpreter: interpreters) {
-                Node node = tree.root.children.get(0);
+                Node node = tree.getFirstNode();
                 if (interpreter.validate(node)) {
-                    interpreter.interpret(node,types,values);
+                    result = interpreter.interpret(node,types,values);
+                }
+                if(!result.equals("Success")){
+                    throw new RuntimeException(result);
                 }
             }
         }
