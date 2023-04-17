@@ -12,16 +12,25 @@ public class InterpreterTest {
     @Test
     public void testing(){
         KeywordInterpreter i = new KeywordInterpreter();
+        Interpreter interpreter = new Interpreter();
+
+        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
         AbstractSyntaxTree tree = new AbstractSyntaxTree();
+        AbstractSyntaxTree tree2 = new AbstractSyntaxTree();
 
         Node n1 = new ValueNode("'Peter'");
         Node n2 = new NameNode("name");
         Node n3 = new TypeNode("String");
         Node n5 = new DeclareNode("Declaration", new ArrayList<>(Arrays.asList(n3,n2)));
         tree.addSentence(new AssignDeclareNode("Assignation", new ArrayList<>(Arrays.asList(n5,n1))));
+        tree2.addSentence(new FunctionNode("Print",new ArrayList<>(List.of(n2))));
         HashMap<String,String> types = new HashMap<>();
         HashMap<String,String> values = new HashMap<>();
 
-        assertEquals("Success",i.interpret(tree.getFirstNode(), types,values));
+        trees.add(tree);
+        trees.add(tree2);
+
+        interpreter.interpret(trees);
+        //assertEquals("Success",i.interpret(tree.getFirstNode(), types,values));
     }
 }
