@@ -20,9 +20,9 @@ public class Interpreter {
                 Node node = tree.getFirstNode();
                 if (interpreter.validate(node)) {
                     result = interpreter.interpret(node,types,values);
-                }
-                if(!result.equals("Success")){
-                    throw new RuntimeException(result);
+                    if(!result.equals("Success")){
+                        throw new RuntimeException(result);
+                    }
                 }
             }
         }
