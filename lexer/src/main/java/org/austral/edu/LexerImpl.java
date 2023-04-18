@@ -1,12 +1,13 @@
 package org.austral.edu;
 
 import exceptions.UnclosedStringLiteralException;
+import exceptions.UnknownTokenException;
 
 import java.util.ArrayList;
 public class LexerImpl implements Lexer{
     public Tokenizer tokenizer;
     @Override
-    public ArrayList<Token> lex(String input) {
+    public ArrayList<Token> lex(String input) throws UnknownTokenException, UnclosedStringLiteralException {
 
         ArrayList<Token> tokens = new ArrayList<>();
 
