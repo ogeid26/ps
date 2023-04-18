@@ -1,6 +1,7 @@
 package org.austral.edu;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ValueInterpreter implements InterpreterStrategy{
     @Override
@@ -10,6 +11,10 @@ public class ValueInterpreter implements InterpreterStrategy{
 
     @Override
     public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) {
-        return node.content;
+        if (node.content == null || Objects.equals(node.content, "")){
+            return "Error";
+        }else {
+            return node.content;
+        }
     }
 }

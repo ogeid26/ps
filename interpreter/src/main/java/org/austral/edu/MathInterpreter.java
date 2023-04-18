@@ -16,39 +16,28 @@ public class MathInterpreter implements InterpreterStrategy{
     public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) {
         MathNode mathNode = (MathNode) node;
         StringBuilder sb = new StringBuilder();
-        if (isInteger(mathNode.getLeft().content)){
-            if (isInteger(mathNode.getRight().content)){
-                sb.append(mathNode.solve(Integer.parseInt(mathNode.getLeft().content), Integer.parseInt(mathNode.getRight().content)));
+        String left = null;
+        String right = null;
+        for (InterpreterStrategy strategy: strategies) {
+            if (strategy.validate(mathNode.getLeft())){
+                left = strategy.interpret(mathNode.getLeft(),types,values);
+            }
+        }
+        for (InterpreterStrategy strategy: strategies) {
+            if (strategy.validate(mathNode.getRight())){
+                right = strategy.interpret(mathNode.getRight(),types,values);
+            }
+        }
+        if (isInteger(left)){
+            if (isInteger(right)){
+                sb.append(mathNode.solve(Integer.parseInt(left), Integer.parseInt(right)));
             }else{
-                for (InterpreterStrategy strategy: strategies) {
-                    if (strategy.validate(mathNode.getRight())){
-                        sb.append(mathNode.solve(Integer.parseInt(mathNode.getLeft().content), Integer.parseInt(strategy.interpret(mathNode.getRight(),types,values))));
-                    }
-                }
+                sb.append(mathNode.solve(left, right));
             }
         }else{
-            if (isInteger(mathNode.getRight().content)){
-                for (InterpreterStrategy strategy: strategies) {
-                    if (strategy.validate(mathNode.getRight())){
-                        sb.append(mathNode.solve(Integer.parseInt(strategy.interpret(mathNode.getLeft(),types,values)), Integer.parseInt(mathNode.getRight().content)));
-                    }
-                }
-            }else{
-                int left = 0;
-                int right = 0;
-                for (InterpreterStrategy strategy: strategies) {
-                    if (strategy.validate(mathNode.getLeft())){
-                        left = Integer.parseInt(strategy.interpret(mathNode.getLeft(),types,values));
-                    }
-                }
-                for (InterpreterStrategy strategy: strategies) {
-                    if (strategy.validate(mathNode.getRight())){
-                        right = Integer.parseInt(strategy.interpret(mathNode.getRight(),types,values));
-                    }
-                }
-                sb.append(mathNode.solve(left,right));
-            }
-        } return sb.toString();
+            sb.append(mathNode.solve(left, right));
+        }
+        return sb.toString();
     }
 
     public static boolean isInteger(String str) {
