@@ -26,9 +26,7 @@ tasks.withType(Checkstyle) {
     ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
 }
 
-application{
-    mainClass = "Main"
-}
+
 
 repositories {
     mavenCentral()
