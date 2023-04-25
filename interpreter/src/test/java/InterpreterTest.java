@@ -18,12 +18,14 @@ public class InterpreterTest {
         AbstractSyntaxTree tree = new AbstractSyntaxTree();
         AbstractSyntaxTree tree2 = new AbstractSyntaxTree();
 
-        Node n1 = new ValueNode("'Peter'");
-        Node n2 = new NameNode("name");
-        Node n3 = new TypeNode("String");
-        Node n5 = new DeclareNode("Declaration", new ArrayList<>(Arrays.asList(n3,n2)));
-        tree.addSentence(new AssignDeclareNode("Assignation", new ArrayList<>(Arrays.asList(n5,n1))));
-        tree2.addSentence(new FunctionNode("Print",new ArrayList<>(List.of(n2))));
+        Node n1 = new ValueNode("1");
+        Node n2 = new ValueNode("number");
+        Node n3 = new MathNode("-", new ArrayList<>(Arrays.asList(n2,n1)));
+        Node n4 = new NameNode("value");
+        Node n5 = new TypeNode("String");
+        Node n6 = new DeclareNode("Declaration", new ArrayList<>(Arrays.asList(n5,n4)));
+        tree.addSentence(new AssignDeclareNode("Assignation", new ArrayList<>(Arrays.asList(n6,n3))));
+        tree2.addSentence(new FunctionNode("Print",new ArrayList<>(List.of(n4))));
         HashMap<String,String> types = new HashMap<>();
         HashMap<String,String> values = new HashMap<>();
 
