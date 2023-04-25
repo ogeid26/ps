@@ -28,7 +28,11 @@ public class KeywordInterpreter implements InterpreterStrategy{
 
             for (InterpreterStrategy strategy: strategies) {
                 if (strategy.validate(n)){
-                    values.put(declareNode.getNameNode().content,strategy.interpret(n,types,values));
+                    String message = strategy.interpret(n,types,values);
+                    if (message.equals("Error")){
+                        throw new RuntimeException("Error on assignation");
+                    }
+                    values.put(declareNode.getNameNode().content, message);
                 }
             }
 

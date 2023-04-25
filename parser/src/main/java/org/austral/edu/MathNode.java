@@ -39,4 +39,17 @@ public class MathNode extends Node{
         }
         return result;
     }
+
+    public String solve(String left, String right) {
+        String result = null;
+        switch (content){
+            case "+" ->{
+                result = left + right;
+            }
+            default -> {
+                result = "Error";
+            }
+        }
+        return result;
+    }
 }
