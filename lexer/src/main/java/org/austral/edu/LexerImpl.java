@@ -1,13 +1,11 @@
 package org.austral.edu;
-
-import exceptions.UnclosedStringLiteralException;
 import exceptions.UnknownTokenException;
 
 import java.util.ArrayList;
 public class LexerImpl implements Lexer{
     public Tokenizer tokenizer;
     @Override
-    public ArrayList<Token> lex(String input) throws UnknownTokenException, UnclosedStringLiteralException {
+    public ArrayList<Token> lex(String input) throws UnknownTokenException {
 
         ArrayList<Token> tokens = new ArrayList<>();
 
@@ -18,8 +16,8 @@ public class LexerImpl implements Lexer{
 
             StringBuilder currentString = new StringBuilder();
             currentString.append(current);
-            while (i < length - 1) {
 
+            while (i < length - 1) {
                 if (
                         !Character.isLetterOrDigit(current)
                                 && current != '.'
@@ -33,6 +31,7 @@ public class LexerImpl implements Lexer{
                     current = nextChar;
                     col++;
                     i++;
+                    tokenizer.tokenize(currentString.toString(), i, length-1, col, row);
                 } else
                     break;
             }
@@ -51,7 +50,5 @@ public class LexerImpl implements Lexer{
                 ? (input.substring(i + 1)).indexOf('"')
                 : (input.substring(i + 1)).indexOf('\'');
     }
-
-
 
 }
