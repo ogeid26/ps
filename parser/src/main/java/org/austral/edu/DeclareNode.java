@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DeclareNode extends Node{
-    public DeclareNode(String content) {
-        super(content, "Declare");
+    public DeclareNode() {
+        super("Declare", "Declare");
     }
 
-    public DeclareNode(String content, ArrayList<Node> children) {
-        super(content, "Declare", children);
+    public DeclareNode(ArrayList<Node> children) {
+        super("Declare", "Declare", children);
     }
 
     public TypeNode getTypeNode(){

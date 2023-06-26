@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class AssignNode extends Node{
-    public AssignNode(String content) {
-        super(content, "Assign");
+    public AssignNode() {
+        super("Assign", "Assign");
     }
 
-    public AssignNode(String content, ArrayList<Node> children) {
-        super(content, "Assign", children);
+    public AssignNode(ArrayList<Node> children) {
+        super("Assign", "Assign", children);
     }
 }

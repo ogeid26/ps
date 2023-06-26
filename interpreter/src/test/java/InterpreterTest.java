@@ -23,7 +23,7 @@ public class InterpreterTest {
         Node n3 = new MathNode("-", new ArrayList<>(Arrays.asList(n2,n1)));
         Node n4 = new NameNode("value");
         Node n5 = new TypeNode("String");
-        Node n6 = new DeclareNode("Declaration", new ArrayList<>(Arrays.asList(n5,n4)));
+        Node n6 = new DeclareNode(new ArrayList<>(Arrays.asList(n5,n4)));
         tree.addSentence(new AssignDeclareNode("Assignation", new ArrayList<>(Arrays.asList(n6,n3))));
         tree2.addSentence(new FunctionNode("Print",new ArrayList<>(List.of(n4))));
         HashMap<String,String> types = new HashMap<>();

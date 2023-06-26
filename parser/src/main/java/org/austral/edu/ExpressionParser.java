@@ -2,7 +2,7 @@ package org.austral.edu;
 
 import java.util.ArrayList;
 
-public class ParserIdentifier implements ParserStrategy {
+public class ExpressionParser implements SentenceParser {
     @Override
     public boolean validate(ArrayList<Token> tokens) {
         return false;
