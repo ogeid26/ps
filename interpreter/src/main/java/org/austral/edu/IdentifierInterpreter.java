@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class IdentifierInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -17,26 +17,29 @@ public class IdentifierInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, NotDefinedError {
         if (types.isEmpty()){
-            return "Your variable has not been defined";
+            throw new NotDefinedError();
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
             Node n = assignNode.children.get(1);
 
-            for (InterpreterStrategy strategy: strategies) {
+            for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(n)){
-                    values.put(nameNode.content,strategy.interpret(n,types,values));
+                    String message = strategy.interpret(n,types,values);
+                    if (message.equals("Error")){
+                        throw new AssignationError();
+                    }else {
+                        values.put(nameNode.content, message);
+                    }
                 }
             }
 
             if (types.get(nameNode.content).equals("String") && !isInteger(values.get(nameNode.content))){
-                return "Success";
             } else if (types.get(nameNode.content).equals("Number") && isInteger(values.get(nameNode.content))) {
-                return "Success";
             }else{
-                return "Incompatible type and value";
+                throw new IncompatibilityError();
             }
         }
     }

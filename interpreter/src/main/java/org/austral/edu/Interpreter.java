@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 public class Interpreter {
 
-    public void interpret(ArrayList<AbstractSyntaxTree> trees){
+    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError {
         HashMap<String,String> types = new HashMap<>();
         HashMap<String,String> values = new HashMap<>();
 
@@ -19,10 +19,7 @@ public class Interpreter {
             for (InterpreterStrategy interpreter: interpreters) {
                 Node node = tree.getFirstNode();
                 if (interpreter.validate(node)) {
-                    result = interpreter.interpret(node,types,values);
-                    if(!result.equals("Success")){
-                        throw new RuntimeException(result);
-                    }
+                    interpreter.interpret(node,types,values);
                 }
             }
         }

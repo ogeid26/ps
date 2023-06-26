@@ -3,7 +3,7 @@ package org.austral.edu;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class NameInterpreter implements InterpreterStrategy{
+public class NameInterpreter implements SubInterpreterStrategy{
     @Override
     public boolean validate(Node node) {
         return node.type.equals("Name");

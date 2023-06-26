@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class FunctionInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -13,13 +13,17 @@ public class FunctionInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError {
         Node n = node.children.get(0);
-        for (InterpreterStrategy strategy: strategies) {
+        for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(n)){
-                System.out.println(strategy.interpret(n,types,values));
+                String message = strategy.interpret(n,types,values);
+                if (message.equals("Error")){
+                    throw new AssignationError();
+                }else {
+                    System.out.println(message);
+                }
             }
         }
-        return "Success";
     }
 }

@@ -3,7 +3,7 @@ package org.austral.edu;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ValueInterpreter implements InterpreterStrategy{
+public class ValueInterpreter implements SubInterpreterStrategy{
     @Override
     public boolean validate(Node node) {
         return node.type.equals("Value");
@@ -11,7 +11,7 @@ public class ValueInterpreter implements InterpreterStrategy{
 
     @Override
     public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) {
-        if (node.content == null || Objects.equals(node.content, "")){
+        if (Objects.equals(node.content, "")){
             return "Error";
         }else {
             return node.content;
