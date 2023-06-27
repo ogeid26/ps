@@ -1,7 +1,6 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MathNode extends Node{
 
@@ -13,11 +12,11 @@ public class MathNode extends Node{
         super(content, "Math", children);
     }
 
-    Node getLeft(){
+    public Node getLeft(){
         return children.get(0);
     }
 
-    Node getRight(){
+    public Node getRight(){
         return children.get(1);
     }
 

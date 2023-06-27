@@ -1,6 +1,7 @@
 package org.austral.edu;
 
-import java.util.ArrayList;
+import org.austral.edu.Nodes.Node;
+import org.austral.edu.Nodes.RootNode;
 
 public class AbstractSyntaxTree {
 

@@ -1,7 +1,8 @@
 package org.austral.edu;
 
+import org.austral.edu.Nodes.Node;
+
 import java.util.HashMap;
-import java.util.Objects;
 
 public class NameInterpreter implements SubInterpreterStrategy{
     @Override

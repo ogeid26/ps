@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class IdentifierInterpreter implements InterpreterStrategy{
-    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+public class IdentifierInterpreter_2 implements InterpreterStrategy{
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(), new NameInterpreter(), new ValueInterpreter(), new BinaryInterpreter(), new ReaderInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -45,6 +45,8 @@ public class IdentifierInterpreter implements InterpreterStrategy{
 
             }else if(isNumber(types, values, nameNode)){
 
+            }else if(isBoolean(types, values, nameNode)) {
+
             }else{
                 throw new IncompatibilityError();
             }
@@ -53,6 +55,14 @@ public class IdentifierInterpreter implements InterpreterStrategy{
 
     private boolean isString(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {
         return types.get(nameNode.content).equals("String") && !isInteger(values.get(nameNode.content));
+    }
+
+    private boolean isBoolean(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {
+        return types.get(nameNode.content).equals("Boolean") && isaBoolean(values, nameNode);
+    }
+
+    private boolean isaBoolean(HashMap<String, String> values, NameNode nameNode) {
+        return values.get(nameNode.content).equals("TRUE") || values.get(nameNode.content).equals("FALSE");
     }
 
     private boolean isNumber(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {

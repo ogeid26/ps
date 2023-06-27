@@ -5,10 +5,10 @@ import org.austral.edu.Nodes.Node;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class ValueInterpreter implements SubInterpreterStrategy{
+public class BinaryInterpreter implements SubInterpreterStrategy{
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Value");
+        return node.type.equals("Binary");
     }
 
     @Override

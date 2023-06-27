@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-public class FunctionInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(List.of(new PrintInterpreter()));
+public class FunctionInterpreter_2 implements InterpreterStrategy{
+    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new PrintInterpreter(), new IfInterpreter()));
 
     @Override
     public boolean validate(Node node) {

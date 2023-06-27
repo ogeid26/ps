@@ -1,5 +1,7 @@
 package org.austral.edu;
 
+import org.austral.edu.Nodes.Node;
+
 import java.util.HashMap;
 
 public interface InterpreterStrategy {

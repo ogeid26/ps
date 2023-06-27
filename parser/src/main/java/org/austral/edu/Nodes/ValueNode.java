@@ -1,7 +1,6 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class ValueNode extends Node{
     public ValueNode(String content) {

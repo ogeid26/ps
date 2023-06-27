@@ -2,14 +2,15 @@ package org.austral.edu;
 
 import org.austral.edu.Nodes.AssignDeclareNode;
 import org.austral.edu.Nodes.DeclareNode;
+import org.austral.edu.Nodes.NameNode;
 import org.austral.edu.Nodes.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class KeywordInterpreter implements InterpreterStrategy{
-    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+public class KeywordInterpreter_2 implements InterpreterStrategy{
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter(), new BinaryInterpreter(), new ReaderInterpreter()));
     @Override
     public boolean validate(Node node) {
         return (isAssignDeclare(node) || isDeclare(node));
@@ -40,6 +41,8 @@ public class KeywordInterpreter implements InterpreterStrategy{
 
             }else if(isNumber(types, values, declareNode)){
 
+            }else if(isBoolean(types, values, declareNode)) {
+
             }else{
                 throw new IncompatibilityError();
             }
@@ -55,6 +58,14 @@ public class KeywordInterpreter implements InterpreterStrategy{
 
     private boolean isString(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
         return types.get(declareNode.getNameNode().content).equals("String") && !isInteger(values.get(declareNode.getNameNode().content));
+    }
+
+    private boolean isBoolean(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
+        return types.get(declareNode.getNameNode().content).equals("Boolean") && isaBoolean(values,declareNode);
+    }
+
+    private boolean isaBoolean(HashMap<String, String> values, DeclareNode declareNode) {
+        return values.get(declareNode.getNameNode().content).equals("TRUE") || values.get(declareNode.getNameNode().content).equals("FALSE");
     }
 
     private boolean isDeclare(Node node) {

@@ -1,7 +1,6 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class RootNode extends Node{
     public RootNode(String content) {

@@ -1,5 +1,7 @@
 package org.austral.edu;
 
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
 
 public class ParserFunction implements ParserStrategy {

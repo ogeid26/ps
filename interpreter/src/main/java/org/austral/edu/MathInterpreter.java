@@ -1,5 +1,8 @@
 package org.austral.edu;
 
+import org.austral.edu.Nodes.MathNode;
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -21,11 +24,13 @@ public class MathInterpreter implements SubInterpreterStrategy{
         for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(mathNode.getLeft())){
                 left = strategy.interpret(mathNode.getLeft(),types,values);
+                break;
             }
         }
         for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(mathNode.getRight())){
                 right = strategy.interpret(mathNode.getRight(),types,values);
+                break;
             }
         }
         if (isInteger(left)){
