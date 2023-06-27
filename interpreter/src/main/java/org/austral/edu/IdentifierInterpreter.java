@@ -1,11 +1,17 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.*;
+import org.austral.edu.Nodes.AssignNode;
+import org.austral.edu.Nodes.BinaryNode;
+import org.austral.edu.Nodes.NameNode;
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class IdentifierInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -17,28 +23,42 @@ public class IdentifierInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
         if (types.isEmpty()){
-            return "Your variable has not been defined";
+            throw new NotDefinedError();
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
-            Node n = assignNode.children.get(1);
+            Node valueName = assignNode.children.get(1);
 
-            for (InterpreterStrategy strategy: strategies) {
-                if (strategy.validate(n)){
-                    values.put(nameNode.content,strategy.interpret(n,types,values));
+            for (SubInterpreterStrategy strategy: strategies) {
+                if (strategy.validate(valueName)){
+                    try{
+                        String message = strategy.interpret(valueName,types,values);
+                        if (isString(types, nameNode, message, valueName)){
+                            values.put(nameNode.content, message);
+                            break;
+                        }else if(isNumber(types, nameNode, message)){
+                            values.put(nameNode.content, message);
+                            break;
+                        }else{
+                            throw new IncompatibilityError();
+                        }
+                    }catch (Error e){
+                        System.out.println(e.getMessage());
+                        throw new AssignationError();
+                    }
                 }
             }
-
-            if (types.get(nameNode.content).equals("String") && !isInteger(values.get(nameNode.content))){
-                return "Success";
-            } else if (types.get(nameNode.content).equals("Number") && isInteger(values.get(nameNode.content))) {
-                return "Success";
-            }else{
-                return "Incompatible type and value";
-            }
         }
+    }
+
+    private boolean isString(HashMap<String, String> types, NameNode nameNode, String message, Node valueNode) {
+        return types.get(nameNode.content).equals("String") && !isInteger(message) && !(valueNode instanceof BinaryNode);
+    }
+
+    private boolean isNumber(HashMap<String, String> types, NameNode nameNode, String message) {
+        return types.get(nameNode.content).equals("Number") && isInteger(message);
     }
 
     public static boolean isInteger(String str) {

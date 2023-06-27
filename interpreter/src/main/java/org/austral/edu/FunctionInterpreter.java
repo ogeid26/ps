@@ -1,11 +1,14 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.*;
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class FunctionInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(List.of(new PrintInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -13,13 +16,13 @@ public class FunctionInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, NotDefinedError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
         Node n = node.children.get(0);
         for (InterpreterStrategy strategy: strategies) {
             if (strategy.validate(n)){
-                System.out.println(strategy.interpret(n,types,values));
+                strategy.interpret(n,types,values);
+                break;
             }
         }
-        return "Success";
     }
 }

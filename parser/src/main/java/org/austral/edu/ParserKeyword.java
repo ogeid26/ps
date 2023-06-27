@@ -4,7 +4,7 @@ import org.austral.edu.Nodes.Node;
 
 import java.util.ArrayList;
 
-public class ExpressionParser implements SentenceParser {
+public class ParserKeyword implements ParserStrategy {
     @Override
     public boolean validate(ArrayList<Token> tokens) {
         return false;

@@ -1,12 +1,11 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class Node {
-    String content;
-    String type;
-    ArrayList<Node> children;
+    public String content;
+    public String type;
+    public ArrayList<Node> children;
 
     public Node(String content, String type) {
         this.content = content;

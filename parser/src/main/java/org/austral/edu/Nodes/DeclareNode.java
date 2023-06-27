@@ -1,15 +1,14 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DeclareNode extends Node{
     public DeclareNode() {
-        super("Declare", "Declare");
+        super(" : ", "Declare");
     }
 
     public DeclareNode(ArrayList<Node> children) {
-        super("Declare", "Declare", children);
+        super(" : ", "Declare", children);
     }
 
     public TypeNode getTypeNode(){

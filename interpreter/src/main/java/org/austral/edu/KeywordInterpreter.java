@@ -1,53 +1,69 @@
 package org.austral.edu;
 
-import java.sql.Array;
+import org.austral.edu.Errors.AssignationError;
+import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Errors.IncompatibilityError;
+import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.Nodes.AssignDeclareNode;
+import org.austral.edu.Nodes.DeclareNode;
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
 public class KeywordInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
     @Override
     public boolean validate(Node node) {
         return (isAssignDeclare(node) || isDeclare(node));
     }
 
-    private boolean isDeclare(Node node) {
-        return node.type.equals("Declare");
-    }
-
     @Override
-    public String interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
         if (isAssignDeclare(node)){
 
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
 
             types.put(declareNode.getNameNode().content,declareNode.getTypeNode().content);
-            Node n = assignDeclareNode.children.get(1);
+            Node valueNode = assignDeclareNode.children.get(1);
 
-            for (InterpreterStrategy strategy: strategies) {
-                if (strategy.validate(n)){
-                    String message = strategy.interpret(n,types,values);
-                    if (message.equals("Error")){
-                        throw new RuntimeException("Error on assignation");
+            for (SubInterpreterStrategy strategy: strategies) {
+                if (strategy.validate(valueNode)){
+                    try{
+                        String message = strategy.interpret(valueNode,types,values);
+                        if (isString(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else if(isNumber(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else{
+                            throw new IncompatibilityError();
+                        }
+                    }catch (Error e){
+                        System.out.println(e.getMessage());
+                        throw new AssignationError();
                     }
-                    values.put(declareNode.getNameNode().content, message);
                 }
-            }
-
-            if (types.get(declareNode.getNameNode().content).equals("String") && !isInteger(values.get(declareNode.getNameNode().content))){
-                return "Success";
-            } else if (types.get(declareNode.getNameNode().content).equals("Number") && isInteger(values.get(declareNode.getNameNode().content))) {
-                return "Success";
-            }else{
-                return "Incompatible type and value";
             }
         }else {
             DeclareNode declareNode = (DeclareNode) node;
             types.put(declareNode.getNameNode().content, declareNode.getTypeNode().content);
-            return "Success";
         }
+    }
+
+    private boolean isNumber(DeclareNode declareNode, String message) {
+        return declareNode.getTypeNode().content.equals("Number") && isInteger(message);
+    }
+
+    private boolean isString(DeclareNode declareNode, String message) {
+        return declareNode.getTypeNode().content.equals("String") && !isInteger(message);
+    }
+
+    private boolean isDeclare(Node node) {
+        return node.type.equals("Declare");
     }
 
     private boolean isAssignDeclare(Node node) {

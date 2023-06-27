@@ -1,11 +1,17 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.AssignationError;
+import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.Nodes.MathNode;
+import org.austral.edu.Nodes.Node;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class MathInterpreter implements InterpreterStrategy{
-    ArrayList<InterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(this ,new NameInterpreter(), new ValueInterpreter()));
+public class MathInterpreter implements SubInterpreterStrategy{
+    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(this ,new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -13,19 +19,21 @@ public class MathInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError, ValueNotFoundError, EmptyContentError {
         MathNode mathNode = (MathNode) node;
         StringBuilder sb = new StringBuilder();
         String left = null;
         String right = null;
-        for (InterpreterStrategy strategy: strategies) {
+        for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(mathNode.getLeft())){
                 left = strategy.interpret(mathNode.getLeft(),types,values);
+                break;
             }
         }
-        for (InterpreterStrategy strategy: strategies) {
+        for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(mathNode.getRight())){
                 right = strategy.interpret(mathNode.getRight(),types,values);
+                break;
             }
         }
         if (isInteger(left)){
