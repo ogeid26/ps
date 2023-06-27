@@ -1,5 +1,7 @@
 package org.austral.edu;
 
+import org.austral.edu.Nodes.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 

@@ -18,4 +18,8 @@ public abstract class Node {
         this.type = type;
         this.children = children;
     }
+
+    public ArrayList<Node> getChildren() {
+        return children;
+    }
 }

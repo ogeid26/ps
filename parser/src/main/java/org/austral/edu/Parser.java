@@ -5,23 +5,27 @@ import org.austral.edu.Nodes.Node;
 
 import java.util.ArrayList;
 
-public class Parser {
+public abstract class Parser {
+
+    public SentenceParser[] parsers;
+
+    Parser(SentenceParser[] parsers) {
+        this.parsers = parsers;
+    }
 
     public AbstractSyntaxTree parse(ArrayList<Token> tokens) {
         //Step 0: Initialize variables
         AbstractSyntaxTree ast = new AbstractSyntaxTree();
-        ArrayList<SentenceParser> parsers = new ArrayList<>();
-        parsers.add(new AssignationParser());
-        parsers.add(new DeclarationParser());
 
         //Step 1: Divide the general list in smaller lists according to the SEMICOLON.
         ArrayList<ArrayList<Token>> body = new ArrayList<>();
         ArrayList<Token> temp = new ArrayList<>();
         for (Token token : tokens) {
-            temp.add(token);
             if (token.tokenType.equals(TokenType.SEMICOLON)) {
                 body.add(temp);
                 temp = new ArrayList<>();
+            } else {
+                temp.add(token);
             }
         }
 

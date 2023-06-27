@@ -5,21 +5,23 @@ import org.austral.edu.Nodes.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DeclarationParser implements SentenceParser {
+public class DeclareAndAssignParser implements SentenceParser {
 
     TokenType[][] pattern;
 
-    DeclarationParser() {
+    DeclareAndAssignParser() {
         pattern = new TokenType[][]{
                 {TokenType.KEYWORD},
                 {TokenType.IDENTIFIER},
                 {TokenType.DECLARATION},
-                {TokenType.NUMBERTYPE, TokenType.STRINGTYPE}
+                {TokenType.NUMBERTYPE, TokenType.STRINGTYPE},
+                {TokenType.ASSIGNATION},
+                {TokenType.NUMBER, TokenType.STRING}
         };
     }
     @Override
     public boolean validate(ArrayList<Token> tokens) {
-        if (tokens.size() != pattern.length)
+        if (tokens.size() < pattern.length)
             return false;
         for (int i = 0; i < pattern.length; i++) {
             if (!Arrays.asList(pattern[i]).contains(tokens.get(i).tokenType))
@@ -33,6 +35,7 @@ public class DeclarationParser implements SentenceParser {
         ArrayList<Node> children = new ArrayList<>();
         children.add(new TypeNode(tokens.get(3).content));
         children.add(new NameNode(tokens.get(1).content));
-        return new DeclareNode(children);
+        children.add(new ValueNode(tokens.get(5).content));
+        return new AssignDeclareNode(children);
     }
 }

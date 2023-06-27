@@ -1,4 +1,4 @@
-package org.austral.edu;
+package org.austral.edu.Nodes;
 
 import java.util.ArrayList;
 

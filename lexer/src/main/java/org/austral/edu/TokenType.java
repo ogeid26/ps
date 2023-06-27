@@ -14,5 +14,6 @@ public enum TokenType {
     MINUS,
     MULTIPLY,
     DIVIDE,
-    PRINTLN
+    PRINTLN,
+    BOOLEANTYPE
 }
