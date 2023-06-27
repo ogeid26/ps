@@ -2,3 +2,4 @@
 lexer/build
 .idea
 parser/build
+interpreter/build
