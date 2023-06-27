@@ -27,11 +27,11 @@ public class IdentifierInterpreter implements InterpreterStrategy{
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
-            Node n = assignNode.children.get(1);
+            Node valueName = assignNode.children.get(1);
 
             for (SubInterpreterStrategy strategy: strategies) {
-                if (strategy.validate(n)){
-                    String message = strategy.interpret(n,types,values);
+                if (strategy.validate(valueName)){
+                    String message = strategy.interpret(valueName,types,values);
                     if (message.equals("Error")){
                         throw new AssignationError();
                     }else {

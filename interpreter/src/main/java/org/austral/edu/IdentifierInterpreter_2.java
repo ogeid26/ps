@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class IdentifierInterpreter_2 implements InterpreterStrategy{
+public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(), new NameInterpreter(), new ValueInterpreter(), new BinaryInterpreter(), new ReaderInterpreter()));
 
     @Override
@@ -21,34 +21,37 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, NotDefinedError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError {
         if (types.isEmpty()){
             throw new NotDefinedError();
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
-            Node n = assignNode.children.get(1);
-
-            for (SubInterpreterStrategy strategy: strategies) {
-                if (strategy.validate(n)){
-                    String message = strategy.interpret(n,types,values);
-                    if (message.equals("Error")){
-                        throw new AssignationError();
-                    }else {
-                        values.put(nameNode.content, message);
-                        break;
+            Node valueNode = assignNode.children.get(1);
+            if (constants.contains(nameNode.content)){
+                throw new RuntimeException("This variable is a constant, you can´t change it");
+            }else {
+                for (SubInterpreterStrategy strategy : strategies) {
+                    if (strategy.validate(valueNode)) {
+                        String message = strategy.interpret(valueNode, types, values);
+                        if (message.equals("Error")) {
+                            throw new AssignationError();
+                        } else {
+                            values.put(nameNode.content, message);
+                            break;
+                        }
                     }
                 }
-            }
 
-            if (isString(types, values, nameNode)){
+                if (isString(types, values, nameNode)) {
 
-            }else if(isNumber(types, values, nameNode)){
+                } else if (isNumber(types, values, nameNode)) {
 
-            }else if(isBoolean(types, values, nameNode)) {
+                } else if (isBoolean(types, values, nameNode)) {
 
-            }else{
-                throw new IncompatibilityError();
+                } else {
+                    throw new IncompatibilityError();
+                }
             }
         }
     }

@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class DeclareNode extends Node{
     public DeclareNode() {
-        super(" ", "Declare");
+        super(" : ", "Declare");
     }
 
     public DeclareNode(ArrayList<Node> children) {
-        super(" ", "Declare", children);
+        super(" : ", "Declare", children);
     }
 
     public TypeNode getTypeNode(){

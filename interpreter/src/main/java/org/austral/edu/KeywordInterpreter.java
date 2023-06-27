@@ -23,11 +23,11 @@ public class KeywordInterpreter implements InterpreterStrategy{
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
 
             types.put(declareNode.getNameNode().content,declareNode.getTypeNode().content);
-            Node n = assignDeclareNode.children.get(1);
+            Node valueNode = assignDeclareNode.children.get(1);
 
             for (SubInterpreterStrategy strategy: strategies) {
-                if (strategy.validate(n)){
-                    String message = strategy.interpret(n,types,values);
+                if (strategy.validate(valueNode)){
+                    String message = strategy.interpret(valueNode,types,values);
                     if (message.equals("Error")){
                         throw new AssignationError();
                     }else {
