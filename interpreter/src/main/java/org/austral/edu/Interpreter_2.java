@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.*;
 import org.austral.edu.Nodes.Node;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class Interpreter_2 {
         this.constants = constants;
     }
 
-    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError {
+    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
 
         ArrayList<InterpreterStrategy_2> interpreters = new ArrayList<>();
         interpreters.add(new FunctionInterpreter_2());

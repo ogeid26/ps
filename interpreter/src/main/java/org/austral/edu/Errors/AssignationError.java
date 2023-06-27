@@ -1,4 +1,4 @@
-package org.austral.edu;
+package org.austral.edu.Errors;
 
 public class AssignationError extends Exception{
     public AssignationError() {

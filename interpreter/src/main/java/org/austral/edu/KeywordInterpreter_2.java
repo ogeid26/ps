@@ -1,5 +1,9 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.AssignationError;
+import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Errors.IncompatibilityError;
+import org.austral.edu.Errors.ValueNotFoundError;
 import org.austral.edu.Nodes.*;
 
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, EmptyContentError, ValueNotFoundError {
         if (isAssignDeclare(node)){
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
@@ -24,24 +28,27 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
 
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
-                    String message = strategy.interpret(valueNode,types,values);
-                    if (message.equals("Error")){
+                    try{
+                        String message = strategy.interpret(valueNode,types,values);
+                        if (isString(declareNode, message, valueNode)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else if(isNumber(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else if(isBoolean(declareNode, valueNode)) {
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else{
+                            throw new IncompatibilityError();
+                        }
+                    }catch (Error e){
+                        System.out.println(e.getMessage());
                         throw new AssignationError();
-                    }else {
-                        values.put(declareNode.getNameNode().content, message);
-                        break;
                     }
                 }
             }
-            if (isString(types, values, declareNode)){
 
-            }else if(isNumber(types, values, declareNode)){
-
-            }else if(isBoolean(types, values, declareNode)) {
-
-            }else{
-                throw new IncompatibilityError();
-            }
         }else if(isConstant(node)) {
             ConstantNode constantNode = (ConstantNode) node;
             DeclareNode declareNode = constantNode.getDeclareNode();
@@ -51,24 +58,28 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
 
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
-                    String message = strategy.interpret(valueNode,types,values);
-                    if (message.equals("Error")){
+                    try{
+                        String message = strategy.interpret(valueNode,types,values);
+                        if (isString(declareNode, message, valueNode)){
+                            values.put(declareNode.getNameNode().content, message);
+                            constants.add(declareNode.getNameNode().content);
+                            break;
+                        }else if(isNumber(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            constants.add(declareNode.getNameNode().content);
+                            break;
+                        }else if(isBoolean(declareNode, valueNode)) {
+                            values.put(declareNode.getNameNode().content, message);
+                            constants.add(declareNode.getNameNode().content);
+                            break;
+                        }else{
+                            throw new IncompatibilityError();
+                        }
+                    }catch (Error e){
+                        System.out.println(e.getMessage());
                         throw new AssignationError();
-                    }else {
-                        values.put(declareNode.getNameNode().content, message);
-                        constants.add(declareNode.getNameNode().content);
-                        break;
                     }
                 }
-            }
-            if (isString(types, values, declareNode)){
-
-            }else if(isNumber(types, values, declareNode)){
-
-            }else if(isBoolean(types, values, declareNode)) {
-
-            }else{
-                throw new IncompatibilityError();
             }
         }else{
             DeclareNode declareNode = (DeclareNode) node;
@@ -76,20 +87,16 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isNumber(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
-        return types.get(declareNode.getNameNode().content).equals("Number") && isInteger(values.get(declareNode.getNameNode().content));
+    private boolean isNumber(DeclareNode declareNode, String message) {
+        return declareNode.getTypeNode().content.equals("Number") && isInteger(message);
     }
 
-    private boolean isString(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
-        return types.get(declareNode.getNameNode().content).equals("String") && !isInteger(values.get(declareNode.getNameNode().content));
+    private boolean isString(DeclareNode declareNode, String message, Node valueNode) {
+        return declareNode.getTypeNode().content.equals("String") && !isInteger(message) && !(valueNode instanceof BinaryNode);
     }
 
-    private boolean isBoolean(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
-        return types.get(declareNode.getNameNode().content).equals("Boolean") && isaBoolean(values,declareNode);
-    }
-
-    private boolean isaBoolean(HashMap<String, String> values, DeclareNode declareNode) {
-        return values.get(declareNode.getNameNode().content).equals("TRUE") || values.get(declareNode.getNameNode().content).equals("FALSE");
+    private boolean isBoolean(DeclareNode declareNode, Node valueNode) {
+        return declareNode.getTypeNode().content.equals("Boolean") && (valueNode instanceof BinaryNode);
     }
 
     private boolean isDeclare(Node node) {

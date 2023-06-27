@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.*;
 import org.austral.edu.Nodes.Node;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class Interpreter {
          this. values = new HashMap<>();
     }
 
-    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError {
+    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
 
         ArrayList<InterpreterStrategy> interpreters = new ArrayList<>();
         interpreters.add(new FunctionInterpreter());

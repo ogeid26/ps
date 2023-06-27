@@ -1,5 +1,9 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.AssignationError;
+import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Errors.IncompatibilityError;
+import org.austral.edu.Errors.ValueNotFoundError;
 import org.austral.edu.Nodes.AssignDeclareNode;
 import org.austral.edu.Nodes.DeclareNode;
 import org.austral.edu.Nodes.Node;
@@ -16,7 +20,7 @@ public class KeywordInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
         if (isAssignDeclare(node)){
 
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
@@ -27,21 +31,22 @@ public class KeywordInterpreter implements InterpreterStrategy{
 
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
-                    String message = strategy.interpret(valueNode,types,values);
-                    if (message.equals("Error")){
+                    try{
+                        String message = strategy.interpret(valueNode,types,values);
+                        if (isString(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else if(isNumber(declareNode, message)){
+                            values.put(declareNode.getNameNode().content, message);
+                            break;
+                        }else{
+                            throw new IncompatibilityError();
+                        }
+                    }catch (Error e){
+                        System.out.println(e.getMessage());
                         throw new AssignationError();
-                    }else {
-                        values.put(declareNode.getNameNode().content, message);
-                        break;
                     }
                 }
-            }
-            if (isString(types, values, declareNode)){
-
-            }else if(isNumber(types, values, declareNode)){
-
-            }else{
-                throw new IncompatibilityError();
             }
         }else {
             DeclareNode declareNode = (DeclareNode) node;
@@ -49,12 +54,12 @@ public class KeywordInterpreter implements InterpreterStrategy{
         }
     }
 
-    private boolean isNumber(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
-        return types.get(declareNode.getNameNode().content).equals("Number") && isInteger(values.get(declareNode.getNameNode().content));
+    private boolean isNumber(DeclareNode declareNode, String message) {
+        return declareNode.getTypeNode().content.equals("Number") && isInteger(message);
     }
 
-    private boolean isString(HashMap<String, String> types, HashMap<String, String> values, DeclareNode declareNode) {
-        return types.get(declareNode.getNameNode().content).equals("String") && !isInteger(values.get(declareNode.getNameNode().content));
+    private boolean isString(DeclareNode declareNode, String message) {
+        return declareNode.getTypeNode().content.equals("String") && !isInteger(message);
     }
 
     private boolean isDeclare(Node node) {

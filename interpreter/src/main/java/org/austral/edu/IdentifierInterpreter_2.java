@@ -1,6 +1,8 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.*;
 import org.austral.edu.Nodes.AssignNode;
+import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.NameNode;
 import org.austral.edu.Nodes.Node;
 
@@ -21,7 +23,7 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError {
         if (types.isEmpty()){
             throw new NotDefinedError();
         }else{
@@ -29,47 +31,44 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
             NameNode nameNode = (NameNode) assignNode.children.get(0);
             Node valueNode = assignNode.children.get(1);
             if (constants.contains(nameNode.content)){
-                throw new RuntimeException("This variable is a constant, you can´t change it");
+                throw new ConstantVariableError();
             }else {
                 for (SubInterpreterStrategy strategy : strategies) {
                     if (strategy.validate(valueNode)) {
-                        String message = strategy.interpret(valueNode, types, values);
-                        if (message.equals("Error")) {
+                        try{
+                            String message = strategy.interpret(valueNode,types,values);
+                            if (isString(types, nameNode, message, valueNode)){
+                                values.put(nameNode.content, message);
+                                break;
+                            }else if(isNumber(types, nameNode, message)){
+                                values.put(nameNode.content, message);
+                                break;
+                            }else if(isBoolean(types, nameNode, valueNode)) {
+                                values.put(nameNode.content, message);
+                                break;
+                            }else{
+                                throw new IncompatibilityError();
+                            }
+                        }catch (Error e){
+                            System.out.println(e.getMessage());
                             throw new AssignationError();
-                        } else {
-                            values.put(nameNode.content, message);
-                            break;
                         }
                     }
-                }
-
-                if (isString(types, values, nameNode)) {
-
-                } else if (isNumber(types, values, nameNode)) {
-
-                } else if (isBoolean(types, values, nameNode)) {
-
-                } else {
-                    throw new IncompatibilityError();
                 }
             }
         }
     }
 
-    private boolean isString(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {
-        return types.get(nameNode.content).equals("String") && !isInteger(values.get(nameNode.content));
+    private boolean isString(HashMap<String, String> types, NameNode nameNode, String message, Node valueNode) {
+        return types.get(nameNode.content).equals("String") && !isInteger(message) && !(valueNode instanceof BinaryNode);
     }
 
-    private boolean isBoolean(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {
-        return types.get(nameNode.content).equals("Boolean") && isaBoolean(values, nameNode);
+    private boolean isNumber(HashMap<String, String> types, NameNode nameNode, String message) {
+        return types.get(nameNode.content).equals("Number") && isInteger(message);
     }
 
-    private boolean isaBoolean(HashMap<String, String> values, NameNode nameNode) {
-        return values.get(nameNode.content).equals("TRUE") || values.get(nameNode.content).equals("FALSE");
-    }
-
-    private boolean isNumber(HashMap<String, String> types, HashMap<String, String> values, NameNode nameNode) {
-        return types.get(nameNode.content).equals("Number") && isInteger(values.get(nameNode.content));
+    private boolean isBoolean(HashMap<String, String> types, NameNode nameNode, Node valueNode) {
+        return types.get(nameNode.content).equals("Boolean") && (valueNode instanceof BinaryNode);
     }
 
     public static boolean isInteger(String str) {

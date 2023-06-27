@@ -1,5 +1,8 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.AssignationError;
+import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Errors.ValueNotFoundError;
 import org.austral.edu.Nodes.MathNode;
 import org.austral.edu.Nodes.Node;
 
@@ -16,7 +19,7 @@ public class MathInterpreter implements SubInterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError, ValueNotFoundError, EmptyContentError {
         MathNode mathNode = (MathNode) node;
         StringBuilder sb = new StringBuilder();
         String left = null;

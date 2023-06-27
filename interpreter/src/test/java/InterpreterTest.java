@@ -1,4 +1,5 @@
 import org.austral.edu.*;
+import org.austral.edu.Errors.*;
 import org.austral.edu.Nodes.*;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +9,7 @@ import java.util.List;
 
 public class InterpreterTest {
     @Test
-    public void testing_Version_1() throws AssignationError, NotDefinedError, IncompatibilityError {
+    public void testing_Version_1() throws AssignationError, NotDefinedError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
         Interpreter interpreter = new Interpreter();
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
@@ -36,12 +37,13 @@ public class InterpreterTest {
     }
 
     @Test
-    public void testing_Version_2() throws AssignationError, NotDefinedError, IncompatibilityError {
+    public void testing_Version_2() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
         Interpreter_2 interpreter = new Interpreter_2();
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
         AbstractSyntaxTree start = new AbstractSyntaxTree();
         AbstractSyntaxTree ifTree = new AbstractSyntaxTree();
+        AbstractSyntaxTree continueTree = new AbstractSyntaxTree();
 
         ArrayList<AbstractSyntaxTree> trueTrees = new ArrayList<>();
         AbstractSyntaxTree trueTree = new AbstractSyntaxTree();
@@ -65,11 +67,16 @@ public class InterpreterTest {
         falseTree.addSentence(n8);
         falseTrees.add(falseTree);
 
-        Node n10 = new IfNode(n2,trueTrees,falseTrees);
-        ifTree.addSentence(new FunctionNode(new ArrayList<>(List.of(n10))));
+        Node n9 = new IfNode(n2,trueTrees,falseTrees);
+        ifTree.addSentence(new FunctionNode(new ArrayList<>(List.of(n9))));
+
+        Node n10 = new PrintNode(new ArrayList<>(List.of(new ValueNode("Exito"))));
+        Node n11 = new FunctionNode(new ArrayList<>(List.of(n10)));
+        continueTree.addSentence(n11);
 
         trees.add(start);
         trees.add(ifTree);
+        trees.add(continueTree);
 
         interpreter.interpret(trees);
     }

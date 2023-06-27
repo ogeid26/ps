@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import org.austral.edu.Errors.EmptyContentError;
 import org.austral.edu.Nodes.Node;
 
 import java.util.HashMap;
@@ -12,9 +13,9 @@ public class BinaryInterpreter implements SubInterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws EmptyContentError {
         if (Objects.equals(node.content, "")){
-            return "Error";
+            throw new EmptyContentError();
         }else {
             return node.content;
         }
