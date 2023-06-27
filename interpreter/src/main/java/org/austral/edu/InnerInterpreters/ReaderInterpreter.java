@@ -1,7 +1,7 @@
 package org.austral.edu.InnerInterpreters;
 
-import org.austral.edu.Errors.AssignationError;
-import org.austral.edu.Errors.EmptyContentError;
+import org.austral.edu.Exceptions.AssignationException;
+import org.austral.edu.Exceptions.EmptyContentException;
 import org.austral.edu.Nodes.Node;
 
 import java.util.HashMap;
@@ -15,12 +15,12 @@ public class ReaderInterpreter implements SubInterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError, EmptyContentError {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws EmptyContentException {
         System.out.println(node.content);
         Scanner newInput = new Scanner(System.in);
         String result = newInput.nextLine();
         if (Objects.equals(result, "")){
-            throw new EmptyContentError();
+            throw new EmptyContentException();
         }else {
             return result;
         }

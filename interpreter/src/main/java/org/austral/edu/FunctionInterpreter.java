@@ -1,6 +1,6 @@
 package org.austral.edu;
 
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.Node;
 import org.austral.edu.Results.Result;
 
@@ -17,7 +17,7 @@ public class FunctionInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationError, NotDefinedError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException {
         Node n = node.children.get(0);
         for (InterpreterStrategy strategy: strategies) {
             if (strategy.validate(n)){

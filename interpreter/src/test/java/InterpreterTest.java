@@ -1,5 +1,5 @@
 import org.austral.edu.*;
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.*;
 import org.austral.edu.Results.ClassicResult;
 import org.junit.jupiter.api.Test;
@@ -10,7 +10,7 @@ import java.util.List;
 
 public class InterpreterTest {
     @Test
-    public void testing_Version_1() throws AssignationError, NotDefinedError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
+    public void testing_Version_1() throws AssignationException, NotDefinedException, IncompatibilityException, InterpretException {
         Interpreter interpreter = new Interpreter(new ClassicResult());
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
@@ -40,7 +40,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void testing_Version_2() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
+    public void testing_Version_2() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
         Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
@@ -87,7 +87,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void testing_constants() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
+    public void testing_constants() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
         Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();

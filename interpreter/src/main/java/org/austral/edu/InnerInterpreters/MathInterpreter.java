@@ -1,8 +1,6 @@
 package org.austral.edu.InnerInterpreters;
 
-import org.austral.edu.Errors.AssignationError;
-import org.austral.edu.Errors.EmptyContentError;
-import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.MathNode;
 import org.austral.edu.Nodes.Node;
 
@@ -19,7 +17,7 @@ public class MathInterpreter implements SubInterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError, ValueNotFoundError, EmptyContentError {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws InterpretException {
         MathNode mathNode = (MathNode) node;
         StringBuilder sb = new StringBuilder();
         String left = null;
@@ -40,10 +38,20 @@ public class MathInterpreter implements SubInterpreterStrategy{
             if (isInteger(right)){
                 sb.append(mathNode.solve(Integer.parseInt(left), Integer.parseInt(right)));
             }else{
-                sb.append(mathNode.solve(left, right));
+                try {
+                    sb.append(mathNode.solve(left, right));
+                }catch (Exception e){
+                    System.out.println(e.getMessage());
+                    throw new MathException();
+                }
             }
         }else{
-            sb.append(mathNode.solve(left, right));
+            try{
+                sb.append(mathNode.solve(left, right));
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+                throw new MathException();
+            }
         }
         return sb.toString();
     }

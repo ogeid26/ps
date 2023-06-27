@@ -40,14 +40,11 @@ public class MathNode extends Node{
     }
 
     public String solve(String left, String right) {
-        String result = null;
-        switch (content){
-            case "+" ->{
-                result = left + right;
-            }
-            default -> {
-                result = "Error";
-            }
+        String result;
+        if ("+".equals(content)) {
+            result = left + right;
+        } else {
+            throw new RuntimeException("It is impossible to realize de operation");
         }
         return result;
     }

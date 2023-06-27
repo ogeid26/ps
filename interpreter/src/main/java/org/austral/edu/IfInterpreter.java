@@ -1,6 +1,6 @@
 package org.austral.edu;
 
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.IfNode;
 import org.austral.edu.Nodes.Node;
@@ -16,7 +16,7 @@ public class IfInterpreter implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants, Result result) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
+    public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants, Result result) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, AssignationException {
         IfNode ifNode = (IfNode) node;
         Interpreter_2 interpreter = new Interpreter_2(types,values,constants, result);
         Node condition = ifNode.getCondition();
@@ -33,7 +33,7 @@ public class IfInterpreter implements InterpreterStrategy_2{
                 interpreter.interpret(ifNode.getFalseTree());
             }
         }else{
-            throw new IllogicalConditionalError();
+            throw new IllogicalConditionalException();
         }
     }
 }

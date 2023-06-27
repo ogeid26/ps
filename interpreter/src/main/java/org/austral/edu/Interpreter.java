@@ -1,6 +1,6 @@
 package org.austral.edu;
 
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.Node;
 import org.austral.edu.Results.Result;
 
@@ -18,7 +18,7 @@ public class Interpreter {
          this.result = result;
     }
 
-    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
+    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException {
 
         ArrayList<InterpreterStrategy> interpreters = new ArrayList<>();
         interpreters.add(new FunctionInterpreter());

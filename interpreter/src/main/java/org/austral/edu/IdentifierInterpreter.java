@@ -1,6 +1,6 @@
 package org.austral.edu;
 
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.InnerInterpreters.MathInterpreter;
 import org.austral.edu.InnerInterpreters.NameInterpreter;
 import org.austral.edu.InnerInterpreters.SubInterpreterStrategy;
@@ -28,9 +28,9 @@ public class IdentifierInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, IncompatibilityException, NotDefinedException, ValueNotFoundException, EmptyContentException {
         if (types.isEmpty()){
-            throw new NotDefinedError();
+            throw new NotDefinedException();
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
@@ -47,11 +47,11 @@ public class IdentifierInterpreter implements InterpreterStrategy{
                             values.put(nameNode.content, message);
                             break;
                         }else{
-                            throw new IncompatibilityError();
+                            throw new IncompatibilityException();
                         }
-                    }catch (Error e){
+                    }catch (InterpretException e){
                         System.out.println(e.getMessage());
-                        throw new AssignationError();
+                        throw new AssignationException();
                     }
                 }
             }
