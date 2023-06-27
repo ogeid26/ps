@@ -1,10 +1,12 @@
 package org.austral.edu;
 
 import org.austral.edu.Errors.*;
+import org.austral.edu.InnerInterpreters.*;
 import org.austral.edu.Nodes.AssignNode;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.NameNode;
 import org.austral.edu.Nodes.Node;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +21,11 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     }
 
     private boolean isAssignation(Node node) {
-        return node.type.equals("Assignation");
+        return node.type.equals("Assign");
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError {
         if (types.isEmpty()){
             throw new NotDefinedError();
         }else{
@@ -39,12 +41,15 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
                             String message = strategy.interpret(valueNode,types,values);
                             if (isString(types, nameNode, message, valueNode)){
                                 values.put(nameNode.content, message);
+                                isReader(result, strategy, message);
                                 break;
                             }else if(isNumber(types, nameNode, message)){
                                 values.put(nameNode.content, message);
+                                isReader(result, strategy, message);
                                 break;
                             }else if(isBoolean(types, nameNode, valueNode)) {
                                 values.put(nameNode.content, message);
+                                isReader(result, strategy, message);
                                 break;
                             }else{
                                 throw new IncompatibilityError();
@@ -56,6 +61,12 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
                     }
                 }
             }
+        }
+    }
+
+    private void isReader(Result result, SubInterpreterStrategy strategy, String message) {
+        if (strategy instanceof ReaderInterpreter){
+            result.saveReaderElement(message);
         }
     }
 

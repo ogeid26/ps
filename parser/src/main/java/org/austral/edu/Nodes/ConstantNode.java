@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class ConstantNode extends Node{
 
     public ConstantNode() {
-        super(" = ", "AssignDeclare");
+        super(" = ", "Constant");
     }
 
     public ConstantNode(ArrayList<Node> children) {
-        super(" = ", "AssignDeclare", children);
+        super(" = ", "Constant", children);
     }
 
     public DeclareNode getDeclareNode(){

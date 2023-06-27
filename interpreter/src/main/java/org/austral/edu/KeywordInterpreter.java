@@ -4,9 +4,14 @@ import org.austral.edu.Errors.AssignationError;
 import org.austral.edu.Errors.EmptyContentError;
 import org.austral.edu.Errors.IncompatibilityError;
 import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.InnerInterpreters.MathInterpreter;
+import org.austral.edu.InnerInterpreters.NameInterpreter;
+import org.austral.edu.InnerInterpreters.SubInterpreterStrategy;
+import org.austral.edu.InnerInterpreters.ValueInterpreter;
 import org.austral.edu.Nodes.AssignDeclareNode;
 import org.austral.edu.Nodes.DeclareNode;
 import org.austral.edu.Nodes.Node;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +25,7 @@ public class KeywordInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
         if (isAssignDeclare(node)){
 
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;

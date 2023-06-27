@@ -1,4 +1,4 @@
-package org.austral.edu;
+package org.austral.edu.InnerInterpreters;
 
 import org.austral.edu.Errors.AssignationError;
 import org.austral.edu.Errors.EmptyContentError;
@@ -17,8 +17,8 @@ public class ReaderInterpreter implements SubInterpreterStrategy{
     @Override
     public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws AssignationError, EmptyContentError {
         System.out.println(node.content);
-        Scanner myObj = new Scanner(System.in);
-        String result = myObj.nextLine();
+        Scanner newInput = new Scanner(System.in);
+        String result = newInput.nextLine();
         if (Objects.equals(result, "")){
             throw new EmptyContentError();
         }else {

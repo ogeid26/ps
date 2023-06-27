@@ -1,4 +1,4 @@
-package org.austral.edu;
+package org.austral.edu.InnerInterpreters;
 
 import org.austral.edu.Errors.ValueNotFoundError;
 import org.austral.edu.Nodes.Node;

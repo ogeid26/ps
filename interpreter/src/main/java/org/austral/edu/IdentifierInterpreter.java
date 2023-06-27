@@ -1,10 +1,15 @@
 package org.austral.edu;
 
 import org.austral.edu.Errors.*;
+import org.austral.edu.InnerInterpreters.MathInterpreter;
+import org.austral.edu.InnerInterpreters.NameInterpreter;
+import org.austral.edu.InnerInterpreters.SubInterpreterStrategy;
+import org.austral.edu.InnerInterpreters.ValueInterpreter;
 import org.austral.edu.Nodes.AssignNode;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.NameNode;
 import org.austral.edu.Nodes.Node;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +24,11 @@ public class IdentifierInterpreter implements InterpreterStrategy{
     }
 
     private boolean isAssignation(Node node) {
-        return node.type.equals("Assignation");
+        return node.type.equals("Assign");
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationError, IncompatibilityError, NotDefinedError, ValueNotFoundError, EmptyContentError {
         if (types.isEmpty()){
             throw new NotDefinedError();
         }else{

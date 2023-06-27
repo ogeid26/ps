@@ -4,7 +4,9 @@ import org.austral.edu.Errors.AssignationError;
 import org.austral.edu.Errors.EmptyContentError;
 import org.austral.edu.Errors.IncompatibilityError;
 import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.InnerInterpreters.*;
 import org.austral.edu.Nodes.*;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +20,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, EmptyContentError, ValueNotFoundError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws AssignationError, IncompatibilityError, EmptyContentError, ValueNotFoundError {
         if (isAssignDeclare(node)){
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
@@ -32,12 +34,15 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
                         String message = strategy.interpret(valueNode,types,values);
                         if (isString(declareNode, message, valueNode)){
                             values.put(declareNode.getNameNode().content, message);
+                            isReader(result, strategy, message);
                             break;
                         }else if(isNumber(declareNode, message)){
                             values.put(declareNode.getNameNode().content, message);
+                            isReader(result, strategy, message);
                             break;
                         }else if(isBoolean(declareNode, valueNode)) {
                             values.put(declareNode.getNameNode().content, message);
+                            isReader(result, strategy, message);
                             break;
                         }else{
                             throw new IncompatibilityError();
@@ -63,14 +68,17 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
                         if (isString(declareNode, message, valueNode)){
                             values.put(declareNode.getNameNode().content, message);
                             constants.add(declareNode.getNameNode().content);
+                            isReader(result, strategy, message);
                             break;
                         }else if(isNumber(declareNode, message)){
                             values.put(declareNode.getNameNode().content, message);
                             constants.add(declareNode.getNameNode().content);
+                            isReader(result, strategy, message);
                             break;
                         }else if(isBoolean(declareNode, valueNode)) {
                             values.put(declareNode.getNameNode().content, message);
                             constants.add(declareNode.getNameNode().content);
+                            isReader(result, strategy, message);
                             break;
                         }else{
                             throw new IncompatibilityError();
@@ -84,6 +92,12 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
         }else{
             DeclareNode declareNode = (DeclareNode) node;
             types.put(declareNode.getNameNode().content, declareNode.getTypeNode().content);
+        }
+    }
+
+    private void isReader(Result result, SubInterpreterStrategy strategy, String message) {
+        if (strategy instanceof ReaderInterpreter){
+            result.saveReaderElement(message);
         }
     }
 

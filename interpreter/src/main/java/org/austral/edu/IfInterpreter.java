@@ -4,6 +4,7 @@ import org.austral.edu.Errors.*;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.IfNode;
 import org.austral.edu.Nodes.Node;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,9 +16,9 @@ public class IfInterpreter implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
+    public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants, Result result) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
         IfNode ifNode = (IfNode) node;
-        Interpreter_2 interpreter = new Interpreter_2(types,values,constants);
+        Interpreter_2 interpreter = new Interpreter_2(types,values,constants, result);
         Node condition = ifNode.getCondition();
         if (condition instanceof BinaryNode){
             if (condition.content.equals("TRUE")){
