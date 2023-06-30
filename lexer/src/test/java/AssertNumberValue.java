@@ -1,7 +1,9 @@
+import exceptions.UnclosedStringException;
+import exceptions.UnknownTokenException;
 import org.austral.edu.Lexer;
 import org.austral.edu.LexerImpl;
 import org.austral.edu.Token;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
@@ -14,7 +16,7 @@ public class AssertNumberValue {
     }
 
     @Test
-    public void testLexer() {
+    public void testLexer() throws UnclosedStringException, UnknownTokenException {
         Lexer lexer = new LexerImpl();
         ArrayList<Token> tokens =  lexer.lex("let x: Number = 19;");
 
