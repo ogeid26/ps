@@ -2,3 +2,5 @@
 lexer/build
 .idea
 parser/build
+buildSrc/build
+buildSrc/.gradle
