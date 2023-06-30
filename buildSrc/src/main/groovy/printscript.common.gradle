@@ -24,8 +24,7 @@ tasks.withType(Checkstyle) {
     ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
 }
 
-group 'org.example'
-version 'unspecified'
+group 'org.idm.ingsis.printscript'
 
 repositories {
     mavenCentral()
