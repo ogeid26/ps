@@ -1,6 +1,7 @@
 import org.austral.edu.*;
-import org.austral.edu.Errors.*;
+import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.*;
+import org.austral.edu.Results.ClassicResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -9,8 +10,8 @@ import java.util.List;
 
 public class InterpreterTest {
     @Test
-    public void testing_Version_1() throws AssignationError, NotDefinedError, IncompatibilityError, ValueNotFoundError, EmptyContentError {
-        Interpreter interpreter = new Interpreter();
+    public void testing_Version_1() throws AssignationException, NotDefinedException, IncompatibilityException, InterpretException {
+        Interpreter interpreter = new Interpreter(new ClassicResult());
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
         AbstractSyntaxTree tree = new AbstractSyntaxTree();
@@ -34,11 +35,13 @@ public class InterpreterTest {
         trees.add(tree2);
 
         interpreter.interpret(trees);
+        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
+        classicResult.print();
     }
 
     @Test
-    public void testing_Version_2() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
-        Interpreter_2 interpreter = new Interpreter_2();
+    public void testing_Version_2() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
+        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
 
         ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
         AbstractSyntaxTree start = new AbstractSyntaxTree();
@@ -79,5 +82,53 @@ public class InterpreterTest {
         trees.add(continueTree);
 
         interpreter.interpret(trees);
+        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
+        classicResult.print();
     }
+
+    @Test
+    public void testing_constants() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
+        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
+
+        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
+        AbstractSyntaxTree start = new AbstractSyntaxTree();
+        AbstractSyntaxTree continueTree = new AbstractSyntaxTree();
+
+        Node n1 = new FalseNode();
+        Node n2 = new NameNode("value");
+        Node n3 = new TypeNode("Boolean");
+        Node n4 = new DeclareNode(new ArrayList<>(Arrays.asList(n3,n2)));
+        start.addSentence(new ConstantNode(new ArrayList<>(Arrays.asList(n4,n1))));
+
+        Node n5 = new TrueNode();
+        Node n6 = new AssignNode(new ArrayList<>(Arrays.asList(n2,n5)));
+        continueTree.addSentence(n6);
+
+        trees.add(start);
+        trees.add(continueTree);
+
+        interpreter.interpret(trees);
+    }
+/*
+    @Test
+    public void testing_readInput() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
+        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
+
+        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
+        AbstractSyntaxTree start = new AbstractSyntaxTree();
+
+        Node n1 = new ReadInputNode("Please enter a Boolean");
+        Node n2 = new NameNode("value");
+        Node n3 = new TypeNode("Boolean");
+        Node n4 = new DeclareNode(new ArrayList<>(Arrays.asList(n3,n2)));
+        start.addSentence(new ConstantNode(new ArrayList<>(Arrays.asList(n4,n1))));
+
+        trees.add(start);
+
+        interpreter.interpret(trees);
+        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
+        classicResult.showInputs();
+    }
+
+ */
 }

@@ -1,10 +1,9 @@
 package org.austral.edu;
 
-import org.austral.edu.Errors.*;
-import org.austral.edu.Nodes.AssignNode;
-import org.austral.edu.Nodes.BinaryNode;
-import org.austral.edu.Nodes.NameNode;
-import org.austral.edu.Nodes.Node;
+import org.austral.edu.Exceptions.*;
+import org.austral.edu.InnerInterpreters.*;
+import org.austral.edu.Nodes.*;
+import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,43 +18,50 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     }
 
     private boolean isAssignation(Node node) {
-        return node.type.equals("Assignation");
+        return node.type.equals("Assign");
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants) throws AssignationError, IncompatibilityError, NotDefinedError, ConstantVariableError, ValueNotFoundError, EmptyContentError {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws IncompatibilityException, NotDefinedException, ConstantVariableException, AssignationException {
         if (types.isEmpty()){
-            throw new NotDefinedError();
+            throw new NotDefinedException();
         }else{
             AssignNode assignNode = (AssignNode) node;
             NameNode nameNode = (NameNode) assignNode.children.get(0);
             Node valueNode = assignNode.children.get(1);
             if (constants.contains(nameNode.content)){
-                throw new ConstantVariableError();
+                throw new ConstantVariableException();
             }else {
                 for (SubInterpreterStrategy strategy : strategies) {
                     if (strategy.validate(valueNode)) {
                         try{
                             String message = strategy.interpret(valueNode,types,values);
-                            if (isString(types, nameNode, message, valueNode)){
+                            if (isValueValidForType(types,nameNode,message,valueNode)){
                                 values.put(nameNode.content, message);
-                                break;
-                            }else if(isNumber(types, nameNode, message)){
-                                values.put(nameNode.content, message);
-                                break;
-                            }else if(isBoolean(types, nameNode, valueNode)) {
-                                values.put(nameNode.content, message);
+                                isReader(result, strategy, message);
                                 break;
                             }else{
-                                throw new IncompatibilityError();
+                                throw new IncompatibilityException();
                             }
-                        }catch (Error e){
+                        }catch (InterpretException e){
                             System.out.println(e.getMessage());
-                            throw new AssignationError();
+                            throw new AssignationException();
                         }
                     }
                 }
             }
+        }
+    }
+
+    private boolean isValueValidForType(HashMap<String, String> types, NameNode nameNode, String message, Node valueNode) {
+        return isString(types,nameNode,message,valueNode) ||
+                isNumber(types,nameNode,message) ||
+                isBoolean(types, nameNode, valueNode);
+    }
+
+    private void isReader(Result result, SubInterpreterStrategy strategy, String message) {
+        if (strategy instanceof ReaderInterpreter){
+            result.saveReaderElement(message);
         }
     }
 

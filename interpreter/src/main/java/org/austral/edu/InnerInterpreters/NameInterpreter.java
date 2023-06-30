@@ -1,6 +1,6 @@
-package org.austral.edu;
+package org.austral.edu.InnerInterpreters;
 
-import org.austral.edu.Errors.ValueNotFoundError;
+import org.austral.edu.Exceptions.ValueNotFoundException;
 import org.austral.edu.Nodes.Node;
 
 import java.util.HashMap;
@@ -12,11 +12,11 @@ public class NameInterpreter implements SubInterpreterStrategy{
     }
 
     @Override
-    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws ValueNotFoundError {
+    public String interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws ValueNotFoundException {
         if (values.containsKey(node.content)){
             return values.get(node.content);
         }else{
-            throw new ValueNotFoundError();
+            throw new ValueNotFoundException();
         }
     }
 }
