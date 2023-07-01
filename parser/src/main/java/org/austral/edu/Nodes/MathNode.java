@@ -20,32 +20,54 @@ public class MathNode extends Node{
         return children.get(1);
     }
 
-    public int solve(int left, int right) {
-        int result = 0;
-        switch (content){
-            case "+" ->{
-                result = left + right;
+    public Object solve(Object left, Object right) {
+        if (left instanceof String || right instanceof String) {
+            if ("+".equals(content)) {
+                return left.toString() + right.toString();
+            } else {
+                throw new RuntimeException("It is impossible to realize de operation");
             }
-            case "-" ->{
-                result = left - right;
+        } else if (left instanceof Double || right instanceof Double) {
+            double num1 = ((Number) left).doubleValue();
+            double num2 = ((Number) right).doubleValue();
+            switch (content) {
+                case "+":
+                    return num1 + num2;
+                case "-":
+                    return num1 - num2;
+                case "*":
+                    return num1 * num2;
+                case "/":
+                    if (num2 != 0) {
+                        return num1 / num2;
+                    } else {
+                        throw new RuntimeException("Unable to divide by 0");
+                    }
+                default:
+                    return "Error: Operación no válida";
             }
-            case "*" ->{
-                result = left * right;
-            }
-            case "/" ->{
-                result = left / right;
-            }
-        }
-        return result;
-    }
+        } else if (left instanceof Integer && right instanceof Integer) {
+            int num1 = (int) left;
+            int num2 = (int) right;
 
-    public String solve(String left, String right) {
-        String result;
-        if ("+".equals(content)) {
-            result = left + right;
+            switch (content) {
+                case "+":
+                    return num1 + num2;
+                case "-":
+                    return num1 - num2;
+                case "*":
+                    return num1 * num2;
+                case "/":
+                    if (num2 != 0) {
+                        return num1 / num2;
+                    } else {
+                        throw new RuntimeException("Unable to divide by 0");
+                    }
+                default:
+                    return "Error: Operación no válida";
+            }
         } else {
-            throw new RuntimeException("It is impossible to realize de operation");
+            return "Error: Al menos uno de los objetos no es un número";
         }
-        return result;
     }
 }

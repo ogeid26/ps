@@ -5,9 +5,7 @@ import org.austral.edu.InnerInterpreters.MathInterpreter;
 import org.austral.edu.InnerInterpreters.NameInterpreter;
 import org.austral.edu.InnerInterpreters.SubInterpreterStrategy;
 import org.austral.edu.InnerInterpreters.ValueInterpreter;
-import org.austral.edu.Nodes.AssignDeclareNode;
-import org.austral.edu.Nodes.DeclareNode;
-import org.austral.edu.Nodes.Node;
+import org.austral.edu.Nodes.*;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
@@ -34,12 +32,12 @@ public class KeywordInterpreter implements InterpreterStrategy{
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
                     try{
-                        String message = strategy.interpret(valueNode,types,values);
-                        if (isString(declareNode, message)){
-                            values.put(declareNode.getNameNode().content, message);
+                        Node answer = strategy.interpret(valueNode,types,values);
+                        if (isString(declareNode, answer)){
+                            values.put(declareNode.getNameNode().content, answer.content);
                             break;
-                        }else if(isNumber(declareNode, message)){
-                            values.put(declareNode.getNameNode().content, message);
+                        }else if(isNumber(declareNode, answer)){
+                            values.put(declareNode.getNameNode().content, answer.content);
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -56,12 +54,12 @@ public class KeywordInterpreter implements InterpreterStrategy{
         }
     }
 
-    private boolean isNumber(DeclareNode declareNode, String message) {
-        return declareNode.getTypeNode().content.equals("Number") && isInteger(message);
+    private boolean isNumber(DeclareNode declareNode, Node answer) {
+        return declareNode.getTypeNode().content.equals("Number") && answer instanceof ValueNumberNode;
     }
 
-    private boolean isString(DeclareNode declareNode, String message) {
-        return declareNode.getTypeNode().content.equals("String") && !isInteger(message);
+    private boolean isString(DeclareNode declareNode, Node answer) {
+        return declareNode.getTypeNode().content.equals("String") && answer instanceof ValueStringNode;
     }
 
     private boolean isDeclare(Node node) {
@@ -70,29 +68,5 @@ public class KeywordInterpreter implements InterpreterStrategy{
 
     private boolean isAssignDeclare(Node node) {
         return node.type.equals("AssignDeclare");
-    }
-
-    public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        for (; i < length; i++) {
-            char c = str.charAt(i);
-            if (c < '0' || c > '9') {
-                return false;
-            }
-        }
-        return true;
     }
 }

@@ -35,10 +35,10 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
                 for (SubInterpreterStrategy strategy : strategies) {
                     if (strategy.validate(valueNode)) {
                         try{
-                            String message = strategy.interpret(valueNode,types,values);
-                            if (isValueValidForType(types,nameNode,message,valueNode)){
-                                values.put(nameNode.content, message);
-                                isReader(result, strategy, message);
+                            Node answer = strategy.interpret(valueNode,types,values);
+                            if (isValueValidForType(types,nameNode,answer)){
+                                values.put(nameNode.content, answer.content);
+                                isReader(result, strategy, answer.content);
                                 break;
                             }else{
                                 throw new IncompatibilityException();
@@ -53,10 +53,10 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isValueValidForType(HashMap<String, String> types, NameNode nameNode, String message, Node valueNode) {
-        return isString(types,nameNode,message,valueNode) ||
-                isNumber(types,nameNode,message) ||
-                isBoolean(types, nameNode, valueNode);
+    private boolean isValueValidForType(HashMap<String, String> types, NameNode nameNode, Node answer) {
+        return isString(types, nameNode, answer) ||
+                isNumber(types, nameNode, answer) ||
+                isBoolean(types, nameNode, answer);
     }
 
     private void isReader(Result result, SubInterpreterStrategy strategy, String message) {
@@ -65,40 +65,16 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isString(HashMap<String, String> types, NameNode nameNode, String message, Node valueNode) {
-        return types.get(nameNode.content).equals("String") && !isInteger(message) && !(valueNode instanceof BinaryNode);
+    private boolean isString(HashMap<String, String> types, NameNode nameNode, Node answer) {
+        return types.get(nameNode.content).equals("String") && answer instanceof ValueStringNode;
     }
 
-    private boolean isNumber(HashMap<String, String> types, NameNode nameNode, String message) {
-        return types.get(nameNode.content).equals("Number") && isInteger(message);
+    private boolean isNumber(HashMap<String, String> types, NameNode nameNode, Node answer) {
+        return types.get(nameNode.content).equals("Number") && answer instanceof ValueNumberNode;
     }
 
-    private boolean isBoolean(HashMap<String, String> types, NameNode nameNode, Node valueNode) {
-        return types.get(nameNode.content).equals("Boolean") && (valueNode instanceof BinaryNode);
-    }
-
-    public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        for (; i < length; i++) {
-            char c = str.charAt(i);
-            if (c < '0' || c > '9') {
-                return false;
-            }
-        }
-        return true;
+    private boolean isBoolean(HashMap<String, String> types, NameNode nameNode, Node answer) {
+        return types.get(nameNode.content).equals("Boolean") && answer instanceof BinaryNode;
     }
 
 }

@@ -23,8 +23,12 @@ public class PrintInterpreter_2 implements InterpreterStrategy_2{
         for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(n)){
                 try{
-                    String message = strategy.interpret(n,types,values);
-                    result.savePrintElement(message);
+                    Node message = strategy.interpret(n,types,values);
+                    if (values.containsKey(message.content)){
+                        result.savePrintElement(values.get(message.content));
+                    }else{
+                        result.savePrintElement(message.content);
+                    }
                     break;
                 }catch (InterpretException e){
                     System.out.println(e.getMessage());

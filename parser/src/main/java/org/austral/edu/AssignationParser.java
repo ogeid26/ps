@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 public class AssignationParser implements SentenceParser {
 
-    TokenType[][] pattern;
+    protected TokenType[][] pattern;
 
-    AssignationParser() {
+    protected AssignationParser() {
         pattern = new TokenType[][]{
                 {TokenType.IDENTIFIER},
                 {TokenType.ASSIGNATION},

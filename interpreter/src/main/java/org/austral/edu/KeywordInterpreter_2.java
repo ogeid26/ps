@@ -28,10 +28,10 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
                     try{
-                        String message = strategy.interpret(valueNode,types,values);
-                        if (isValueValidForType(declareNode, valueNode, message)){
-                            values.put(declareNode.getNameNode().content, message);
-                            isReader(result, strategy, message);
+                        Node answer = strategy.interpret(valueNode,types,values);
+                        if (isValueValidForType(declareNode, answer)){
+                            values.put(declareNode.getNameNode().content, answer.content);
+                            isReader(result, strategy, answer.content);
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -53,11 +53,11 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             for (SubInterpreterStrategy strategy: strategies) {
                 if (strategy.validate(valueNode)){
                     try{
-                        String message = strategy.interpret(valueNode,types,values);
-                        if (isValueValidForType(declareNode, valueNode, message)){
-                            values.put(declareNode.getNameNode().content, message);
+                        Node answer = strategy.interpret(valueNode,types,values);
+                        if (isValueValidForType(declareNode, answer)){
+                            values.put(declareNode.getNameNode().content, answer.content);
                             constants.add(declareNode.getNameNode().content);
-                            isReader(result, strategy, message);
+                            isReader(result, strategy, answer.content);
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -74,10 +74,10 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isValueValidForType(DeclareNode declareNode, Node valueNode, String message) {
-        return isString(declareNode, message, valueNode) ||
-                isNumber(declareNode, message) ||
-                isBoolean(declareNode, valueNode);
+    private boolean isValueValidForType(DeclareNode declareNode, Node answer) {
+        return isString(declareNode, answer) ||
+                isNumber(declareNode, answer) ||
+                isBoolean(declareNode, answer);
     }
 
     private void isReader(Result result, SubInterpreterStrategy strategy, String message) {
@@ -86,16 +86,16 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isNumber(DeclareNode declareNode, String message) {
-        return declareNode.getTypeNode().content.equals("Number") && isInteger(message);
+    private boolean isNumber(DeclareNode declareNode, Node answer) {
+        return declareNode.getTypeNode().content.equals("Number") && answer instanceof ValueNumberNode;
     }
 
-    private boolean isString(DeclareNode declareNode, String message, Node valueNode) {
-        return declareNode.getTypeNode().content.equals("String") && !isInteger(message) && !(valueNode instanceof BinaryNode);
+    private boolean isString(DeclareNode declareNode, Node answer) {
+        return declareNode.getTypeNode().content.equals("String") && answer instanceof ValueStringNode;
     }
 
-    private boolean isBoolean(DeclareNode declareNode, Node valueNode) {
-        return declareNode.getTypeNode().content.equals("Boolean") && (valueNode instanceof BinaryNode);
+    private boolean isBoolean(DeclareNode declareNode, Node answer) {
+        return declareNode.getTypeNode().content.equals("Boolean") && answer instanceof BinaryNode;
     }
 
     private boolean isDeclare(Node node) {
@@ -108,29 +108,5 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
 
     private boolean isConstant(Node node) {
         return node.type.equals("Constant");
-    }
-
-    public static boolean isInteger(String str) {
-        if (str == null) {
-            return false;
-        }
-        int length = str.length();
-        if (length == 0) {
-            return false;
-        }
-        int i = 0;
-        if (str.charAt(0) == '-') {
-            if (length == 1) {
-                return false;
-            }
-            i = 1;
-        }
-        for (; i < length; i++) {
-            char c = str.charAt(i);
-            if (c < '0' || c > '9') {
-                return false;
-            }
-        }
-        return true;
     }
 }
