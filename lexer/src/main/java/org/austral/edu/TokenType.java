@@ -20,7 +20,11 @@ public enum TokenType {
     IF("if"),
     ELSE("else"),
     READ_INPUT("readInput"),
-    CONST("const");
+    CONST("const"),
+
+    RPAR(")"),
+
+    LPAR("(");
 
     private final String name;
 

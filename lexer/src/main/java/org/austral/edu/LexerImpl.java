@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import exceptions.UnclosedParenthesesException;
 import exceptions.UnclosedStringLiteralException;
 
 import java.util.ArrayList;
@@ -10,7 +11,8 @@ public class LexerImpl implements Lexer {
     public Tokenizer tokenizer;
 
     @Override
-    public List<Token> lex(InputProvider provider) throws UnclosedStringLiteralException {
+    public List<Token> lex(InputProvider provider) throws
+            UnclosedStringLiteralException, UnclosedParenthesesException {
         String input = provider.getContent();
         List<Token> tokens = new ArrayList<>();
         tokenizer = new TokenizerImpl();
@@ -33,6 +35,13 @@ public class LexerImpl implements Lexer {
                     col = col + nextQuoteMark + 1;
                     break;
                 }
+
+                if (currentChar == '(') {
+                    if (!checkNextParentheses(input, i))
+                        throw new UnclosedParenthesesException(col, row);
+                    break;
+                }
+
                 if (
                         !Character.isLetterOrDigit(currentChar)
                                 && currentChar != '.'
@@ -78,4 +87,10 @@ public class LexerImpl implements Lexer {
                 ? (input.substring(i + 1)).indexOf('"')
                 : (input.substring(i + 1)).indexOf('\'');
     }
+
+    private boolean checkNextParentheses(String input, int i) {
+        return (input.indexOf(')') != -1);
+    }
 }
+
+

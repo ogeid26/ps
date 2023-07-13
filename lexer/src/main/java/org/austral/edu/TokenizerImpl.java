@@ -1,9 +1,4 @@
 package org.austral.edu;
-
-import exceptions.UnknownTokenException;
-
-import java.util.Arrays;
-
 public class TokenizerImpl implements Tokenizer {
 
     @Override
@@ -24,6 +19,5 @@ public class TokenizerImpl implements Tokenizer {
         }
         return new Token(TokenType.IDENTIFIER, currentString);
     }
-
 }
 

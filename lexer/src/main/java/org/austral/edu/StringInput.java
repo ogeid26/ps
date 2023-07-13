@@ -1,24 +1,21 @@
 package org.austral.edu;
-
-import org.austral.edu.InputProvider;
-
 public class StringInput implements InputProvider {
+    private String string;
 
-     public StringInput(String string){
+
+    // TODO Cómo hacer si se pasan uno por uno los caracteres
+
+    public StringInput(String string){
          this.string = string;
      }
-     private String string;
-
-        @Override
-        public String getContent(){
-            return string;
-        }
-
-        public StringInput(){}
-
-
-
-     public void setString(String string) {
+    public void setString(String string) {
          this.string = string;
-     }
+    }
+    @Override
+    public String getContent(){
+        return string;
+    }
+
+    public StringInput(){}
+
  }
