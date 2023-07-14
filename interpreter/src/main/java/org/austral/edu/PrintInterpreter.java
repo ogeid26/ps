@@ -1,5 +1,9 @@
 package org.austral.edu;
 
+import ast.PrintNode;
+import exceptions.DividedByZeroException;
+import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.InnerInterpreters.MathInterpreter;
 import org.austral.edu.InnerInterpreters.NameInterpreter;
@@ -13,7 +17,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 public class PrintInterpreter implements InterpreterStrategy{
-    ArrayList<SubInterpreterStrategy> strategies = new ArrayList<>(Arrays.asList(new MathInterpreter(),new NameInterpreter(), new ValueInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -21,24 +24,8 @@ public class PrintInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException {
-        assert node.children != null;
-        Node n = node.children.get(0);
-        for (SubInterpreterStrategy strategy: strategies) {
-            if (strategy.validate(n)){
-                try{
-                    Node message = strategy.interpret(n,types,values);
-                    if (values.containsKey(message.getContent())){
-                        result.savePrintElement(values.get(message.getContent()));
-                    }else{
-                        result.savePrintElement(message.getContent());
-                    }
-                    break;
-                }catch (InterpretException e){
-                    System.out.println(e.getMessage());
-                    throw new AssignationException();
-                }
-            }
-        }
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+        Node valueNode = ((PrintNode) node).getExpressionNode().solve(values, types);
+        result.savePrintElement(valueNode.getContent());
     }
 }

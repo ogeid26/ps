@@ -15,6 +15,22 @@ public class ExpressionParser extends AbstractParser {
     public ExpressionParser() {
         super(new TokenType[][]{});
     }
+    // 51
+    //
+
+    //
+
+    // 4+4*4+4+4+4*4+4-5-8
+
+    // +
+    // 4 +
+    //   4 +
+    //      * +
+    //    4 4  +
+    //         4 +
+    //           * +
+    //          4 4 -
+
 
     @Override
     public Node parse(List<Token> sentence) throws UnexpectedTokenException {
@@ -69,15 +85,15 @@ public class ExpressionParser extends AbstractParser {
     }
 
     public int findNextParenthesis(List<Token> list, int index) {
-        int l_counter = 0;
+        int skip_par = 0;
         for (int i = index + 1; i < list.size(); i++) {
             if (list.get(i).tokenType.equals(TokenType.L_PAR)) {
-                l_counter += 1;
+                skip_par += 1;
                 continue;
             }
             if (list.get(i).tokenType.equals(TokenType.R_PAR))
-                if (l_counter > 0) {
-                    l_counter -= 1;
+                if (skip_par > 0) {
+                    skip_par -= 1;
                 } else {
                     return i;
                 }

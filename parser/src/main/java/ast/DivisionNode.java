@@ -2,8 +2,11 @@ package ast;
 
 import exceptions.DividedByZeroException;
 import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Nodes.ValueNode;
 import org.austral.edu.Nodes.ValueNumberNode;
+
+import java.util.Map;
 
 public class DivisionNode extends ExpressionNode {
 
@@ -11,9 +14,9 @@ public class DivisionNode extends ExpressionNode {
         super("Division", left, right);
     }
 
-    public Node solve() throws IncompatibleOperationException, DividedByZeroException {
-        ValueNode valueLeft = (ValueNode) getLeft().solve();
-        ValueNode valueRight = (ValueNode) getRight().solve();
+    public Node solve(Map<String,String> values, Map<String,String> types) throws IncompatibleOperationException, DividedByZeroException, VariableDoesntExistsException {
+        ValueNode valueLeft = (ValueNode) getLeft().solve(values, types);
+        ValueNode valueRight = (ValueNode) getRight().solve(values, types);
 
         if (valueLeft.type.equals("Number") && valueRight.type.equals("Number")) {
             if (Double.parseDouble(valueRight.content) != 0) {

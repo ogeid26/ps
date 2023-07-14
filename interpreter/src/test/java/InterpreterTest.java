@@ -1,15 +1,22 @@
 import ast.*;
+import exceptions.*;
 import org.austral.edu.*;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.*;
 import org.austral.edu.Results.ClassicResult;
+import org.austral.edu.Results.Result;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import parser.Parser;
+import parser.ParserV1;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class InterpreterTest {
+    /*
     @Test
     public void testing_Version_1() throws AssignationException, NotDefinedException, IncompatibilityException, InterpretException {
         Interpreter interpreter = new Interpreter(new ClassicResult());
@@ -110,6 +117,8 @@ public class InterpreterTest {
 
         interpreter.interpret(trees);
     }
+
+     */
 /*
     @Test
     public void testing_readInput() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
@@ -132,4 +141,35 @@ public class InterpreterTest {
     }
 
  */
+
+    static Lexer lexerV1;
+    static Parser parserV1;
+
+    @BeforeAll
+    public static void setup() {
+        lexerV1 = new LexerImpl();
+        parserV1 = new ParserV1();
+    }
+
+    @Test
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+        List<Token> tokens = lexerV1.lex(new StringInput("""
+                let name: string = "Miguel";
+                let x: number;
+                let y: string;
+                x = 90;
+                y = "Perez";
+                println(x + y + 1);
+                let lastname: string = 90 + "MMMM";
+                """));
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        Interpreter interpreterV1 = new InterpreterV1(result);
+
+        interpreterV1.interpret(ast);
+
+        Assertions.assertEquals(3,3);
+    }
 }

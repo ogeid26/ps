@@ -1,6 +1,9 @@
 package org.austral.edu;
 
 import ast.AbstractSyntaxTree;
+import exceptions.DividedByZeroException;
+import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
 import ast.Node;
 import org.austral.edu.Results.Result;
@@ -8,29 +11,26 @@ import org.austral.edu.Results.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Interpreter {
+public abstract class Interpreter {
     HashMap<String,String> types;
     HashMap<String,String> values;
+    
     Result result;
 
-    public Interpreter(Result result){
+    InterpreterStrategy[] interpreters;
+
+    public Interpreter(Result result, InterpreterStrategy[] interpreters){
          this.types = new HashMap<>();
          this.values = new HashMap<>();
+         this.interpreters = interpreters;
          this.result = result;
     }
 
-    public void interpret(ArrayList<AbstractSyntaxTree> trees) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException {
-
-        ArrayList<InterpreterStrategy> interpreters = new ArrayList<>();
-        interpreters.add(new FunctionInterpreter());
-        interpreters.add(new IdentifierInterpreter());
-        interpreters.add(new KeywordInterpreter());
-
-        for (AbstractSyntaxTree tree: trees) {
-            for (InterpreterStrategy interpreter: interpreters) {
-                Node node = tree.getChildren().get(0);
-                if (interpreter.validate(node)) {
-                    interpreter.interpret(node,types,values,result);
+    public void interpret(AbstractSyntaxTree ast) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+        for (Node sentence: ast.getChildren()) {
+            for (InterpreterStrategy interpreter : interpreters) {
+                if (interpreter.validate(sentence)) {
+                    interpreter.interpret(sentence, types, values, result);
                     break;
                 }
             }

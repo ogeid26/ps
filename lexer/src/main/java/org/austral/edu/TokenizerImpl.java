@@ -14,7 +14,7 @@ public class TokenizerImpl implements Tokenizer {
                 return new Token(TokenType.NUMBER, currentString);
             }
             if (currentString.contains("\"") || currentString.contains("'")) {
-                return new Token(TokenType.STRING, currentString);
+                return new Token(TokenType.STRING, currentString.substring(1,currentString.length()-1));
             }
         }
         return new Token(TokenType.IDENTIFIER, currentString);

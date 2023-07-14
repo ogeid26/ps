@@ -2,6 +2,7 @@ package org.austral.edu.InnerInterpreters;
 
 import exceptions.DividedByZeroException;
 import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.Helpers.TextHelper;
 import ast.ExpressionNode;
@@ -26,10 +27,12 @@ public class MathInterpreter implements SubInterpreterStrategy{
         ExpressionNode expressionNode = (ExpressionNode) node;
         Object result;
         try {
-            result = expressionNode.solve();
+            result = expressionNode.solve(values, types);
         } catch (Exception | IncompatibleOperationException | DividedByZeroException e) {
             System.out.println(e.getMessage());
             throw new MathException();
+        } catch (VariableDoesntExistsException e) {
+            throw new RuntimeException(e);
         }
         return new ValueStringNode(result.toString());
     }

@@ -7,6 +7,6 @@ import java.util.ArrayList;
 public class ValueNumberNode extends ValueNode {
 
     public ValueNumberNode(String value) {
-        super(value, "Number");
+        super(value, "number");
     }
 }

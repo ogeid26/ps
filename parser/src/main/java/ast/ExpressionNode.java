@@ -2,8 +2,10 @@ package ast;
 
 import exceptions.DividedByZeroException;
 import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 
 import java.util.List;
+import java.util.Map;
 
 public abstract class ExpressionNode extends Node {
 
@@ -23,5 +25,5 @@ public abstract class ExpressionNode extends Node {
         return (ExpressionNode) children.get(1);
     }
 
-    public abstract Node solve() throws IncompatibleOperationException, DividedByZeroException;
+    public abstract Node solve(Map<String,String> values, Map<String,String> types) throws IncompatibleOperationException, DividedByZeroException, VariableDoesntExistsException;
 }
