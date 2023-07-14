@@ -6,7 +6,7 @@ public abstract class Node {
 
     protected final String content;
     protected final String type;
-    protected final List<Node> children;
+    public final List<Node> children;
 
     public Node(String content, String type) {
         this.content = content;

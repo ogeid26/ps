@@ -29,7 +29,7 @@ public class KeywordInterpreter implements InterpreterStrategy{
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
 
-            types.put(declareNode.getNameNode().content,declareNode.getTypeNode().content);
+            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
             Node valueNode = assignDeclareNode.children.get(1);
 
             for (SubInterpreterStrategy strategy: strategies) {
@@ -37,10 +37,10 @@ public class KeywordInterpreter implements InterpreterStrategy{
                     try{
                         Node answer = strategy.interpret(valueNode,types,values);
                         if (isString(declareNode, answer)){
-                            values.put(declareNode.getNameNode().content, answer.content);
+                            values.put(declareNode.getNameNode().getContent(), answer.getContent());
                             break;
                         }else if(isNumber(declareNode, answer)){
-                            values.put(declareNode.getNameNode().content, answer.content);
+                            values.put(declareNode.getNameNode().getContent(), answer.getContent());
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -53,23 +53,23 @@ public class KeywordInterpreter implements InterpreterStrategy{
             }
         }else {
             DeclareNode declareNode = (DeclareNode) node;
-            types.put(declareNode.getNameNode().content, declareNode.getTypeNode().content);
+            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
         }
     }
 
     private boolean isNumber(DeclareNode declareNode, Node answer) {
-        return declareNode.getTypeNode().content.equals("Number") && answer instanceof ValueNumberNode;
+        return declareNode.getTypeNode().getContent().equals("Number") && answer instanceof ValueNumberNode;
     }
 
     private boolean isString(DeclareNode declareNode, Node answer) {
-        return declareNode.getTypeNode().content.equals("String") && answer instanceof ValueStringNode;
+        return declareNode.getTypeNode().getContent().equals("String") && answer instanceof ValueStringNode;
     }
 
     private boolean isDeclare(Node node) {
-        return node.type.equals("Declare");
+        return node.getType().equals("Declare");
     }
 
     private boolean isAssignDeclare(Node node) {
-        return node.type.equals("AssignDeclare");
+        return node.getType().equals("AssignDeclare");
     }
 }

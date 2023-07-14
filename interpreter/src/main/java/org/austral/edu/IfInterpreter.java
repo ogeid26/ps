@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class IfInterpreter implements InterpreterStrategy_2{
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("If");
+        return node.getType().equals("If");
     }
 
     @Override
@@ -21,13 +21,13 @@ public class IfInterpreter implements InterpreterStrategy_2{
         Interpreter_2 interpreter = new Interpreter_2(types,values,constants, result);
         Node condition = ifNode.getCondition();
         if (condition instanceof BinaryNode){
-            if (condition.content.equals("TRUE")){
+            if (((BinaryNode) condition).getContent().equals("TRUE")){
                 interpreter.interpret(ifNode.getTrueTree());
             }else{
                 interpreter.interpret(ifNode.getFalseTree());
             }
-        }else  if(values.containsKey(condition.content) && types.get(condition.content).equals("Boolean")){
-            if (values.get(condition.content).equals("TRUE")){
+        }else  if(values.containsKey(condition.getContent()) && types.get(condition.getContent()).equals("Boolean")){
+            if (values.get(condition.getContent()).equals("TRUE")){
                 interpreter.interpret(ifNode.getTrueTree());
             }else{
                 interpreter.interpret(ifNode.getFalseTree());

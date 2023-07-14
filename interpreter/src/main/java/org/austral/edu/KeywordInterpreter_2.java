@@ -25,7 +25,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
             DeclareNode declareNode = assignDeclareNode.getDeclareNode();
 
-            types.put(declareNode.getNameNode().content,declareNode.getTypeNode().content);
+            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
             Node valueNode = assignDeclareNode.children.get(1);
 
             for (SubInterpreterStrategy strategy: strategies) {
@@ -33,8 +33,8 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
                     try{
                         Node answer = strategy.interpret(valueNode,types,values);
                         if (isValueValidForType(declareNode, answer)){
-                            values.put(declareNode.getNameNode().content, answer.content);
-                            isReader(result, strategy, answer.content);
+                            values.put(declareNode.getNameNode().getContent(), answer.getContent());
+                            isReader(result, strategy, answer.getContent());
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -50,7 +50,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             ConstantNode constantNode = (ConstantNode) node;
             DeclareNode declareNode = constantNode.getDeclareNode();
 
-            types.put(declareNode.getNameNode().content,declareNode.getTypeNode().content);
+            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
             Node valueNode = constantNode.children.get(1);
 
             for (SubInterpreterStrategy strategy: strategies) {
@@ -58,9 +58,9 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
                     try{
                         Node answer = strategy.interpret(valueNode,types,values);
                         if (isValueValidForType(declareNode, answer)){
-                            values.put(declareNode.getNameNode().content, answer.content);
-                            constants.add(declareNode.getNameNode().content);
-                            isReader(result, strategy, answer.content);
+                            values.put(declareNode.getNameNode().getContent(), answer.getContent());
+                            constants.add(declareNode.getNameNode().getContent());
+                            isReader(result, strategy, answer.getContent());
                             break;
                         }else{
                             throw new IncompatibilityException();
@@ -73,7 +73,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             }
         }else{
             DeclareNode declareNode = (DeclareNode) node;
-            types.put(declareNode.getNameNode().content, declareNode.getTypeNode().content);
+            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
         }
     }
 
@@ -90,26 +90,26 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
     }
 
     private boolean isNumber(DeclareNode declareNode, Node answer) {
-        return declareNode.getTypeNode().content.equals("Number") && answer instanceof ValueNumberNode;
+        return declareNode.getTypeNode().getContent().equals("Number") && answer instanceof ValueNumberNode;
     }
 
     private boolean isString(DeclareNode declareNode, Node answer) {
-        return declareNode.getTypeNode().content.equals("String") && answer instanceof ValueStringNode;
+        return declareNode.getTypeNode().getContent().equals("String") && answer instanceof ValueStringNode;
     }
 
     private boolean isBoolean(DeclareNode declareNode, Node answer) {
-        return declareNode.getTypeNode().content.equals("Boolean") && answer instanceof BinaryNode;
+        return declareNode.getTypeNode().getContent().equals("Boolean") && answer instanceof BinaryNode;
     }
 
     private boolean isDeclare(Node node) {
-        return node.type.equals("Declare");
+        return node.getType().equals("Declare");
     }
 
     private boolean isAssignDeclare(Node node) {
-        return node.type.equals("AssignDeclare");
+        return node.getType().equals("AssignDeclare");
     }
 
     private boolean isConstant(Node node) {
-        return node.type.equals("Constant");
+        return node.getType().equals("Constant");
     }
 }

@@ -20,7 +20,7 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     }
 
     private boolean isAssignation(Node node) {
-        return node.type.equals("Assign");
+        return node.getType().equals("Assign");
     }
 
     @Override
@@ -29,9 +29,10 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
             throw new NotDefinedException();
         }else{
             AssignNode assignNode = (AssignNode) node;
-            NameNode nameNode = (NameNode) assignNode.children.get(0);
+            assert assignNode.children != null;
+            ValueVariableNode nameNode = (ValueVariableNode) assignNode.children.get(0);
             Node valueNode = assignNode.children.get(1);
-            if (constants.contains(nameNode.content)){
+            if (constants.contains(nameNode.getContent())){
                 throw new ConstantVariableException();
             }else {
                 for (SubInterpreterStrategy strategy : strategies) {
@@ -39,8 +40,8 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
                         try{
                             Node answer = strategy.interpret(valueNode,types,values);
                             if (isValueValidForType(types,nameNode,answer)){
-                                values.put(nameNode.content, answer.content);
-                                isReader(result, strategy, answer.content);
+                                values.put(nameNode.getContent(), answer.getContent());
+                                isReader(result, strategy, answer.getContent());
                                 break;
                             }else{
                                 throw new IncompatibilityException();
@@ -55,7 +56,7 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isValueValidForType(HashMap<String, String> types, NameNode nameNode, Node answer) {
+    private boolean isValueValidForType(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
         return isString(types, nameNode, answer) ||
                 isNumber(types, nameNode, answer) ||
                 isBoolean(types, nameNode, answer);
@@ -67,16 +68,16 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
         }
     }
 
-    private boolean isString(HashMap<String, String> types, NameNode nameNode, Node answer) {
-        return types.get(nameNode.content).equals("String") && answer instanceof ValueStringNode;
+    private boolean isString(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
+        return types.get(nameNode.getContent()).equals("String") && answer instanceof ValueStringNode;
     }
 
-    private boolean isNumber(HashMap<String, String> types, NameNode nameNode, Node answer) {
-        return types.get(nameNode.content).equals("Number") && answer instanceof ValueNumberNode;
+    private boolean isNumber(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
+        return types.get(nameNode.getContent()).equals("Number") && answer instanceof ValueNumberNode;
     }
 
-    private boolean isBoolean(HashMap<String, String> types, NameNode nameNode, Node answer) {
-        return types.get(nameNode.content).equals("Boolean") && answer instanceof BinaryNode;
+    private boolean isBoolean(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
+        return types.get(nameNode.getContent()).equals("Boolean") && answer instanceof BinaryNode;
     }
 
 }

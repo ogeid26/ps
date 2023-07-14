@@ -18,6 +18,7 @@ public class FunctionInterpreter_2 implements InterpreterStrategy_2{
 
     @Override
     public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException, ConstantVariableException, IllogicalConditionalException {
+        assert node.children != null;
         Node n = node.children.get(0);
         for (InterpreterStrategy_2 strategy: strategies) {
             if (strategy.validate(n)){

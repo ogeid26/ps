@@ -13,15 +13,15 @@ public class ValueInterpreter implements SubInterpreterStrategy{
     TextHelper textHelper = new TextHelper();
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Value");
+        return node.getType().equals("Value");
     }
 
     @Override
     public Node interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws EmptyContentException {
-        if (Objects.equals(node.content, "")){
+        if (Objects.equals(node.getContent(), "")){
             throw new EmptyContentException();
         }else {
-            Object result = textHelper.parseString(node.content);
+            Object result = textHelper.parseString(node.getContent());
             if (result instanceof Double || result instanceof Integer) {
                 return new ValueNumberNode(result.toString());
             }else{

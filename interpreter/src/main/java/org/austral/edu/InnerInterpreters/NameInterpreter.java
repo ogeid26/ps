@@ -12,13 +12,13 @@ public class NameInterpreter implements SubInterpreterStrategy{
     TextHelper textHelper = new TextHelper();
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Name");
+        return node.getType().equals("Name");
     }
 
     @Override
     public Node interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws ValueNotFoundException {
-        if (values.containsKey(node.content)){
-            Object result = textHelper.parseString(node.content);
+        if (values.containsKey(node.getContent())){
+            Object result = textHelper.parseString(node.getContent());
             if (result instanceof Double || result instanceof Integer) {
                 return new ValueNumberNode(result.toString());
             }else{

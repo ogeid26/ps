@@ -17,20 +17,21 @@ public class PrintInterpreter implements InterpreterStrategy{
 
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Print");
+        return node.getType().equals("Print");
     }
 
     @Override
     public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException {
+        assert node.children != null;
         Node n = node.children.get(0);
         for (SubInterpreterStrategy strategy: strategies) {
             if (strategy.validate(n)){
                 try{
                     Node message = strategy.interpret(n,types,values);
-                    if (values.containsKey(message.content)){
-                        result.savePrintElement(values.get(message.content));
+                    if (values.containsKey(message.getContent())){
+                        result.savePrintElement(values.get(message.getContent()));
                     }else{
-                        result.savePrintElement(message.content);
+                        result.savePrintElement(message.getContent());
                     }
                     break;
                 }catch (InterpretException e){

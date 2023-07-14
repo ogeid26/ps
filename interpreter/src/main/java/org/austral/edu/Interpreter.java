@@ -28,7 +28,7 @@ public class Interpreter {
 
         for (AbstractSyntaxTree tree: trees) {
             for (InterpreterStrategy interpreter: interpreters) {
-                Node node = tree.getFirstNode();
+                Node node = tree.getChildren().get(0);
                 if (interpreter.validate(node)) {
                     interpreter.interpret(node,types,values,result);
                     break;

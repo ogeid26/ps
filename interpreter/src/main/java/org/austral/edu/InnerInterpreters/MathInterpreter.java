@@ -1,5 +1,7 @@
 package org.austral.edu.InnerInterpreters;
 
+import exceptions.DividedByZeroException;
+import exceptions.IncompatibleOperationException;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.Helpers.TextHelper;
 import ast.ExpressionNode;
@@ -16,39 +18,19 @@ public class MathInterpreter implements SubInterpreterStrategy{
     TextHelper textHelper = new TextHelper();
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Math");
+        return node.getType().equals("Math");
     }
 
     @Override
     public Node interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws InterpretException {
         ExpressionNode expressionNode = (ExpressionNode) node;
-        Node left = null;
-        for (SubInterpreterStrategy strategy : strategies) {
-            if (strategy.validate(expressionNode.getLeft())) {
-                left = strategy.interpret(expressionNode.getLeft(), types, values);
-                break;
-            }
-        }
-        Node right = null;
-        for (SubInterpreterStrategy strategy : strategies) {
-            if (strategy.validate(expressionNode.getRight())) {
-                right = strategy.interpret(expressionNode.getRight(), types, values);
-                break;
-            }
-        }
-        assert left != null;
-        assert right != null;
         Object result;
         try {
-            result = expressionNode.solve(textHelper.parseString(left.content), textHelper.parseString(right.content));
-        } catch (Exception e) {
+            result = expressionNode.solve();
+        } catch (Exception | IncompatibleOperationException | DividedByZeroException e) {
             System.out.println(e.getMessage());
             throw new MathException();
         }
-        if (result instanceof Double || result instanceof Integer) {
-            return new ValueNumberNode(result.toString());
-        }else{
-            return new ValueStringNode(result.toString());
-        }
+        return new ValueStringNode(result.toString());
     }
 }

@@ -13,12 +13,12 @@ public class ReaderInterpreter implements SubInterpreterStrategy{
     TextHelper textHelper = new TextHelper();
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("ReadInput");
+        return node.getType().equals("ReadInput");
     }
 
     @Override
     public Node interpret(Node node, HashMap<String, String> types, HashMap<String, String> values) throws EmptyContentException {
-        System.out.println(node.content);
+        System.out.println(node.getContent());
         Scanner newInput = new Scanner(System.in);
         String answer = newInput.nextLine();
         if (Objects.equals(answer, "")){
