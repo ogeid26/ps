@@ -1,7 +1,7 @@
 package org.austral.edu;
 
 import org.austral.edu.Exceptions.*;
-import org.austral.edu.Nodes.Node;
+import ast.Node;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ public class FunctionInterpreter_2 implements InterpreterStrategy_2{
 
     @Override
     public boolean validate(Node node) {
-        return node.type.equals("Function");
+        return node.getType().equals("Function");
     }
 
     @Override

@@ -10,7 +10,7 @@ public class TokenizerImpl implements Tokenizer {
             if (type.getName().equals(currentString)){
                 return new Token(type, currentString);
             }
-            if (currentString.matches("^[0-9]+.*[0-9]*")) {
+            if (currentString.matches("^[0-9]+.?[0-9]*")) {
                 return new Token(TokenType.NUMBER, currentString);
             }
             if (currentString.contains("\"") || currentString.contains("'")) {

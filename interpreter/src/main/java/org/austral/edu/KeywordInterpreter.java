@@ -1,5 +1,8 @@
 package org.austral.edu;
 
+import ast.AssignDeclareNode;
+import ast.DeclareNode;
+import ast.Node;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.InnerInterpreters.MathInterpreter;
 import org.austral.edu.InnerInterpreters.NameInterpreter;

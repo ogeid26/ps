@@ -1,7 +1,7 @@
 package org.austral.edu.InnerInterpreters;
 
 import org.austral.edu.Exceptions.*;
-import org.austral.edu.Nodes.Node;
+import ast.Node;
 
 import java.util.HashMap;
 

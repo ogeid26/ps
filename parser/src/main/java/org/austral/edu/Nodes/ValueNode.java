@@ -1,13 +1,13 @@
 package org.austral.edu.Nodes;
 
+import ast.Node;
+
 import java.util.ArrayList;
+import java.util.List;
 
-public class ValueNode extends Node{
-    public ValueNode(String content) {
-        super(content, "Value");
-    }
+public abstract class ValueNode extends Node {
 
-    public ValueNode(String content, ArrayList<Node> children) {
-        super(content, "Value", children);
+    public ValueNode(String value, String type) {
+        super(value, type, List.of());
     }
 }

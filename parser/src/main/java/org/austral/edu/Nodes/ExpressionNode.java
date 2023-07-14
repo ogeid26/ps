@@ -1,14 +1,12 @@
 package org.austral.edu.Nodes;
 
+import ast.Node;
+
 import java.util.ArrayList;
 
-public class MathNode extends Node{
+public class ExpressionNode extends Node {
 
-    public MathNode(String content) {
-        super(content, "Math");
-    }
-
-    public MathNode(String content, ArrayList<Node> children) {
+    public ExpressionNode(String content, ArrayList<Node> children) {
         super(content, "Math", children);
     }
 

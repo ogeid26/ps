@@ -17,6 +17,8 @@ public class LexerImpl implements Lexer {
         List<Token> tokens = new ArrayList<>();
         tokenizer = new TokenizerImpl();
 
+        int parentheses_open = 0;
+
         int length = input.length();
 
         for (int i = 0, col = 0, row = 0; i < length; i++) {
@@ -37,7 +39,15 @@ public class LexerImpl implements Lexer {
                 }
 
                 if (currentChar == '(') {
+                    parentheses_open += 1;
                     if (!checkNextParentheses(input, i))
+                        throw new UnclosedParenthesesException(col, row);
+                    break;
+                }
+
+                if (currentChar == ')') {
+                    parentheses_open -= 1;
+                    if (parentheses_open < 0)
                         throw new UnclosedParenthesesException(col, row);
                     break;
                 }

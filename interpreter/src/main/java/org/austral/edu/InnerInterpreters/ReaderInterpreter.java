@@ -1,6 +1,6 @@
 package org.austral.edu.InnerInterpreters;
 
-import org.austral.edu.Exceptions.AssignationException;
+import ast.Node;
 import org.austral.edu.Exceptions.EmptyContentException;
 import org.austral.edu.Helpers.TextHelper;
 import org.austral.edu.Nodes.*;

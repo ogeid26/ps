@@ -1,11 +1,15 @@
-package org.austral.edu;
+package parser;
+
+import parser.sentenceParser.*;
 
 public class ParserV1 extends Parser {
-    ParserV1() {
+
+    public ParserV1() {
         super(new SentenceParser[]{
                 new DeclarationParser(),
                 new AssignationParser(),
-                new DeclareAndAssignParser()
+                new DeclareAndAssignParser(),
+                new PrintParser()
         });
     }
 }

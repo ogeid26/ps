@@ -3,7 +3,7 @@ package org.austral.edu;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.IfNode;
-import org.austral.edu.Nodes.Node;
+import ast.Node;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;

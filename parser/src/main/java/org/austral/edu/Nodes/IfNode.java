@@ -1,10 +1,11 @@
 package org.austral.edu.Nodes;
 
-import org.austral.edu.AbstractSyntaxTree;
+import ast.AbstractSyntaxTree;
+import ast.Node;
 
 import java.util.ArrayList;
 
-public class IfNode extends Node{
+public class IfNode extends Node {
     Node condition;
     ArrayList<AbstractSyntaxTree> trueTree;
     ArrayList<AbstractSyntaxTree> falseTree;

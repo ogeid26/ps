@@ -5,7 +5,7 @@ import org.austral.edu.InnerInterpreters.MathInterpreter;
 import org.austral.edu.InnerInterpreters.NameInterpreter;
 import org.austral.edu.InnerInterpreters.SubInterpreterStrategy;
 import org.austral.edu.InnerInterpreters.ValueInterpreter;
-import org.austral.edu.Nodes.Node;
+import ast.Node;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;

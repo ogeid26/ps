@@ -2,7 +2,7 @@ package org.austral.edu.InnerInterpreters;
 
 import org.austral.edu.Exceptions.EmptyContentException;
 import org.austral.edu.Helpers.TextHelper;
-import org.austral.edu.Nodes.Node;
+import ast.Node;
 import org.austral.edu.Nodes.ValueNumberNode;
 import org.austral.edu.Nodes.ValueStringNode;
 

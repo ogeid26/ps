@@ -1,8 +1,11 @@
 package org.austral.edu.Nodes;
 
+import ast.DeclareNode;
+import ast.Node;
+
 import java.util.ArrayList;
 
-public class ConstantNode extends Node{
+public class ConstantNode extends Node {
 
     public ConstantNode() {
         super(" = ", "Constant");

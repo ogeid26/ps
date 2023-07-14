@@ -21,10 +21,8 @@ public enum TokenType {
     ELSE("else"),
     READ_INPUT("readInput"),
     CONST("const"),
-
-    RPAR(")"),
-
-    LPAR("(");
+    R_PAR(")"),
+    L_PAR("(");
 
     private final String name;
 

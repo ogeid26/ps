@@ -4,27 +4,22 @@ import exceptions.UnclosedStringLiteralException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Array;
 import java.util.List;
 
 
 public class LexerTest {
 
     @Test
-    public void test_001() throws UnclosedStringLiteralException, UnclosedParenthesesException {
+    public void test001_lexer() throws UnclosedStringLiteralException {
         InputProvider string = new StringInput("let name: string = \"Miguel\" 8 8.9 32132 'Hello'+-*/ ");
         Lexer lexer = new LexerImpl();
+        List<Token> tokens =  lexer.lex(input);
 
-        List<Token> tokens = lexer.lex(string);
-        Assertions.assertEquals(3,3);
+        for (Token token: tokens) {
+            System.out.println(token.tokenType + " --> " + token.content);
+        }
 
     }
-
-
 
    @Test
     public  void test_002() throws IOException {
@@ -83,7 +78,18 @@ public class LexerTest {
         System.out.println(exception.getMessage());
     }
 
+    @Test
+    public void sandbox() {
+        // System.out.println(Double.parseDouble("30.0"));
+
+        System.out.println(Double.parseDouble("0") != 0);
+        System.out.println(Double.parseDouble(".0") != 0);
+        System.out.println(Double.parseDouble("0.0") != 0);
 
 
+
+
+        assertEquals(3,3);
+    }
 }
 
