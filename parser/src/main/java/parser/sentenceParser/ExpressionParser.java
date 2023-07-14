@@ -18,66 +18,45 @@ public class ExpressionParser extends AbstractParser {
 
     @Override
     public Node parse(List<Token> sentence) throws UnexpectedTokenException {
-
-        ExpressionNode left = null;
-        ExpressionNode right = null;
-        Token operation = null;
+        Stack<ExpressionNode> nodes = new Stack<>();
+        Stack<Token> operands = new Stack<>();
+        boolean literalRequired = true;
+        boolean priorityOperand = false;
 
         for (int i = 0; i < sentence.size(); i++) {
             Token current = sentence.get(i);
-            if (left == null) {
-                left = getLiteralNode(current);
-            } else {
-                if (operation == null) {
-                    operation = switch (current.tokenType) {
-                        case PLUS, MINUS, MULTIPLY, DIVIDE -> current;
-                        default -> throw new UnexpectedTokenException(current.tokenType.getName());
-                    };
-                } else {
-                    if (right == null) {
-                        right = getLiteralNode(current);
-                        if (right == null) {
-                            if (current.tokenType.equals(TokenType.L_PAR)) {
-                                int next_par = findNextParenthesis(sentence, i);
-                                right = (ExpressionNode) parse(sentence.subList(i + 1, next_par));
-                            } else {
-                                throw new UnexpectedTokenException(current.tokenType.getName());
-                            }
-                        }
-                        continue;
+            if (literalRequired) {
+                ExpressionNode node = getLiteralNode(current);
+                if (node == null) {
+                    if (current.tokenType.equals(TokenType.L_PAR)) {
+                        int next_par = findNextParenthesis(sentence, i);
+                        node = (ExpressionNode) parse(sentence.subList(i + 1, next_par));
+                        i = next_par;
+                    } else {
+                        throw new UnexpectedTokenException(current);
                     }
                 }
-            }
-            if (left != null && right != null) {
-                Token sndOperation = switch (current.tokenType) {
-                    case PLUS, MINUS, MULTIPLY, DIVIDE -> current;
-                    default -> throw new UnexpectedTokenException(current.tokenType.getName());
-                };
-                if (List.of(TokenType.MULTIPLY,TokenType.DIVIDE).contains(operation.tokenType)) {
-                    left = getExpressionNode(operation, left, right);
-                    return getExpressionNode(sndOperation, left, (ExpressionNode) parse(sentence.subList(i+1,sentence.size())));
-                } else {
-                    right = getExpressionNode(sndOperation, right, (ExpressionNode) parse(sentence.subList(i+1,sentence.size())));
-                    i = sentence.size();
+                if (priorityOperand) {
+                    node = getExpressionNode(operands.pop(), nodes.pop(), node);
+                    priorityOperand = false;
                 }
-            }
-
-            if (left != null) continue;
-
-            if (current.tokenType.equals(TokenType.L_PAR)) {
-                int next_par = findNextParenthesis(sentence, i);
-                left = (ExpressionNode) parse(sentence.subList(i+1, next_par));
-                i = next_par;
+                nodes.push(node);
             } else {
-                throw new UnexpectedTokenException(current.tokenType.getName());
+                if (!isOperand(current))
+                    throw new UnexpectedTokenException(current);
+                priorityOperand = hasPriority(current);
+                operands.push(current);
             }
+            literalRequired = !literalRequired;
+        }
+        if (literalRequired)
+            throw new UnexpectedTokenException(operands.pop());
+        while (!operands.empty()) {
+            ExpressionNode last = nodes.pop();
+            nodes.push(getExpressionNode(operands.pop(), nodes.pop(), last));
         }
 
-        if (right != null) {
-            return getExpressionNode(operation, left, right);
-        }
-
-        return left;
+        return nodes.pop();
     }
 
     private ExpressionNode getLiteralNode(Token current) {
@@ -114,5 +93,14 @@ public class ExpressionParser extends AbstractParser {
             case DIVIDE -> new DivisionNode(left, right);
             default -> null;
         };
+    }
+
+    public boolean isOperand(Token token) {
+        return List.of(TokenType.PLUS, TokenType.MINUS, TokenType.MULTIPLY, TokenType.DIVIDE).
+                contains(token.tokenType);
+    }
+
+    public boolean hasPriority(Token token) {
+        return List.of(TokenType.MULTIPLY, TokenType.DIVIDE).contains(token.tokenType);
     }
 }
