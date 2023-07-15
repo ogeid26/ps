@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 public class ConstantNode extends Node {
 
-    public ConstantNode() {
-        super(" = ", "Constant");
-    }
-
     public ConstantNode(ArrayList<Node> children) {
         super(" = ", "Constant", children);
     }

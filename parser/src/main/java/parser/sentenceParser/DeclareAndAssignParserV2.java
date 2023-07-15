@@ -34,7 +34,7 @@ public class DeclareAndAssignParserV2 extends AbstractParser {
 
     @Override
     public Node parse(List<Token> sentence) throws UnexpectedTokenException {
-        DeclareNode declareNode = (DeclareNode) new DeclarationParser().parse(sentence.subList(0,4));
+        DeclareNode declareNode = (DeclareNode) new DeclarationParserV2().parse(sentence.subList(0,4));
         if (readInput) {
             return new DeclareReaderNode(
                     declareNode,

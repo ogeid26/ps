@@ -146,12 +146,14 @@ public class InterpreterTest {
  */
 
     static Lexer lexerV1;
+    static Lexer lexerV2;
     static Parser parserV1;
     static Parser parserV2;
 
     @BeforeAll
     public static void setup() {
         lexerV1 = new LexerV1();
+        lexerV2 = new LexerV2();
         parserV1 = new ParserV1();
         parserV2 = new ParserV2();
     }
@@ -172,6 +174,16 @@ public class InterpreterTest {
 
         interpreterV2.interpret(ast);
 
+        printNode(ast);
+
         Assertions.assertEquals(3,3);
+    }
+
+    public void printNode(Node node) {
+        System.out.println("Type: " + node.getType() + ", Content: " + node.getContent());
+        for (Node child: node.children) {
+            if (child != null) printNode(child);
+            else System.out.println("Null Node");
+        }
     }
 }

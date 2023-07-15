@@ -42,6 +42,7 @@ public class Interpreter_2 {
         interpreters.add(new IdentifierInterpreter_2());
         interpreters.add(new KeywordInterpreter_2());
         interpreters.add(new PrintInterpreter_2());
+        interpreters.add(new IfInterpreter());
 
         for (Node sentence: ast.getChildren()) {
             for (InterpreterStrategy_2 interpreter : interpreters) {

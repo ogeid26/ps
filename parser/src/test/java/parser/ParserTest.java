@@ -2,6 +2,7 @@ package parser;
 
 import ast.AbstractSyntaxTree;
 import ast.AssignDeclareNode;
+import ast.Node;
 import exceptions.*;
 import org.austral.edu.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -31,7 +32,7 @@ public class ParserTest {
     @Test
     public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         List<Token> tokens = lexerV2.lex(new StringInput("""
-                if (true) {
+                if (cond) {
                     let x: string = "Miguel";
                     const y: number;
                 } else {
@@ -40,8 +41,17 @@ public class ParserTest {
                 """));
 
         AbstractSyntaxTree ast = parserV2.parse(tokens);
+        printNode(ast);
 
         assertEquals(3,3);
 
+    }
+
+    public void printNode(Node node) {
+        System.out.println("Type: " + node.getType() + ", Content: " + node.getContent());
+        for (Node child: node.children) {
+            if (child != null) printNode(child);
+            else System.out.println("Null Node");
+        }
     }
 }

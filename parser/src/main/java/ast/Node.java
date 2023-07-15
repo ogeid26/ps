@@ -27,4 +27,6 @@ public abstract class Node {
     public String getContent() {
         return content;
     }
+
+    public List<Node> getChildren() {return children;}
 }

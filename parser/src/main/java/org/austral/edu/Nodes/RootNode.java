@@ -7,7 +7,7 @@ import java.util.List;
 
 public class RootNode extends Node {
     public RootNode(String content) {
-        super(content, "root");
+        super(content, "root", List.of());
     }
 
     public RootNode(String content, ArrayList<Node> children) {

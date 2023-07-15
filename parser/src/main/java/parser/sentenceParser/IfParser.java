@@ -19,7 +19,7 @@ public class IfParser extends AbstractParser {
         super(new TokenType[][]{
                 {TokenTypeV2.IF},
                 {TokenTypeV1.L_PAR},
-                {TokenTypeV2.BOOLEAN},
+                {TokenTypeV1.IDENTIFIER, TokenTypeV2.BOOLEAN},
                 {TokenTypeV1.R_PAR},
                 {TokenTypeV2.L_BRACES}
         });
@@ -32,7 +32,7 @@ public class IfParser extends AbstractParser {
         AbstractSyntaxTree falseTree = new AbstractSyntaxTree();
         if (elseIndex > 0)
             falseTree = new ParserV2().parse(sentence.subList(elseIndex+2, sentence.size()-1));
-        return new IfNode(new ValueBooleanNode(sentence.get(2).content), trueTree, falseTree);
+        return new IfNode(sentence.get(2).content, trueTree, falseTree);
     }
 
     private int getElseIndex(List<Token> sentence) {
