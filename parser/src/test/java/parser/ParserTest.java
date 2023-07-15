@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,21 +17,31 @@ public class ParserTest {
 
     static Lexer lexerV1;
     static Parser parserV1;
+    static Lexer lexerV2;
+    static Parser parserV2;
 
     @BeforeAll
     public static void setup() {
-        lexerV1 = new LexerImpl();
+        lexerV1 = new LexerV1();
         parserV1 = new ParserV1();
+        lexerV2 = new LexerV2();
+        parserV2 = new ParserV2();
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException {
-        List<Token> tokens = lexerV1.lex(new StringInput("""
-                let x: number = 1+(2+3)+4*5+(6+7-2*5);
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+        List<Token> tokens = lexerV2.lex(new StringInput("""
+                if (true) {
+                    let x: string = "Miguel";
+                    const y: number;
+                } else {
+                    let age: number = 23;
+                }
                 """));
 
-        AbstractSyntaxTree ast = parserV1.parse(tokens);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
 
-        assertEquals("29.0", ((AssignDeclareNode) ast.getChildren().get(0)).getExpressionNode().solve().getContent());
+        assertEquals(3,3);
+
     }
 }

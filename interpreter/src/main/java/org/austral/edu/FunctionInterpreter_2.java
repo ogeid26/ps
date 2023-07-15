@@ -1,7 +1,11 @@
 package org.austral.edu;
 
+import exceptions.DividedByZeroException;
+import exceptions.IncompatibleOperationException;
+import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
 import ast.Node;
+import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
@@ -17,12 +21,12 @@ public class FunctionInterpreter_2 implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException, ConstantVariableException, IllogicalConditionalException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         assert node.children != null;
         Node n = node.children.get(0);
         for (InterpreterStrategy_2 strategy: strategies) {
             if (strategy.validate(n)){
-                strategy.interpret(n,types,values, constants, result);
+                strategy.interpret(n,types,values, constants, result, input);
                 break;
             }
         }

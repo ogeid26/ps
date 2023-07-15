@@ -6,16 +6,19 @@ import exceptions.UnclosedStringLiteralException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LexerImpl implements Lexer {
+public abstract class LexerImpl implements Lexer {
     public InputProvider provider = new StringInput();
     public Tokenizer tokenizer;
+
+    public LexerImpl(Tokenizer tokenizer) {
+        this.tokenizer = tokenizer;
+    }
 
     @Override
     public List<Token> lex(InputProvider provider) throws
             UnclosedStringLiteralException, UnclosedParenthesesException {
         String input = provider.getContent();
         List<Token> tokens = new ArrayList<>();
-        tokenizer = new TokenizerImpl();
 
         int parentheses_open = 0;
 

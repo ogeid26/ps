@@ -3,13 +3,16 @@ import exceptions.*;
 import org.austral.edu.*;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.*;
+import org.austral.edu.Results.ClassicInput;
 import org.austral.edu.Results.ClassicResult;
+import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import parser.Parser;
 import parser.ParserV1;
+import parser.ParserV2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -144,31 +147,30 @@ public class InterpreterTest {
 
     static Lexer lexerV1;
     static Parser parserV1;
+    static Parser parserV2;
 
     @BeforeAll
     public static void setup() {
-        lexerV1 = new LexerImpl();
+        lexerV1 = new LexerV1();
         parserV1 = new ParserV1();
+        parserV2 = new ParserV2();
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException {
         List<Token> tokens = lexerV1.lex(new StringInput("""
-                let name: string = "Miguel";
-                let x: number;
-                let y: string;
-                x = 90;
-                y = "Perez";
-                println(x + y + 1);
-                let lastname: string = 90 + "MMMM";
+                const name: boolean = readInput("Name:");
+                const x: number;
+                const y: number = 9+12;
                 """));
-        AbstractSyntaxTree ast = parserV1.parse(tokens);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
 
         Result result = new ClassicResult();
+        Input input = new ClassicInput("true");
 
-        Interpreter interpreterV1 = new InterpreterV1(result);
+        Interpreter_2 interpreterV2 = new Interpreter_2(result, input);
 
-        interpreterV1.interpret(ast);
+        interpreterV2.interpret(ast);
 
         Assertions.assertEquals(3,3);
     }

@@ -7,6 +7,7 @@ import ast.ExpressionNode;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenType;
+import org.austral.edu.TokenTypeV1;
 
 import java.util.List;
 
@@ -14,8 +15,8 @@ public class AssignationParser extends AbstractParser {
 
     public AssignationParser() {
         super(new TokenType[][]{
-                {TokenType.IDENTIFIER},
-                {TokenType.ASSIGNATION}
+                {TokenTypeV1.IDENTIFIER},
+                {TokenTypeV1.ASSIGNATION}
         });
     }
 
@@ -29,6 +30,6 @@ public class AssignationParser extends AbstractParser {
 
     @Override
     public boolean hookValidate(List<Token> sentence) {
-        return sentence.get(sentence.size()-1).tokenType.equals(TokenType.SEMICOLON);
+        return sentence.get(sentence.size()-1).tokenType.equals(TokenTypeV1.SEMICOLON);
     }
 }

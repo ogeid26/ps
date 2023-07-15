@@ -54,6 +54,8 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
                 }
             }
         }
+
+         */
     }
 
     private boolean isValueValidForType(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
@@ -67,6 +69,8 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
             result.saveReaderElement(message);
         }
     }
+
+    //void execute(InputStream src, String version, PrintEmitter emitter, ErrorHandler handler, InputProvider provider);
 
     private boolean isString(HashMap<String, String> types, ValueVariableNode nameNode, Node answer) {
         return types.get(nameNode.getContent()).equals("String") && answer instanceof ValueStringNode;

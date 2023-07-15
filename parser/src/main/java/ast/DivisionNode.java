@@ -18,7 +18,7 @@ public class DivisionNode extends ExpressionNode {
         ValueNode valueLeft = (ValueNode) getLeft().solve(values, types);
         ValueNode valueRight = (ValueNode) getRight().solve(values, types);
 
-        if (valueLeft.type.equals("Number") && valueRight.type.equals("Number")) {
+        if (valueLeft.type.equals("number") && valueRight.type.equals("number")) {
             if (Double.parseDouble(valueRight.content) != 0) {
                 double result = Double.parseDouble(valueLeft.content) / Double.parseDouble(valueRight.content);
                 return new ValueNumberNode(String.valueOf(result));

@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Lexer lexer = new LexerImpl();
+        Lexer lexer = new LexerV1();
 
         String x = """
                 let x:string = "Hello";

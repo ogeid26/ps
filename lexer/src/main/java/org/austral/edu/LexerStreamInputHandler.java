@@ -12,7 +12,7 @@ public class LexerStreamInputHandler {
         StringBuilder stringBuilder = new StringBuilder();
         int currentChar = inputStream.read();
         stringBuilder.append((char) currentChar);
-        Lexer lexer = new LexerImpl();
+        Lexer lexer = new LexerV1();
         List<Token> tokens = new ArrayList<>();
 
         while (currentChar != -1){

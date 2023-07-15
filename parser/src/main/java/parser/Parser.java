@@ -4,7 +4,7 @@ package parser;
 import ast.AbstractSyntaxTree;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
-import org.austral.edu.TokenType;
+import org.austral.edu.TokenTypeV1;
 import parser.sentenceParser.SentenceParser;
 
 import java.util.ArrayList;
@@ -32,12 +32,12 @@ public abstract class Parser {
         return ast;
     }
 
-    private static List<List<Token>> splitBySentences(List<Token> list) {
+    protected List<List<Token>> splitBySentences(List<Token> list) {
         List<List<Token>> subLists = new ArrayList<>();
         List<Token> subList = new ArrayList<>();
         for (Token token : list) {
             subList.add(token);
-            if (token.tokenType.equals(TokenType.SEMICOLON)) {
+            if (token.tokenType.equals(TokenTypeV1.SEMICOLON)) {
                 subLists.add(subList);
                 subList = new ArrayList<>();
             }

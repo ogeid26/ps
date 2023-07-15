@@ -5,7 +5,7 @@ import ast.ExpressionNode;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Nodes.*;
 import org.austral.edu.Token;
-import org.austral.edu.TokenType;
+import org.austral.edu.TokenTypeV1;
 
 import java.util.List;
 import java.util.Stack;
@@ -13,24 +13,8 @@ import java.util.Stack;
 public class ExpressionParser extends AbstractParser {
 
     public ExpressionParser() {
-        super(new TokenType[][]{});
+        super(new TokenTypeV1[][]{});
     }
-    // 51
-    //
-
-    //
-
-    // 4+4*4+4+4+4*4+4-5-8
-
-    // +
-    // 4 +
-    //   4 +
-    //      * +
-    //    4 4  +
-    //         4 +
-    //           * +
-    //          4 4 -
-
 
     @Override
     public Node parse(List<Token> sentence) throws UnexpectedTokenException {
@@ -44,7 +28,7 @@ public class ExpressionParser extends AbstractParser {
             if (literalRequired) {
                 ExpressionNode node = getLiteralNode(current);
                 if (node == null) {
-                    if (current.tokenType.equals(TokenType.L_PAR)) {
+                    if (current.tokenType.equals(TokenTypeV1.L_PAR)) {
                         int next_par = findNextParenthesis(sentence, i);
                         node = (ExpressionNode) parse(sentence.subList(i + 1, next_par));
                         i = next_par;
@@ -75,8 +59,8 @@ public class ExpressionParser extends AbstractParser {
         return nodes.pop();
     }
 
-    private ExpressionNode getLiteralNode(Token current) {
-        return switch (current.tokenType) {
+    protected ExpressionNode getLiteralNode(Token current) {
+        return switch ((TokenTypeV1) current.tokenType) {
             case NUMBER -> new LiteralNode(new ValueNumberNode(current.content));
             case STRING -> new LiteralNode(new ValueStringNode(current.content));
             case IDENTIFIER -> new LiteralNode(new ValueVariableNode(current.content));
@@ -84,14 +68,14 @@ public class ExpressionParser extends AbstractParser {
         };
     }
 
-    public int findNextParenthesis(List<Token> list, int index) {
+    protected int findNextParenthesis(List<Token> list, int index) {
         int skip_par = 0;
         for (int i = index + 1; i < list.size(); i++) {
-            if (list.get(i).tokenType.equals(TokenType.L_PAR)) {
+            if (list.get(i).tokenType.equals(TokenTypeV1.L_PAR)) {
                 skip_par += 1;
                 continue;
             }
-            if (list.get(i).tokenType.equals(TokenType.R_PAR))
+            if (list.get(i).tokenType.equals(TokenTypeV1.R_PAR))
                 if (skip_par > 0) {
                     skip_par -= 1;
                 } else {
@@ -101,8 +85,8 @@ public class ExpressionParser extends AbstractParser {
         return -1;
     }
 
-    public ExpressionNode getExpressionNode(Token token, ExpressionNode left, ExpressionNode right) {
-        return switch (token.tokenType) {
+    protected ExpressionNode getExpressionNode(Token token, ExpressionNode left, ExpressionNode right) {
+        return switch ((TokenTypeV1) token.tokenType) {
             case PLUS -> new AdditionNode(left, right);
             case MINUS -> new SubtractionNode(left, right);
             case MULTIPLY -> new MultiplicationNode(left, right);
@@ -111,12 +95,12 @@ public class ExpressionParser extends AbstractParser {
         };
     }
 
-    public boolean isOperand(Token token) {
-        return List.of(TokenType.PLUS, TokenType.MINUS, TokenType.MULTIPLY, TokenType.DIVIDE).
-                contains(token.tokenType);
+    protected boolean isOperand(Token token) {
+        return List.of(TokenTypeV1.PLUS, TokenTypeV1.MINUS, TokenTypeV1.MULTIPLY, TokenTypeV1.DIVIDE).
+                contains((TokenTypeV1) token.tokenType);
     }
 
-    public boolean hasPriority(Token token) {
-        return List.of(TokenType.MULTIPLY, TokenType.DIVIDE).contains(token.tokenType);
+    protected boolean hasPriority(Token token) {
+        return List.of(TokenTypeV1.MULTIPLY, TokenTypeV1.DIVIDE).contains((TokenTypeV1) token.tokenType);
     }
 }

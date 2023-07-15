@@ -8,6 +8,4 @@ public class Token {
         this.tokenType = tokenType;
         this.content = content;
     }
-
-    // Manejar la lógica de posición desde acá
 }

@@ -9,7 +9,7 @@ public class ParserV1 extends Parser {
                 new DeclarationParser(),
                 new AssignationParser(),
                 new DeclareAndAssignParser(),
-                new PrintParser()
+                new PrintParser(new ExpressionParser())
         });
     }
 }

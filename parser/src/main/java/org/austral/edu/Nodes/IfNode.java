@@ -4,28 +4,19 @@ import ast.AbstractSyntaxTree;
 import ast.Node;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class IfNode extends Node {
-    Node condition;
-    ArrayList<AbstractSyntaxTree> trueTree;
-    ArrayList<AbstractSyntaxTree> falseTree;
 
-    public IfNode(Node condition, ArrayList<AbstractSyntaxTree> trueTree, ArrayList<AbstractSyntaxTree> falseTree) {
-        super("if", "If");
-        this.condition = condition;
-        this.trueTree = trueTree;
-        this.falseTree = falseTree;
+    public IfNode(ValueBooleanNode condition, AbstractSyntaxTree trueTree, AbstractSyntaxTree falseTree) {
+        super(condition.getContent(), "If", List.of(trueTree, falseTree));
     }
 
-    public Node getCondition() {
-        return condition;
+    public AbstractSyntaxTree getFalseTree() {
+        return (AbstractSyntaxTree) children.get(0);
     }
 
-    public ArrayList<AbstractSyntaxTree> getFalseTree() {
-        return falseTree;
-    }
-
-    public ArrayList<AbstractSyntaxTree> getTrueTree() {
-        return trueTree;
+    public AbstractSyntaxTree getTrueTree() {
+        return (AbstractSyntaxTree) children.get(1);
     }
 }
