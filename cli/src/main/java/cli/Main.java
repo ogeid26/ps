@@ -1,9 +1,7 @@
 package cli;
 
 import ast.AbstractSyntaxTree;
-import exceptions.*;
 import org.austral.edu.*;
-import org.austral.edu.Exceptions.*;
 import org.austral.edu.Results.CLIInput;
 import org.austral.edu.Results.CLIResult;
 import org.austral.edu.Results.Input;

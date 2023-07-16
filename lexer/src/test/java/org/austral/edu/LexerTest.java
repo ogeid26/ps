@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import exceptions.UnclosedBracesException;
 import exceptions.UnclosedParenthesesException;
 import exceptions.UnclosedStringLiteralException;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LexerTest {
 
     @Test
-    public void test001_lexer() throws UnclosedStringLiteralException, UnclosedParenthesesException {
+    public void test001_lexer() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
         InputProvider string = new StringInput("let name: string = \"Miguel\" 8 8.9 32132 'Hello'+-*/ ");
         Lexer lexer = new LexerV1();
         List<Token> tokens =  lexer.lex(string);
@@ -51,7 +52,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test_003() throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException {
+    public void test_003() throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
         LexerStreamInputHandler test = new LexerStreamInputHandler();
         InputStream stream = new FileInputStream("test.txt");
 
@@ -64,7 +65,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException {
+    public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
         StringInput txt2 = new StringInput("println('Hola');");
         Lexer lexer = new LexerV1();
 
