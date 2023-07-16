@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class LiteralNode extends ExpressionNode {
 
-    private final ValueNode value;
+    public final ValueNode value;
 
     public LiteralNode(ValueNode value) {
         super("Literal");

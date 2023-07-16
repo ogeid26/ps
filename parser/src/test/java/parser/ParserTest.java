@@ -2,6 +2,7 @@ package parser;
 
 import ast.AbstractSyntaxTree;
 import ast.AssignDeclareNode;
+import ast.LiteralNode;
 import ast.Node;
 import exceptions.*;
 import org.austral.edu.*;
@@ -48,7 +49,11 @@ public class ParserTest {
     }
 
     public void printNode(Node node) {
-        System.out.println("Type: " + node.getType() + ", Content: " + node.getContent());
+        if (node.getType().equals("Literal"))
+            System.out.println("Type: " + node.getType() + ", Content: " + ((LiteralNode) node).value.getContent());
+        else if (node.getContent().equals(""))
+            System.out.println("Type: " + node.getType());
+        else System.out.println("Type: " + node.getType() + ", Content: " + node.getContent());
         for (Node child: node.children) {
             if (child != null) printNode(child);
             else System.out.println("Null Node");
