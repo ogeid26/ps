@@ -1,5 +1,6 @@
 package org.austral.edu;
 
+import exceptions.UnclosedBracesException;
 import exceptions.UnclosedParenthesesException;
 import exceptions.UnclosedStringLiteralException;
 
@@ -12,7 +13,7 @@ public class LexerImpl implements Lexer {
 
     @Override
     public List<Token> lex(InputProvider provider) throws
-            UnclosedStringLiteralException, UnclosedParenthesesException {
+            UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
         String input = provider.getContent();
         List<Token> tokens = new ArrayList<>();
         tokenizer = new TokenizerImpl();
@@ -39,6 +40,11 @@ public class LexerImpl implements Lexer {
                 if (currentChar == '(') {
                     if (!checkNextParentheses(input, i))
                         throw new UnclosedParenthesesException(col, row);
+                    break;
+                }
+                if (currentChar == '{') {
+                    if (!checkNextParentheses(input, i))
+                        throw new UnclosedBracesException(col, row);
                     break;
                 }
 
@@ -91,6 +97,8 @@ public class LexerImpl implements Lexer {
     private boolean checkNextParentheses(String input, int i) {
         return (input.indexOf(')') != -1);
     }
-}
+    private boolean checkNextBraces(String input, int i) {
+        return (input.indexOf('}') != -1);
+    }}
 
 
