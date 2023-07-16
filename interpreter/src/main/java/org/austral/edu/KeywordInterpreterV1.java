@@ -11,7 +11,7 @@ import org.austral.edu.Results.Result;
 
 import java.util.HashMap;
 
-public class KeywordInterpreter implements InterpreterStrategy{
+public class KeywordInterpreterV1 implements InterpreterStrategyV1 {
 
     @Override
     public boolean validate(Node node) {

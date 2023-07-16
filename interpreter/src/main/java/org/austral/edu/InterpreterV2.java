@@ -22,7 +22,7 @@ public class InterpreterV2 {
     
     Input input;
 
-    List<InterpreterStrategy_2> strategies = Arrays.asList(new FunctionInterpreter(), new IdentifierInterpreter_2(), new KeywordInterpreter_2());
+    List<InterpreterStrategyV2> strategies = Arrays.asList(new FunctionInterpreter(), new IdentifierInterpreterV2(), new KeywordInterpreterV2());
 
     public InterpreterV2(Result result, Input input){
         this.types = new HashMap<>();
@@ -41,7 +41,7 @@ public class InterpreterV2 {
 
     public void interpret(AbstractSyntaxTree ast) throws IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, InterpretException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         for (Node sentence: ast.getChildren()) {
-            for (InterpreterStrategy_2 interpreter : strategies) {
+            for (InterpreterStrategyV2 interpreter : strategies) {
                 if (interpreter.validate(sentence)) {
                     interpreter.interpret(sentence, types, values, constants, result, input);
                     break;

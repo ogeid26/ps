@@ -12,7 +12,7 @@ import org.austral.edu.Results.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class IfInterpreter implements InterpreterStrategy_2{
+public class IfInterpreter implements InterpreterStrategyV2 {
     @Override
     public boolean validate(Node node) {
         return node.getType().equals("If");

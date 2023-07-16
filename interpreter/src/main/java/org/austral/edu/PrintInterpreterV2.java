@@ -6,11 +6,13 @@ import exceptions.IncompatibleOperationException;
 import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
 import ast.Node;
+import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
-public class PrintInterpreter implements InterpreterStrategy{
+public class PrintInterpreterV2 implements InterpreterStrategyV2 {
 
     @Override
     public boolean validate(Node node) {
@@ -18,7 +20,7 @@ public class PrintInterpreter implements InterpreterStrategy{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         Node valueNode = ((PrintNode) node).getExpressionNode().solve(values, types);
         result.savePrintElement(valueNode.getContent());
     }

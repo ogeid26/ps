@@ -18,7 +18,7 @@ public class InterpreterV1 {
     
     Result result;
 
-    List<InterpreterStrategy> strategies = Arrays.asList(new PrintInterpreter(), new IdentifierInterpreter(), new KeywordInterpreter());
+    List<InterpreterStrategyV1> strategies = Arrays.asList(new PrintInterpreterV1(), new IdentifierInterpreterV1(), new KeywordInterpreterV1());
 
     public InterpreterV1(Result result){
          this.types = new HashMap<>();
@@ -28,7 +28,7 @@ public class InterpreterV1 {
 
     public void interpret(AbstractSyntaxTree ast) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         for (Node sentence: ast.getChildren()) {
-            for (InterpreterStrategy interpreter : strategies) {
+            for (InterpreterStrategyV1 interpreter : strategies) {
                 if (interpreter.validate(sentence)) {
                     interpreter.interpret(sentence, types, values, result);
                     break;

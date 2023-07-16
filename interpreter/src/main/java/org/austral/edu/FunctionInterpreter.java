@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class FunctionInterpreter implements InterpreterStrategy_2{
-    ArrayList<InterpreterStrategy_2> strategies = new ArrayList<>(Arrays.asList(new PrintInterpreter_2(), new IfInterpreter()));
+public class FunctionInterpreter implements InterpreterStrategyV2 {
+    ArrayList<InterpreterStrategyV2> strategies = new ArrayList<>(Arrays.asList(new PrintInterpreterV2(), new IfInterpreter()));
 
     @Override
     public boolean validate(Node node) {
@@ -30,7 +30,7 @@ public class FunctionInterpreter implements InterpreterStrategy_2{
 
     @Override
     public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
-        for (InterpreterStrategy_2 strategy: strategies) {
+        for (InterpreterStrategyV2 strategy: strategies) {
             if (strategy.validate(node)){
                 strategy.interpret(node,types,values, constants, result, input);
                 break;

@@ -9,7 +9,7 @@ import org.austral.edu.Results.Result;
 
 import java.util.HashMap;
 
-public interface InterpreterStrategy {
+public interface InterpreterStrategyV1 {
     boolean validate(Node node);
 
     void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException;

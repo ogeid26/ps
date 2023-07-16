@@ -8,7 +8,7 @@ import org.austral.edu.Exceptions.*;
 import org.austral.edu.Results.Result;
 import java.util.HashMap;
 
-public class IdentifierInterpreter implements InterpreterStrategy{
+public class IdentifierInterpreterV1 implements InterpreterStrategyV1 {
 
     @Override
     public boolean validate(Node node) {

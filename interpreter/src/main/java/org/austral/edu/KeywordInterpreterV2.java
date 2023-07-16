@@ -11,7 +11,7 @@ import org.austral.edu.Results.Result;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class KeywordInterpreter_2 implements InterpreterStrategy_2{
+public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
 
     @Override
     public boolean validate(Node node) {
@@ -58,7 +58,7 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
                     }
                 }
                 case "boolean" -> {
-                    if (value.equals("true") || value.equals("false"))
+                    if (isaBoolean(value))
                         values.put(declareNode.getNameNode().getContent(), value);
                     else throw new IncompatibilityException();
                 }
@@ -68,6 +68,10 @@ public class KeywordInterpreter_2 implements InterpreterStrategy_2{
             DeclareNode declareNode = (DeclareNode) node;
             types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
         }
+    }
+
+    private boolean isaBoolean(String value) {
+        return value.equals("true") || value.equals("false");
     }
 
     private boolean isDeclare(Node node) {
