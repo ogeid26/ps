@@ -2,7 +2,6 @@ import ast.*;
 import exceptions.*;
 import org.austral.edu.*;
 import org.austral.edu.Exceptions.*;
-import org.austral.edu.Nodes.*;
 import org.austral.edu.Results.ClassicInput;
 import org.austral.edu.Results.ClassicResult;
 import org.austral.edu.Results.Input;
@@ -14,8 +13,6 @@ import parser.Parser;
 import parser.ParserV1;
 import parser.ParserV2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class InterpreterTest {
@@ -183,7 +180,7 @@ public class InterpreterTest {
         Result result = new ClassicResult();
         Input input = new ClassicInput("true");
 
-        Interpreter_2 interpreterV2 = new Interpreter_2(result, input);
+        InterpreterV2 interpreterV2 = new InterpreterV2(result, input);
 
         interpreterV2.interpret(ast);
 

@@ -5,13 +5,11 @@ import exceptions.DividedByZeroException;
 import exceptions.IncompatibleOperationException;
 import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
-import org.austral.edu.InnerInterpreters.*;
 import ast.Node;
 import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class PrintInterpreter_2 implements InterpreterStrategy_2{

@@ -10,9 +10,11 @@ import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
-public class Interpreter_2 {
+public class InterpreterV2 {
     HashMap<String,String> types;
     HashMap<String,String> values;
     ArrayList<String> constants;
@@ -20,14 +22,16 @@ public class Interpreter_2 {
     
     Input input;
 
-    public Interpreter_2(Result result, Input input){
+    List<InterpreterStrategy_2> strategies = Arrays.asList(new FunctionInterpreter(), new IdentifierInterpreter_2(), new KeywordInterpreter_2());
+
+    public InterpreterV2(Result result, Input input){
         this.types = new HashMap<>();
         this. values = new HashMap<>();
         this.constants = new ArrayList<>();
         this.result = result;
         this.input = input;
     }
-    public Interpreter_2(HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input){
+    public InterpreterV2(HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input){
         this.types = types;
         this. values = values;
         this.constants = constants;
@@ -36,16 +40,8 @@ public class Interpreter_2 {
     }
 
     public void interpret(AbstractSyntaxTree ast) throws IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, InterpretException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
-
-        ArrayList<InterpreterStrategy_2> interpreters = new ArrayList<>();
-        interpreters.add(new FunctionInterpreter_2());
-        interpreters.add(new IdentifierInterpreter_2());
-        interpreters.add(new KeywordInterpreter_2());
-        interpreters.add(new PrintInterpreter_2());
-        interpreters.add(new IfInterpreter());
-
         for (Node sentence: ast.getChildren()) {
-            for (InterpreterStrategy_2 interpreter : interpreters) {
+            for (InterpreterStrategy_2 interpreter : strategies) {
                 if (interpreter.validate(sentence)) {
                     interpreter.interpret(sentence, types, values, constants, result, input);
                     break;

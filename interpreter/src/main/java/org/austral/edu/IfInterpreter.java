@@ -4,10 +4,8 @@ import exceptions.DividedByZeroException;
 import exceptions.IncompatibleOperationException;
 import exceptions.VariableDoesntExistsException;
 import org.austral.edu.Exceptions.*;
-import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.IfNode;
 import ast.Node;
-import org.austral.edu.Nodes.ValueBooleanNode;
 import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
@@ -23,12 +21,12 @@ public class IfInterpreter implements InterpreterStrategy_2{
     @Override
     public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         IfNode ifNode = (IfNode) node;
-        Interpreter_2 interpreter = new Interpreter_2(types,values,constants, result, input);
+        InterpreterV2 interpreter = new InterpreterV2(types,values,constants, result, input);
         boolean condition;
 
-        if(ifNode.getContent().equals("true") || ifNode.getContent().equals("false")){
+        if(isaBoolean(ifNode)){
             condition = ifNode.getContent().equals("true");
-        }else if(values.containsKey(ifNode.getContent()) && types.get(ifNode.getContent()).equals("boolean")){
+        }else if(isaBooleanVariable(types, values, ifNode)){
             condition = values.get(ifNode.getContent()).equals("true");
         }else throw new IllogicalConditionalException();
 
@@ -37,5 +35,13 @@ public class IfInterpreter implements InterpreterStrategy_2{
         }else{
             interpreter.interpret(ifNode.getFalseTree());
         }
+    }
+
+    private boolean isaBooleanVariable(HashMap<String, String> types, HashMap<String, String> values, IfNode ifNode) {
+        return values.containsKey(ifNode.getContent()) && types.get(ifNode.getContent()).equals("boolean");
+    }
+
+    private boolean isaBoolean(IfNode ifNode) {
+        return ifNode.getContent().equals("true") || ifNode.getContent().equals("false");
     }
 }
