@@ -32,50 +32,53 @@ public class IdentifierInterpreterV2 implements InterpreterStrategyV2 {
 
     @Override
     public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws IncompatibilityException, NotDefinedException, ConstantVariableException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
-        if (types.isEmpty()){
-            throw new NotDefinedException();
-        }else{
-            if (isAssign(node)) {
-                AssignNode assignNode = (AssignNode) node;
-                IdentifierNode nameNode = assignNode.getIdentifierNode();
-                if (constants.contains(nameNode.getContent())) {
-                    throw new ConstantVariableException();
-                } else {
-                    Node valueNode = assignNode.getExpressionNode().solve(values, types);
+        if (isAssign(node)) {
+            AssignNode assignNode = (AssignNode) node;
+            IdentifierNode nameNode = assignNode.getIdentifierNode();
 
-                    if (valueNode.getType().equals(types.get(nameNode.getContent()))) {
-                        values.put(nameNode.getContent(), valueNode.getContent());
-                    } else {
-                        throw new IncompatibilityException();
-                    }
+            if(!types.containsKey(nameNode.getContent())){
+                throw new NotDefinedException();
+
+            }else if (constants.contains(nameNode.getContent())) {
+                throw new ConstantVariableException();
+
+            } else {
+                Node valueNode = assignNode.getExpressionNode().solve(values, types);
+                if (valueNode.getType().equals(types.get(nameNode.getContent()))) {
+                    values.put(nameNode.getContent(), valueNode.getContent());
+                } else {
+                    throw new IncompatibilityException();
                 }
-            }else{
-                AssignReaderNode assignReaderNode = (AssignReaderNode) node;
-                IdentifierNode nameNode = assignReaderNode.getIdentifierNode();
-                if (constants.contains(nameNode.getContent())) {
-                    throw new ConstantVariableException();
-                } else {
-                    ReaderNode readerNode = assignReaderNode.getReaderNode();
+            }
+        }else{
+            AssignReaderNode assignReaderNode = (AssignReaderNode) node;
+            IdentifierNode nameNode = assignReaderNode.getIdentifierNode();
 
-                    result.savePrintElement(readerNode.getContent());
-                    String value = input.input();
+            if(!types.containsKey(nameNode.getContent())){
+                throw new NotDefinedException();
 
-                    switch (types.get(nameNode.getContent())) {
-                        case "number" -> {
-                            try {
-                                double number = Double.parseDouble(value);
-                                values.put(nameNode.getContent(), String.valueOf(number));
-                            } catch (Exception e) {
-                                throw new IncompatibilityException();
-                            }
+            }else if (constants.contains(nameNode.getContent())) {
+                throw new ConstantVariableException();
+
+            } else {
+                ReaderNode readerNode = assignReaderNode.getReaderNode();
+                result.savePrintElement(readerNode.getContent());
+                String value = input.input();
+                switch (types.get(nameNode.getContent())) {
+                    case "number" -> {
+                        try {
+                            double number = Double.parseDouble(value);
+                            values.put(nameNode.getContent(), String.valueOf(number));
+                        } catch (Exception e) {
+                            throw new IncompatibilityException();
                         }
-                        case "boolean" -> {
-                            if (value.equals("true") || value.equals("false"))
-                                values.put(nameNode.getContent(), value);
-                            else throw new IncompatibilityException();
-                        }
-                        default -> values.put(nameNode.getContent(), value);
                     }
+                    case "boolean" -> {
+                        if (value.equals("true") || value.equals("false"))
+                            values.put(nameNode.getContent(), value);
+                        else throw new IncompatibilityException();
+                    }
+                    default -> values.put(nameNode.getContent(), value);
                 }
             }
         }
