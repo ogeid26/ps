@@ -1,0 +1,2 @@
+let x: number = readInput("Enter a number: ");
+println("X is " + x);

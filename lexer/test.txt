@@ -1,0 +1,3 @@
+let firstName:string;
+let lastName:string;
+let age:number;

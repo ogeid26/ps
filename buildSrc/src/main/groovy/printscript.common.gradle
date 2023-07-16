@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'application'
+    id "checkstyle"
+    id 'jacoco'
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+
+build.dependsOn('spotlessApply')
+build.dependsOn('spotlessJavaApply')
+
+checkstyle {
+    configFile = file("${project.rootDir}/checkstyle.xml")
+    toolVersion = '8.42' // Checkstyle version - Update this to the version you downloaded
+}
+
+tasks.withType(Checkstyle) {
+    ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
+}
+
+group 'org.idm.ingsis.printscript'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
