@@ -5,6 +5,7 @@ import ast.Node;
 import org.austral.edu.Exceptions.*;
 import org.austral.edu.InnerInterpreters.*;
 import org.austral.edu.Nodes.*;
+import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
 import java.util.ArrayList;
@@ -24,8 +25,8 @@ public class IdentifierInterpreter_2 implements InterpreterStrategy_2{
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result) throws IncompatibilityException, NotDefinedException, ConstantVariableException, AssignationException {
-        if (types.isEmpty()){
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws IncompatibilityException, NotDefinedException, ConstantVariableException, AssignationException {
+        /*if (types.isEmpty()){
             throw new NotDefinedException();
         }else{
             AssignNode assignNode = (AssignNode) node;

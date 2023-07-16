@@ -7,6 +7,7 @@ import org.austral.edu.Exceptions.*;
 import org.austral.edu.Nodes.BinaryNode;
 import org.austral.edu.Nodes.IfNode;
 import ast.Node;
+import org.austral.edu.Nodes.ValueBooleanNode;
 import org.austral.edu.Results.Input;
 import org.austral.edu.Results.Result;
 
@@ -23,19 +24,18 @@ public class IfInterpreter implements InterpreterStrategy_2{
     public void interpret(Node node, HashMap<String, String> types, HashMap<String, String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         IfNode ifNode = (IfNode) node;
         Interpreter_2 interpreter = new Interpreter_2(types,values,constants, result, input);
-        if (ifNode.getContent().equals("true")){
+        boolean condition;
+
+        if(ifNode.getContent().equals("true") || ifNode.getContent().equals("false")){
+            condition = ifNode.getContent().equals("true");
+        }else if(values.containsKey(ifNode.getContent()) && types.get(ifNode.getContent()).equals("boolean")){
+            condition = values.get(ifNode.getContent()).equals("true");
+        }else throw new IllogicalConditionalException();
+
+        if (condition){
             interpreter.interpret(ifNode.getTrueTree());
         }else{
             interpreter.interpret(ifNode.getFalseTree());
         }
-        /*else  if(values.containsKey(condition.getContent()) && types.get(condition.getContent()).equals("Boolean")){
-            if (values.get(condition.getContent()).equals("TRUE")){
-                interpreter.interpret(ifNode.getTrueTree());
-            }else{
-                interpreter.interpret(ifNode.getFalseTree());
-            }
-        }else{
-            throw new IllogicalConditionalException();
-        }*/
     }
 }
