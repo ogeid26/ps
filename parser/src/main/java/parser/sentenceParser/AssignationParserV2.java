@@ -16,7 +16,6 @@ public class AssignationParserV2 extends AssignationParser {
     public TokenType[][] optionalPattern;
 
     public AssignationParserV2() {
-        super();
         readInput = false;
         optionalPattern = new TokenType[][]{
                 {TokenTypeV2.READ_INPUT},
@@ -37,7 +36,7 @@ public class AssignationParserV2 extends AssignationParser {
         }
         return new AssignNode(
                 identifierNode,
-                (ExpressionNode) new ExpressionParserV2().parse(sentence.subList(5,sentence.size()-1))
+                (ExpressionNode) new ExpressionParserV2().parse(sentence.subList(2,sentence.size()-1))
         );
     }
 

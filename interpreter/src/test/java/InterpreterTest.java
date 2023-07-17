@@ -156,7 +156,7 @@ public class InterpreterTest {
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException {
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException {
         List<Token> tokens = lexerV2.lex(new StringInput("""
                 if(true){
                     println("true 1");

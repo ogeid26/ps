@@ -7,7 +7,6 @@ import org.austral.edu.TokenTypeV2;
 public class DeclarationParserV2 extends DeclarationParser {
 
     public DeclarationParserV2() {
-        super();
         super.pattern[0] = new TokenType[]{
                 TokenTypeV1.LET, TokenTypeV2.CONST
         };

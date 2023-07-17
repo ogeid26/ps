@@ -45,6 +45,10 @@ public class ExpressionParser extends AbstractParser {
                 if (!isOperand(current))
                     throw new UnexpectedTokenException(current);
                 priorityOperand = hasPriority(current);
+                if (!priorityOperand && !operands.empty()) {
+                    ExpressionNode last = nodes.pop();
+                    nodes.push(getExpressionNode(operands.pop(), nodes.pop(), last));
+                }
                 operands.push(current);
             }
             literalRequired = !literalRequired;
