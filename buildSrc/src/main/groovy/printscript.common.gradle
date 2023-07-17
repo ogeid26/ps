@@ -13,8 +13,8 @@ jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
 }
 
-build.dependsOn('spotlessApply')
-build.dependsOn('spotlessJavaApply')
+//build.dependsOn('spotlessApply')
+//build.dependsOn('spotlessJavaApply')
 
 checkstyle {
     configFile = file("${project.rootDir}/checkstyle.xml")
