@@ -37,7 +37,7 @@ public class AssignationParserV2 extends AssignationParser {
         }
         return new AssignNode(
                 identifierNode,
-                (ExpressionNode) new ExpressionParserV2().parse(sentence.subList(5,sentence.size()-1))
+                (ExpressionNode) new ExpressionParserV2().parse(sentence.subList(2,sentence.size()-1))
         );
     }
 

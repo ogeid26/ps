@@ -1,6 +1,7 @@
 package ast;
 
 import exceptions.VariableDoesntExistsException;
+import org.austral.edu.Nodes.ValueBooleanNode;
 import org.austral.edu.Nodes.ValueNode;
 import org.austral.edu.Nodes.ValueNumberNode;
 import org.austral.edu.Nodes.ValueStringNode;
@@ -22,6 +23,7 @@ public class LiteralNode extends ExpressionNode {
                 return (switch (types.get(value.getContent())) {
                     case "number" -> new ValueNumberNode(values.get(value.getContent()));
                     case "string" -> new ValueStringNode(values.get(value.getContent()));
+                    case "boolean" -> new ValueBooleanNode(values.get(value.getContent()));
                     default -> null;
                 });
             }else{
