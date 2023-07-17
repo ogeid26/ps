@@ -28,10 +28,14 @@ public class IfParser extends AbstractParser {
     @Override
     public Node parse(List<Token> sentence) throws UnexpectedTokenException {
         int elseIndex = getElseIndex(sentence);
-        AbstractSyntaxTree trueTree = new ParserV2().parse(sentence.subList(5,elseIndex-1));
+        AbstractSyntaxTree trueTree = new AbstractSyntaxTree();
         AbstractSyntaxTree falseTree = new AbstractSyntaxTree();
-        if (elseIndex > 0)
-            falseTree = new ParserV2().parse(sentence.subList(elseIndex+2, sentence.size()-1));
+        if (elseIndex > 0) {
+            trueTree = new ParserV2().parse(sentence.subList(5, elseIndex - 1));
+            falseTree = new ParserV2().parse(sentence.subList(elseIndex + 2, sentence.size() - 1));
+        } else {
+            trueTree = new ParserV2().parse(sentence.subList(5,sentence.size()-1));
+        }
         return new IfNode(sentence.get(2).content, trueTree, falseTree);
     }
 

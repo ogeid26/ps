@@ -31,7 +31,7 @@ public class ParserTest {
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UnclosedBracesException {
         List<Token> tokens = lexerV2.lex(new StringInput("""
                 if (cond) {
                     let x: string = "Miguel";
