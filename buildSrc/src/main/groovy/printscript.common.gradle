@@ -3,6 +3,7 @@ plugins {
     id 'application'
     id "checkstyle"
     id 'jacoco'
+    id 'maven-publish'
 }
 
 test {
@@ -37,4 +38,24 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/ogeid26/ps")
+            version = "2.0.4-SNAPSHOT"
+            credentials {
+                username = project.properties['GITHUB_ACTOR']
+                password = project.properties['GITHUB_TOKEN']
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
