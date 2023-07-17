@@ -32,7 +32,7 @@ public class AssignationParserV2 extends AssignationParser {
         if (readInput) {
             return new AssignReaderNode(
                     identifierNode,
-                    new ReaderNode(sentence.get(7).content)
+                    new ReaderNode(sentence.get(4).content)
             );
         }
         return new AssignNode(

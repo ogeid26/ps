@@ -156,10 +156,13 @@ public class InterpreterTest {
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException {
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException {
         List<Token> tokens = lexerV2.lex(new StringInput("""
                 if(true){
                     println("true 1");
+                    const x:string = "Nacho";
+                    let y:string = x;
+                    println(y);
                 }else{
                     println("false 1");
                 }
@@ -167,10 +170,17 @@ public class InterpreterTest {
                     println("true 2");
                 }else{
                     println("false 2");
+                    let x:number = readInput("Please enter a number");
+                    let y:number = (4+2)*(3)/(9-x);
+                    println(y);
                 }
-                const x:boolean = true;
+                let x:boolean;
+                x = true;
+                let y:number;
+                y = readInput("Please enter a number");
                 if(x){
                     println("true 3");
+                    println(y);
                 }else{
                     println("false 3");
                 }
@@ -178,7 +188,7 @@ public class InterpreterTest {
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
         Result result = new ClassicResult();
-        Input input = new ClassicInput("true");
+        Input input = new ClassicInput("23");
 
         InterpreterV2 interpreterV2 = new InterpreterV2(result, input);
 
