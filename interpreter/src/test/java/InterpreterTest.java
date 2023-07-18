@@ -156,35 +156,8 @@ public class InterpreterTest {
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException {
-        List<Token> tokens = lexerV2.lex(new StringInput("""
-                if(true){
-                    println("true 1");
-                    const x:string = "Nacho";
-                    let y:string = x;
-                    println(y);
-                }else{
-                    println("false 1");
-                }
-                if(false){
-                    println("true 2");
-                }else{
-                    println("false 2");
-                    let x:number = readInput("Please enter a number");
-                    let y:number = (4+2)*(3)/(9-x);
-                    println(y);
-                }
-                let x:boolean;
-                x = true;
-                let y:number;
-                y = readInput("Please enter a number");
-                if(x){
-                    println("true 3");
-                    println(y);
-                }else{
-                    println("false 3");
-                }
-                """));
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException, ExpectedTokenException {
+        List<Token> tokens = lexerV2.lex(new StringInput("if(true){println(\"true 1\");const x:string = \"Nacho\";let y:string = x;println(y);}else{println(\"false 1\");}if(false){println(\"true 2\");}"));
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
         Result result = new ClassicResult();

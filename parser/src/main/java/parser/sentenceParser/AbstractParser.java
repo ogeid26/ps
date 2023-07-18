@@ -1,9 +1,11 @@
 package parser.sentenceParser;
 
 import ast.Node;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenType;
+import org.austral.edu.TokenTypeV1;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,20 +19,21 @@ public abstract class AbstractParser implements SentenceParser {
     }
 
     @Override
-    public boolean validate(List<Token> sentence) {
+    public void validate(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
         if (sentence.size() < pattern.length)
-            return false;
+            throw new UnexpectedTokenException(sentence.get(0));
         for (int i = 0; i < pattern.length; i++) {
             if (!Arrays.asList(pattern[i]).contains(sentence.get(i).tokenType))
-                return false;
+                throw new ExpectedTokenException(pattern[i][0]);
         }
-        return hookValidate(sentence);
+        hookValidate(sentence);
     }
 
     @Override
-    public abstract Node parse(List<Token> sentence) throws UnexpectedTokenException;
+    public abstract Node parse(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException;
 
-    public boolean hookValidate(List<Token> sentence) {
-        return !sentence.isEmpty();
+    public void hookValidate(List<Token> sentence) throws ExpectedTokenException {
+        if (!sentence.get(sentence.size()-1).tokenType.equals(TokenTypeV1.SEMICOLON))
+            throw new ExpectedTokenException(TokenTypeV1.SEMICOLON);
     }
 }

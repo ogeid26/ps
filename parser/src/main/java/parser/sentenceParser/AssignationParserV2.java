@@ -1,6 +1,7 @@
 package parser.sentenceParser;
 
 import ast.*;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenType;
@@ -26,7 +27,8 @@ public class AssignationParserV2 extends AssignationParser {
     }
 
     @Override
-    public Node parse(List<Token> sentence) throws UnexpectedTokenException {
+    public Node parse(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
+        validate(sentence);
         IdentifierNode identifierNode = new IdentifierNode(sentence.get(0).content);
         if (readInput) {
             return new AssignReaderNode(
@@ -41,7 +43,7 @@ public class AssignationParserV2 extends AssignationParser {
     }
 
     @Override
-    public boolean hookValidate(List<Token> sentence) {
+    public void hookValidate(List<Token> sentence) throws ExpectedTokenException {
         readInput = true;
         for (int i = 0; i < optionalPattern.length; i++) {
             if (!Arrays.asList(optionalPattern[i]).contains(sentence.get(i + 2).tokenType)) {
@@ -49,6 +51,6 @@ public class AssignationParserV2 extends AssignationParser {
                 break;
             }
         }
-        return sentence.get(sentence.size()-1).tokenType.equals(TokenTypeV1.SEMICOLON);
+        super.hookValidate(sentence);
     }
 }

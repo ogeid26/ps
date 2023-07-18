@@ -3,6 +3,7 @@ package parser.sentenceParser;
 import ast.ExpressionNode;
 import ast.Node;
 import ast.PrintNode;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenTypeV1;
@@ -22,14 +23,15 @@ public class PrintParser extends AbstractParser {
     }
 
     @Override
-    public Node parse(List<Token> sentence) throws UnexpectedTokenException {
+    public Node parse(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
+        validate(sentence);
         return new PrintNode((ExpressionNode) expressionParser.parse(sentence.subList(2,sentence.size()-2)));
     }
 
     @Override
-    public boolean hookValidate(List<Token> sentence) {
+    public void hookValidate(List<Token> sentence) throws ExpectedTokenException {
         if (!sentence.get(sentence.size()-2).tokenType.equals(TokenTypeV1.R_PAR))
-            return false;
-        return sentence.get(sentence.size() - 1).tokenType.equals(TokenTypeV1.SEMICOLON);
+            throw new ExpectedTokenException(TokenTypeV1.R_PAR);
+        super.hookValidate(sentence);
     }
 }
