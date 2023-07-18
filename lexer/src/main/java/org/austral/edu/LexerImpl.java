@@ -25,7 +25,7 @@ public abstract class LexerImpl implements Lexer {
 
         int length = input.length();
 
-        for (int i = 0, col = 0, row = 0; i < length; i++) {
+        for (int i = 0, col = 1, row = 1; i < length; i++) {
             char currentChar = input.charAt(i);
             col++;
 
@@ -79,7 +79,7 @@ public abstract class LexerImpl implements Lexer {
                 } else break;
             }
             if (currentChar == '\n') {
-                col = 0;
+                col = 1;
                 row++;
             }
 

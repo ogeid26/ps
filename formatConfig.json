@@ -1,0 +1,8 @@
+{
+  "spaceBeforeDeclaration": false,
+  "spaceAfterDeclaration": false,
+  "spaceAroundAssignation": true,
+  "newLinesBeforePrint": 0,
+  "singleQuotes": true,
+  "indentSpaces": 4
+}

@@ -1,9 +1,6 @@
 package org.austral.edu;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.stream.Collectors;
 
 public class FileInput implements InputProvider {
@@ -20,8 +17,10 @@ public class FileInput implements InputProvider {
             File file = new File(this.path);
             FileReader stream = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(stream);
-            return bufferedReader.lines().collect(Collectors.joining());
-        } catch (FileNotFoundException e) {
+            String code = bufferedReader.lines().collect(Collectors.joining());
+            bufferedReader.close();
+            return code;
+        } catch (IOException e) {
             return "";
         }
     }
