@@ -4,6 +4,7 @@ import ast.AssignNode;
 import ast.IdentifierNode;
 import ast.Node;
 import ast.ExpressionNode;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenType;
@@ -21,15 +22,11 @@ public class AssignationParser extends AbstractParser {
     }
 
     @Override
-    public Node parse(List<Token> sentence) throws UnexpectedTokenException {
+    public Node parse(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
+        validate(sentence);
         return new AssignNode(
                 new IdentifierNode(sentence.get(0).content),
                 (ExpressionNode) new ExpressionParser().parse(sentence.subList(2,sentence.size()-1))
         );
-    }
-
-    @Override
-    public boolean hookValidate(List<Token> sentence) {
-        return sentence.get(sentence.size()-1).tokenType.equals(TokenTypeV1.SEMICOLON);
     }
 }

@@ -2,11 +2,8 @@ plugins {
     id 'java'
     id 'application'
     id "checkstyle"
-    id"com.diffplug.spotless"
     id 'jacoco'
     id 'maven-publish'
-    id 'base'
-    id 'io.beekeeper.gradle.plugins.formatter'
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -18,6 +15,18 @@ test {
 jacocoTestReport {
     dependsOn test // tests are required to run before generating the report
 }
+
+//build.dependsOn('spotlessApply')
+//build.dependsOn('spotlessJavaApply')
+
+//checkstyle {
+//    configFile = file("${rootProject.rootDir}/checkstyle.xml")
+//    toolVersion = '8.42' // Checkstyle version - Update this to the version you downloaded
+//}
+
+//tasks.withType(Checkstyle) {
+//    ignoreFailures = false // Change to 'true' if you want lint errors to not fail the build
+//}
 
 group 'org.idm.ingsis.printscript'
 
@@ -50,19 +59,5 @@ publishing {
         gpr(MavenPublication) {
             from(components.java)
         }
-    }
-}
-
-spotless {
-    java {
-        target fileTree('.') {
-            include '**/*.java'
-            exclude '**/build/**', '**/build-*/**'
-        }
-        toggleOffOn()
-        palantirJavaFormat()
-        removeUnusedImports()
-        trimTrailingWhitespace()
-        endWithNewline()
     }
 }

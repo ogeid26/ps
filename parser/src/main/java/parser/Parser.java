@@ -2,9 +2,15 @@ package parser;
 
 
 import ast.AbstractSyntaxTree;
+import ast.Node;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
+import org.austral.edu.TokenType;
 import org.austral.edu.TokenTypeV1;
+import org.austral.edu.TokenTypeV2;
+import parser.sentenceParser.AssignationParser;
+import parser.sentenceParser.DeclarationParser;
 import parser.sentenceParser.SentenceParser;
 
 import java.util.ArrayList;
@@ -12,21 +18,11 @@ import java.util.List;
 
 public abstract class Parser {
 
-    public SentenceParser[] parsers;
-
-    Parser(SentenceParser[] parsers) {
-        this.parsers = parsers;
-    }
-
-    public AbstractSyntaxTree parse(List<Token> tokens) throws UnexpectedTokenException {
+    public AbstractSyntaxTree parse(List<Token> tokens) throws UnexpectedTokenException, ExpectedTokenException {
         List<List<Token>> sentences = splitBySentences(tokens);
         AbstractSyntaxTree ast = new AbstractSyntaxTree();
         for (List<Token> sentence: sentences) {
-            for (SentenceParser parser: parsers) {
-                if (parser.validate(sentence)) {
-                    ast.addNode(parser.parse(sentence));
-                }
-            }
+            ast.addNode(parseSentence(sentence));
         }
 
         return ast;
@@ -42,6 +38,9 @@ public abstract class Parser {
                 subList = new ArrayList<>();
             }
         }
+        if (!subList.isEmpty()) subLists.add(subList);
         return subLists;
     }
+
+    protected abstract Node parseSentence(List<Token> tokens) throws UnexpectedTokenException, ExpectedTokenException;
 }

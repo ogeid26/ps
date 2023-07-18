@@ -2,6 +2,7 @@ package parser.sentenceParser;
 
 import ast.AbstractSyntaxTree;
 import ast.Node;
+import exceptions.ExpectedTokenException;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Nodes.IfNode;
 import org.austral.edu.Nodes.ValueBooleanNode;
@@ -26,7 +27,8 @@ public class IfParser extends AbstractParser {
     }
 
     @Override
-    public Node parse(List<Token> sentence) throws UnexpectedTokenException {
+    public Node parse(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
+        validate(sentence);
         int elseIndex = getElseIndex(sentence);
         AbstractSyntaxTree trueTree = new AbstractSyntaxTree();
         AbstractSyntaxTree falseTree = new AbstractSyntaxTree();
@@ -44,5 +46,11 @@ public class IfParser extends AbstractParser {
             if (sentence.get(i).tokenType.equals(TokenTypeV2.ELSE))
                 return i;
         } return -1;
+    }
+
+    @Override
+    public void hookValidate(List<Token> sentence) throws ExpectedTokenException {
+        if (!sentence.get(sentence.size()-1).tokenType.equals(TokenTypeV2.R_BRACES))
+            throw new ExpectedTokenException(TokenTypeV2.R_BRACES);
     }
 }

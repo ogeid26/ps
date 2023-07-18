@@ -21,7 +21,7 @@ public class AdditionNode extends ExpressionNode {
 
         if (valueLeft.type.equals("number") && valueRight.type.equals("number")) {
             double result = Double.parseDouble(valueLeft.content) + Double.parseDouble(valueRight.content);
-            return new ValueNumberNode(String.valueOf(result));
+            return new ValueNumberNode(String.valueOf(convertToInteger(result)));
         }
 
         return new ValueStringNode(valueLeft.content + valueRight.content);

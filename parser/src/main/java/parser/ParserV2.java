@@ -1,6 +1,10 @@
 package parser;
 
+import ast.Node;
+import exceptions.ExpectedTokenException;
+import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
+import org.austral.edu.TokenType;
 import org.austral.edu.TokenTypeV1;
 import org.austral.edu.TokenTypeV2;
 import parser.sentenceParser.*;
@@ -10,14 +14,17 @@ import java.util.List;
 
 public class ParserV2 extends Parser {
 
-    public ParserV2() {
-        super(new SentenceParser[]{
-                new DeclarationParserV2(),
-                new AssignationParserV2(),
-                new DeclareAndAssignParserV2(),
-                new PrintParser(new ExpressionParserV2()),
-                new IfParser()
-        });
+    public Node parseSentence(List<Token> sentence) throws UnexpectedTokenException, ExpectedTokenException {
+        TokenType type = sentence.get(0).tokenType;
+        if (type.equals(TokenTypeV1.LET) || type.equals(TokenTypeV2.CONST))
+            return (new DeclarationParserV2()).parse(sentence);
+        if (type.equals(TokenTypeV1.IDENTIFIER))
+            return (new AssignationParserV2()).parse(sentence);
+        if (type.equals(TokenTypeV1.PRINTLN))
+            return (new PrintParser(new ExpressionParserV2())).parse(sentence);
+        if (type.equals(TokenTypeV2.IF))
+            return (new IfParser()).parse(sentence);
+        throw new UnexpectedTokenException(sentence.get(0));
     }
 
     @Override
@@ -48,6 +55,8 @@ public class ParserV2 extends Parser {
             }
         }
         if (recentCloses)
+            subLists.add(subList);
+        if (!subList.isEmpty())
             subLists.add(subList);
         return subLists;
     }
