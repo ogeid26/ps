@@ -46,10 +46,9 @@ publishing {
         maven {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/ogeid26/ps")
-            version = "2.0.4-SNAPSHOT"
             credentials {
-                username = project.properties['GITHUB_ACTOR']
-                password = project.properties['GITHUB_TOKEN']
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.token") ?: System.getenv("TOKEN")
             }
         }
     }
