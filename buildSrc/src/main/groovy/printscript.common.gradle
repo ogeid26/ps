@@ -4,6 +4,7 @@ plugins {
     id "checkstyle"
     id 'jacoco'
     id 'maven-publish'
+    id 'io.beekeeper.gradle.plugins.formatter'
 }
 
 test {

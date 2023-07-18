@@ -66,7 +66,9 @@ public class LexerTest {
 
     @Test
     public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
-        StringInput txt2 = new StringInput("println('Hola');");
+        StringInput txt2 = new StringInput("""
+                let greeting_99:string = "Hello";
+               """);
         Lexer lexer = new LexerV1();
 
         List<Token> tokens = lexer.lex(txt2);
@@ -86,16 +88,16 @@ public class LexerTest {
     }
 
     @Test
-    public void sandbox() {
-        // System.out.println(Double.parseDouble("30.0"));
+    public void sandbox() throws UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException {
 
-        System.out.println(Double.parseDouble("0") != 0);
-        System.out.println(Double.parseDouble(".0") != 0);
-        System.out.println(Double.parseDouble("0.0") != 0);
-
-
-
-
+        StringInput txt2 = new StringInput("""
+                let x:string = readInput("Name please:");
+               """);
+        Lexer lexer = new LexerV2();
+        List<Token> tokens = lexer.lex(txt2);
+        for (Token token: tokens) {
+            System.out.println(token.tokenType + " -> " + token.content);
+        }
         assertEquals(3,3);
     }
 }
