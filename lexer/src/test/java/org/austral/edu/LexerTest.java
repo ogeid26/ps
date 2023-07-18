@@ -62,7 +62,7 @@ public class LexerTest {
 
     @Test
     public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
-        StringInput txt2 = new StringInput(" println(1+2);");
+        StringInput txt2 = new StringInput("let hola_mundo:string = \"wazaaaaa\";");
         Lexer lexer = new LexerExclusive();
 
         List<Token> tokens = lexer.lex(txt2);

@@ -68,6 +68,6 @@ public class TokenizerV1 implements Tokenizer {
             return true;
         } else if (word.matches("^[a-z][a-zA-Z0-9]*([A-Z][a-zA-Z0-9]*)*$")) {
             return true;
-        } else return word.matches("^[a-z][a-zA-Z0-9]*(_[a-z-0-9][a-zA-Z0-9]*)*$");
+        } else return word.matches("^[a-z][a-zA-Z0-9]*(_[a-z-0-9][a-z-0-9]*)*$");
     }
 }
