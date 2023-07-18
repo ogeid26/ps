@@ -12,7 +12,7 @@ public class TokenizerV1 implements Tokenizer {
             if (currentString.matches("^[0-9]+.?[0-9]*"))
                 return new Token(TokenTypeV1.NUMBER, currentString);
             if (currentString.contains("\"") || currentString.contains("'"))
-                return new Token(TokenTypeV1.STRING, currentString);
+                return new Token(TokenTypeV1.STRING, currentString.substring(1,currentString.length()-1));
         }
         return new Token(TokenTypeV1.IDENTIFIER, currentString);
     }
