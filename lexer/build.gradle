@@ -1,5 +1,8 @@
 plugins {
     id 'printscript.common'
+    id"com.diffplug.spotless"
+
+
 }
 
 version '1.0.1'
