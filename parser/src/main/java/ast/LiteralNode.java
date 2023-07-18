@@ -20,12 +20,17 @@ public class LiteralNode extends ExpressionNode {
     public Node solve(Map<String,String> values, Map<String,String> types) throws VariableDoesntExistsException {
         if (value.type.equals("Variable")) {
             if (values.containsKey(value.getContent())){
-                return (switch (types.get(value.getContent())) {
-                    case "number" -> new ValueNumberNode(values.get(value.getContent()));
-                    case "string" -> new ValueStringNode(values.get(value.getContent()));
-                    case "boolean" -> new ValueBooleanNode(values.get(value.getContent()));
-                    default -> null;
-                });
+                String type = types.get(value.getContent());
+                switch (type) {
+                    case "number":
+                        return new ValueNumberNode(values.get(value.getContent()));
+                    case "string":
+                        return new ValueStringNode(values.get(value.getContent()));
+                    case "boolean":
+                        return new ValueBooleanNode(values.get(value.getContent()));
+                    default:
+                        return null;
+                }
             }else{
                 throw new VariableDoesntExistsException(value.getContent());
             }

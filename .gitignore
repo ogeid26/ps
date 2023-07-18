@@ -6,3 +6,4 @@ buildSrc/build
 buildSrc/.gradle
 interpreter/build
 cli/build
+formatter/build

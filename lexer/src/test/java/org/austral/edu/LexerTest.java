@@ -32,11 +32,7 @@ public class LexerTest {
     public  void test_002() throws IOException {
         Lexer lexer = new LexerV1();
 
-        String x = """
-                let x:string = "Hello";
-                let a:number = 5;
-                let b: number = 7;
-               """;
+        String x = "let x:string = 'Hello';let a:number = 5;let b: number = 7;";
         InputStream inputStream = new FileInputStream("test.txt");
 
         StringBuilder stringBuilder = new StringBuilder();

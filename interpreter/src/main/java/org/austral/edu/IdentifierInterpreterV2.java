@@ -65,7 +65,7 @@ public class IdentifierInterpreterV2 implements InterpreterStrategyV2 {
                 result.savePrintElement(readerNode.getContent());
                 String value = input.input();
                 switch (types.get(nameNode.getContent())) {
-                    case "number" -> {
+                    case "number": {
                         try {
                             double number = Double.parseDouble(value);
                             values.put(nameNode.getContent(), String.valueOf(number));
@@ -73,12 +73,12 @@ public class IdentifierInterpreterV2 implements InterpreterStrategyV2 {
                             throw new IncompatibilityException();
                         }
                     }
-                    case "boolean" -> {
+                    case "boolean": {
                         if (value.equals("true") || value.equals("false"))
                             values.put(nameNode.getContent(), value);
                         else throw new IncompatibilityException();
                     }
-                    default -> values.put(nameNode.getContent(), value);
+                    default: values.put(nameNode.getContent(), value);
                 }
             }
         }
