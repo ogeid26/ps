@@ -16,7 +16,6 @@ public class AssignationParserV2 extends AssignationParser {
     public TokenType[][] optionalPattern;
 
     public AssignationParserV2() {
-        super();
         readInput = false;
         optionalPattern = new TokenType[][]{
                 {TokenTypeV2.READ_INPUT},
