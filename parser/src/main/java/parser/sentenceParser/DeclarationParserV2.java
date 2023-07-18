@@ -58,8 +58,8 @@ public class DeclarationParserV2 extends DeclarationParser {
 
     @Override
     public void hookValidate(List<Token> sentence) throws ExpectedTokenException {
-        readInput = sentence.size() > 10;
-        for (int i = 0; i < optionalPattern.length && sentence.size() > 10; i++) {
+        readInput = sentence.size() > 9;
+        for (int i = 0; i < optionalPattern.length && sentence.size() > 9; i++) {
             if (!Arrays.asList(optionalPattern[i]).contains(sentence.get(i + 5).tokenType)) {
                 readInput = false;
                 break;
