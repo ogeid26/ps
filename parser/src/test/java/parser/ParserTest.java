@@ -32,14 +32,7 @@ public class ParserTest {
 
     @Test
     public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UnclosedBracesException {
-        List<Token> tokens = lexerV2.lex(new StringInput("""
-                if (cond) {
-                    let x: string = "Miguel";
-                    const y: number;
-                } else {
-                    let age: number = 23;
-                }
-                """));
+        List<Token> tokens = lexerV2.lex(new StringInput("if (cond) { let x: string = \"Miguel\";const y: number;} else { let age: number = 23;} "));
 
         AbstractSyntaxTree ast = parserV2.parse(tokens);
         printNode(ast);

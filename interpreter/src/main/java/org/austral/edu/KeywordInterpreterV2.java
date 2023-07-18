@@ -48,8 +48,9 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
             if (declareNode.getKeywordNode().getContent().equals("const"))
                 constants.add(declareNode.getNameNode().getContent());
 
-            switch (declareNode.getTypeNode().getContent()) {
-                case "number" -> {
+            String type = declareNode.getTypeNode().getContent();
+            switch (type) {
+                case "number": {
                     try {
                         double number = Double.parseDouble(value);
                         values.put(declareNode.getNameNode().getContent(), String.valueOf(number));
@@ -57,12 +58,12 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
                         throw new IncompatibilityException();
                     }
                 }
-                case "boolean" -> {
+            case "boolean": {
                     if (isaBoolean(value))
                         values.put(declareNode.getNameNode().getContent(), value);
                     else throw new IncompatibilityException();
                 }
-                default -> values.put(declareNode.getNameNode().getContent(), value);
+                default: values.put(declareNode.getNameNode().getContent(), value);
             }
         } else {
             DeclareNode declareNode = (DeclareNode) node;

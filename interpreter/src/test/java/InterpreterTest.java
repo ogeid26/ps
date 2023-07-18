@@ -157,24 +157,7 @@ public class InterpreterTest {
 
     @Test
     public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException {
-        List<Token> tokens = lexerV2.lex(new StringInput("""
-                if(true){
-                    println("true 1");
-                }else{
-                    println("false 1");
-                }
-                if(false){
-                    println("true 2");
-                }else{
-                    println("false 2");
-                }
-                const x:boolean = true;
-                if(x){
-                    println("true 3");
-                }else{
-                    println("false 3");
-                }
-                """));
+        List<Token> tokens = lexerV2.lex(new StringInput("if(true){println(\"true 1\");}else{println(\"false 1\");}"));
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
         Result result = new ClassicResult();

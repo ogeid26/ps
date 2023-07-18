@@ -41,11 +41,11 @@ public class Main {
             String option = optionScreen();
 
             switch (option) {
-                case "1" -> interpretCode(new FileInput(path));
-                case "2" -> validateCode(new FileInput(path));
-                case "3" -> path = getValidFile();
-                case "4" -> exit = true;
-                case "5" -> (new Formatter(path, new TokenizerFormatter())).format();
+                case "1": interpretCode(new FileInput(path));
+                case "2": validateCode(new FileInput(path));
+                case "3": path = getValidFile();
+                case "4": exit = true;
+                case "5": (new Formatter(path, new TokenizerFormatter())).format();
             }
         }
     }

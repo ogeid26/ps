@@ -64,12 +64,17 @@ public class ExpressionParser extends AbstractParser {
     }
 
     protected ExpressionNode getLiteralNode(Token current) {
-        return switch ((TokenTypeV1) current.tokenType) {
-            case NUMBER -> new LiteralNode(new ValueNumberNode(current.content));
-            case STRING -> new LiteralNode(new ValueStringNode(current.content));
-            case IDENTIFIER -> new LiteralNode(new ValueVariableNode(current.content));
-            default -> null;
-        };
+        TokenTypeV1 tokenType = (TokenTypeV1) current.tokenType;
+        switch (tokenType) {
+            case NUMBER:
+                return new LiteralNode(new ValueNumberNode(current.content));
+            case STRING:
+                return new LiteralNode(new ValueStringNode(current.content));
+            case IDENTIFIER:
+                return new LiteralNode(new ValueVariableNode(current.content));
+            default:
+                return null;
+        }
     }
 
     protected int findNextParenthesis(List<Token> list, int index) {
@@ -90,13 +95,19 @@ public class ExpressionParser extends AbstractParser {
     }
 
     protected ExpressionNode getExpressionNode(Token token, ExpressionNode left, ExpressionNode right) {
-        return switch ((TokenTypeV1) token.tokenType) {
-            case PLUS -> new AdditionNode(left, right);
-            case MINUS -> new SubtractionNode(left, right);
-            case MULTIPLY -> new MultiplicationNode(left, right);
-            case DIVIDE -> new DivisionNode(left, right);
-            default -> null;
-        };
+        TokenTypeV1 tokenType = (TokenTypeV1) token.tokenType;
+        switch (tokenType) {
+            case PLUS:
+                return new AdditionNode(left, right);
+            case MINUS:
+                return new SubtractionNode(left, right);
+            case MULTIPLY:
+                return new MultiplicationNode(left, right);
+            case DIVIDE:
+                return new DivisionNode(left, right);
+            default:
+                return null;
+        }
     }
 
     protected boolean isOperand(Token token) {
