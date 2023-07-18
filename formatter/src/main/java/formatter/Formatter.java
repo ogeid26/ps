@@ -44,6 +44,7 @@ public class Formatter extends LexerImpl {
             tokenizer.spaceAroundAssignation = jsonObject.getBoolean("spaceAroundAssignation");
             tokenizer.newLinesBeforePrint = jsonObject.getInt("newLinesBeforePrint");
             tokenizer.singleQuotes = jsonObject.getBoolean("singleQuotes");
+            tokenizer.indentSpaces = jsonObject.getInt("indentSpaces");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

@@ -1,9 +1,6 @@
 package formatter;
 
-import org.austral.edu.Token;
-import org.austral.edu.TokenType;
-import org.austral.edu.TokenTypeV1;
-import org.austral.edu.TokenizerV2;
+import org.austral.edu.*;
 
 import java.util.List;
 
@@ -16,17 +13,42 @@ public class TokenizerFormatter extends TokenizerV2 {
     boolean spaceAroundAssignation;
     int newLinesBeforePrint;
     int pointer;
-    boolean noSpaces = true;
+    boolean noSpaces;
     boolean singleQuotes;
+    int indentSpaces;
+    int blockCode;
+    boolean newLine;
+
     public TokenizerFormatter() {
         this.code = "";
         this.pointer = 1;
+        this.noSpaces = true;
+        this.blockCode = 0;
     }
 
     @Override
     public Token tokenize(String currentString, int from, int fromCol, int col, int row) {
         Token token = super.tokenize(currentString, from, fromCol, col, row);
-        if (isOperand(token.tokenType)) {
+        if (blockCode > 0 && newLine && !token.tokenType.equals(TokenTypeV1.PRINTLN)) {
+            if (token.tokenType.equals(TokenTypeV2.R_BRACES)) {
+                for (int i = 0; i < (blockCode-1) * indentSpaces; i++) {
+                    code += " ";
+                }
+            } else {
+                for (int i = 0; i < blockCode * indentSpaces; i++) {
+                    code += " ";
+                }
+            }
+        }
+        if (token.tokenType.equals(TokenTypeV2.L_BRACES)) {
+            blockCode += 1;
+            newLine = true;
+            code += " {\n";
+        } else if (token.tokenType.equals(TokenTypeV2.R_BRACES)) {
+            blockCode -= 1;
+            newLine = true;
+            code += "}\n";
+        } else if (isOperand(token.tokenType)) {
             code += " " + token.content + " ";
             noSpaces = true;
         } else if (token.tokenType.equals(TokenTypeV1.DECLARATION)) {
@@ -38,17 +60,25 @@ public class TokenizerFormatter extends TokenizerV2 {
         } else if (token.tokenType.equals(TokenTypeV1.PRINTLN)) {
             for (int i = 0; i < newLinesBeforePrint; i++)
                 code += "\n";
+            if (blockCode > 0) {
+                for (int i = 0; i < blockCode * indentSpaces; i++) {
+                    code += " ";
+                }
+            }
             code += token.content;
-        } else if (pointer != fromCol && !noSpaces)
+            newLine = false;
+        } else if (pointer != fromCol && !noSpaces && !newLine)
             code += " " + formatString(token);
         else {
             code += formatString(token);
             noSpaces = false;
+            newLine = false;
         }
         if (token.tokenType.equals(TokenTypeV1.SEMICOLON)) {
             code += "\n";
             pointer = 1;
             noSpaces = true;
+            newLine = true;
         } else pointer = col;
         return token;
     }
