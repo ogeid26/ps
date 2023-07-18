@@ -34,7 +34,7 @@ public class TokenizerV2 extends TokenizerV1 {
                 if (tokens.size() == 4){
                     active = false;
                     if (tokens.get(1) == TokenTypeV1.L_PAR){
-                        if (tokens.get(2) == TokenTypeV1.IDENTIFIER || tokens.get(2) == TokenTypeV1.NUMBER || tokens.get(2) == TokenTypeV1.STRING){
+                        if (tokens.get(2) == TokenTypeV1.IDENTIFIER || tokens.get(2) == TokenTypeV1.NUMBER || tokens.get(2) == TokenTypeV1.STRING || tokens.get(2) == TokenTypeV2.BOOLEAN){
                             if (tokens.get(3) == TokenTypeV1.R_PAR){
                                 tokens = new ArrayList<>();
                             }else{

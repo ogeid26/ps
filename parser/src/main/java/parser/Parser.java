@@ -5,10 +5,13 @@ import ast.AbstractSyntaxTree;
 import exceptions.UnexpectedTokenException;
 import org.austral.edu.Token;
 import org.austral.edu.TokenTypeV1;
+import parser.sentenceParser.DeclarationParser;
 import parser.sentenceParser.SentenceParser;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.austral.edu.TokenTypeV1.LET;
 
 public abstract class Parser {
 
@@ -24,7 +27,9 @@ public abstract class Parser {
         for (List<Token> sentence: sentences) {
             for (SentenceParser parser: parsers) {
                 if (parser.validate(sentence)) {
-                    ast.addNode(parser.parse(sentence));
+                    if (LET.equals(sentence.get(0).tokenType)) {
+                        ast.addNode(new DeclarationParser().parse(sentence));
+                    }
                 }
             }
         }

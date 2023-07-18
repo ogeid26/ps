@@ -62,14 +62,8 @@ public class LexerTest {
 
     @Test
     public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
-        StringInput txt2 = new StringInput("""
-                if(true){
-                    println("Hola");
-                }else{
-                    println("Adios");
-                }
-               """);
-        Lexer lexer = new LexerV1();
+        StringInput txt2 = new StringInput(" println(1+2);");
+        Lexer lexer = new LexerExclusive();
 
         List<Token> tokens = lexer.lex(txt2);
         for (Token token: tokens) {
@@ -90,11 +84,8 @@ public class LexerTest {
     @Test
     public void sandbox() throws UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException {
 
-        StringInput txt2 = new StringInput("""
-                let x:string = readInput("Name please:");
-               """);
         Lexer lexer = new LexerV2();
-        List<Token> tokens = lexer.lex(txt2);
+        List<Token> tokens = lexer.lex(new StringInput(" let x:string = readInput(\"Miguel\");"));
         for (Token token: tokens) {
             System.out.println(token.tokenType + " -> " + token.content);
         }
