@@ -17,6 +17,19 @@ public class TokenizerV2 extends TokenizerV1 {
                     return new Token(TokenTypeV2.BOOLEAN, currentString);
             }
         }
+        if (token.tokenType == TokenTypeV1.IDENTIFIER){
+            if (!checkCase(token.content)){
+                throw new RuntimeException("Case Error");
+            }
+        }
         return token;
+    }
+
+    private boolean checkCase(String word) {
+        if (word.matches("^[a-z][a-zA-Z0-9]*$")) {
+            return true;
+        } else if (word.matches("^[a-z][a-zA-Z0-9]*([A-Z][a-zA-Z0-9]*)*$")) {
+            return true;
+        } else return word.matches("^[a-z][a-zA-Z0-9]*(_[a-z-0-9][a-z-0-9]*)*$");
     }
 }

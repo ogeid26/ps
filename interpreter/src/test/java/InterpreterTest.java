@@ -157,7 +157,7 @@ public class InterpreterTest {
 
     @Test
     public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException, ExpectedTokenException {
-        List<Token> tokens = lexerV2.lex(new StringInput("if(true){println(\"true 1\");const x:string = \"Nacho\";let y:string = x;println(y);}else{println(\"false 1\");}if(false){println(\"true 2\");}"));
+        List<Token> tokens = lexerV2.lex(new StringInput("const x:string = \"Name\"; let y:string; y = x; if(true){ println(\"true\" + 1); }else{ println(\"false\"); }"));
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
         Result result = new ClassicResult();
