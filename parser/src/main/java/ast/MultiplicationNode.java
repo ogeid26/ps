@@ -20,7 +20,7 @@ public class MultiplicationNode extends ExpressionNode {
 
         if (valueLeft.type.equals("number") && valueRight.type.equals("number")) {
             double result = Double.parseDouble(valueLeft.content) * Double.parseDouble(valueRight.content);
-            return new ValueNumberNode(String.valueOf(result));
+            return new ValueNumberNode(String.valueOf(convertToInteger(result)));
         }
 
         throw new IncompatibleOperationException(type, valueLeft.type, valueRight.content);

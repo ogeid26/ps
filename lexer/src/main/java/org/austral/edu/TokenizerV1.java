@@ -20,14 +20,17 @@ public class TokenizerV1 implements Tokenizer {
                 if (type == TokenTypeV1.PRINTLN){
                     active = true;
                 }
+                break;
             }
             if (currentString.matches("^[0-9]+.?[0-9]*")) {
                 result = new Token(TokenTypeV1.NUMBER, currentString);
                 resultType = TokenTypeV1.NUMBER;
+                break;
             }
             if (currentString.contains("\"") || currentString.contains("'")) {
                 result = new Token(TokenTypeV1.STRING, currentString);
                 resultType = TokenTypeV1.STRING;
+                break;
             }
         }
         if (result == null){

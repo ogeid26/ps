@@ -26,4 +26,12 @@ public abstract class ExpressionNode extends Node {
     }
 
     public abstract Node solve(Map<String,String> values, Map<String,String> types) throws IncompatibleOperationException, DividedByZeroException, VariableDoesntExistsException;
+
+    public Object convertToInteger(double number) {
+        if (number % 1 == 0) {
+            return (int) number;
+        } else {
+            return number;
+        }
+    }
 }

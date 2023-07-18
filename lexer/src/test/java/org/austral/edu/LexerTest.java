@@ -67,7 +67,11 @@ public class LexerTest {
     @Test
     public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
         StringInput txt2 = new StringInput("""
-                let greeting_99:string = "Hello";
+                if(true){
+                    println("Hola");
+                }else{
+                    println("Adios");
+                }
                """);
         Lexer lexer = new LexerV1();
 

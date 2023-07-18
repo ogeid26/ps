@@ -28,7 +28,9 @@ public class TokenizerV2 extends TokenizerV1 {
                 }
             }
             if (active){
-                tokens.add(resultType);
+                if (resultType != null) {
+                    tokens.add(resultType);
+                }
                 if (tokens.size() == 4){
                     active = false;
                     if (tokens.get(1) == TokenTypeV1.L_PAR){
