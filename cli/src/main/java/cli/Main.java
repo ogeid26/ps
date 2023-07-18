@@ -1,6 +1,9 @@
 package cli;
 
 import ast.AbstractSyntaxTree;
+import exceptions.UnclosedBracesException;
+import exceptions.UnclosedParenthesesException;
+import exceptions.UnclosedStringLiteralException;
 import org.austral.edu.*;
 import org.austral.edu.Results.CLIInput;
 import org.austral.edu.Results.CLIResult;
@@ -9,6 +12,7 @@ import org.austral.edu.Results.Result;
 import parser.Parser;
 import parser.ParserV1;
 import parser.ParserV2;
+import formatter.*;
 
 import java.io.*;
 import java.util.List;
@@ -25,27 +29,28 @@ public class Main {
     static InterpreterV1 interpreterV1 = new InterpreterV1(result);
     static InterpreterV2 interpreterV2 = new InterpreterV2(result, input);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException, IOException {
 
         System.out.println("----- Welcome to PrintScript CLI -----");
         System.out.println();
 
-        InputProvider code = getValidFile();
+        String path = getValidFile();
 
         boolean exit = false;
         while (!exit) {
             String option = optionScreen();
 
             switch (option) {
-                case "1" -> interpretCode(code);
-                case "2" -> validateCode(code);
-                case "3" -> code = getValidFile();
+                case "1" -> interpretCode(new FileInput(path));
+                case "2" -> validateCode(new FileInput(path));
+                case "3" -> path = getValidFile();
                 case "4" -> exit = true;
+                case "5" -> (new Formatter(path, new TokenizerFormatter())).format();
             }
         }
     }
 
-    private static InputProvider getValidFile() {
+    private static String getValidFile() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please enter your code snippet file:");
         String path = "";
@@ -56,7 +61,7 @@ public class Main {
             System.out.println("File not found.");
         }
         System.out.println();
-        return new FileInput(path);
+        return path;
     }
 
     private static String optionScreen() {
@@ -66,9 +71,10 @@ public class Main {
         System.out.println("2) Validate it.");
         System.out.println("3) Change snippet.");
         System.out.println("4) Exit.");
+        System.out.println("5) Formatter.");
         System.out.println("\nChoose:");
         String option = scanner.nextLine();
-        while (!List.of("1", "2","3","4").contains(option)) {
+        while (!List.of("1","2","3","4","5").contains(option)) {
             System.out.println("Please, choose a valid option:");
             option = scanner.nextLine();
         }

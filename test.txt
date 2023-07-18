@@ -1,2 +1,4 @@
-let x: number = readInput("Enter a number: ");
-println("X is " + x);
+let x:string ;
+let y:number = 9.0;
+y = 2 + 3 + 4 + 5 + 5 - 6 ;
+const y:string = '99' + 'ray' ;

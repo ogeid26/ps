@@ -4,5 +4,5 @@ plugins {
 
 dependencies {
     implementation project(':lexer')
-    implementation project(':parser')
+    implementation 'org.json:json:20230618'
 }
