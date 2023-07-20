@@ -15,133 +15,10 @@ import parser.ParserV2;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class InterpreterTest {
-    /*
-    @Test
-    public void testing_Version_1() throws AssignationException, NotDefinedException, IncompatibilityException, InterpretException {
-        Interpreter interpreter = new Interpreter(new ClassicResult());
-
-        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
-        AbstractSyntaxTree tree = new AbstractSyntaxTree();
-        AbstractSyntaxTree tree2 = new AbstractSyntaxTree();
-
-        Node n1 = new ValueNode("4");
-        Node n2 = new ValueNode("6");
-        Node n3 = new ExpressionNode("+", new ArrayList<>(Arrays.asList(n2,n1)));
-        Node n11 = new ValueNode("15");
-        Node n22 = new ValueNode("7");
-        Node n33 = new ExpressionNode("*", new ArrayList<>(Arrays.asList(n22,n11)));
-        Node n111 = new ExpressionNode("/", new ArrayList<>(Arrays.asList(n33,n3)));
-        Node n4 = new IdentifierNode("value");
-        Node n5 = new TypeNode("Number");
-        Node n6 = new DeclareNode((TypeNode) n5, (IdentifierNode) n4, new KeywordNode("let"));
-        tree.addNode(new AssignDeclareNode((DeclareNode) n6, (ExpressionNode) n111));
-        Node n7 = new PrintNode(new ArrayList<>(List.of(n4)));
-        tree2.addNode(new FunctionNode(new ArrayList<>(List.of(n7))));
-
-        trees.add(tree);
-        trees.add(tree2);
-
-        interpreter.interpret(trees);
-        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
-        classicResult.print();
-    }
-
-    @Test
-    public void testing_Version_2() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
-        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
-
-        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
-        AbstractSyntaxTree start = new AbstractSyntaxTree();
-        AbstractSyntaxTree ifTree = new AbstractSyntaxTree();
-        AbstractSyntaxTree continueTree = new AbstractSyntaxTree();
-
-        ArrayList<AbstractSyntaxTree> trueTrees = new ArrayList<>();
-        AbstractSyntaxTree trueTree = new AbstractSyntaxTree();
-
-        ArrayList<AbstractSyntaxTree> falseTrees = new ArrayList<>();
-        AbstractSyntaxTree falseTree = new AbstractSyntaxTree();
-
-        Node n1 = new FalseNode();
-        Node n2 = new IdentifierNode("value");
-        Node n3 = new TypeNode("Boolean");
-        Node n4 = new DeclareNode((TypeNode) n3, (IdentifierNode) n2, new KeywordNode("let"));
-        start.addNode(new AssignDeclareNode((DeclareNode) n4, (ExpressionNode) n1));
-
-        Node n5 = new PrintNode(new ArrayList<>(List.of(new ValueNode("2"))));
-        Node n6 = new FunctionNode(new ArrayList<>(List.of(n5)));
-        trueTree.addNode(n6);
-        trueTrees.add(trueTree);
-
-        Node n7 = new PrintNode(new ArrayList<>(List.of(new ValueNode("8"))));
-        Node n8 = new FunctionNode(new ArrayList<>(List.of(n7)));
-        falseTree.addNode(n8);
-        falseTrees.add(falseTree);
-
-        Node n9 = new IfNode(n2,trueTrees,falseTrees);
-        ifTree.addNode(new FunctionNode(new ArrayList<>(List.of(n9))));
-
-        Node n10 = new PrintNode(new ArrayList<>(List.of(new ValueNode("Exito"))));
-        Node n11 = new FunctionNode(new ArrayList<>(List.of(n10)));
-        continueTree.addNode(n11);
-
-        trees.add(start);
-        trees.add(ifTree);
-        trees.add(continueTree);
-
-        interpreter.interpret(trees);
-        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
-        classicResult.print();
-    }
-
-    @Test
-    public void testing_constants() throws InterpretException, NotDefinedException, IncompatibilityException, ConstantVariableException, IllogicalConditionalException, AssignationException {
-        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
-
-        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
-        AbstractSyntaxTree start = new AbstractSyntaxTree();
-        AbstractSyntaxTree continueTree = new AbstractSyntaxTree();
-
-        Node n1 = new FalseNode();
-        Node n2 = new IdentifierNode("value");
-        Node n3 = new TypeNode("Boolean");
-        Node n4 = new DeclareNode((TypeNode) n3, (IdentifierNode) n2, new KeywordNode("let"));
-        start.addNode(new ConstantNode(new ArrayList<>(Arrays.asList(n4,n1))));
-
-        Node n5 = new TrueNode();
-        Node n6 = new AssignNode((IdentifierNode) n2, (ExpressionNode) n5);
-        continueTree.addNode(n6);
-
-        trees.add(start);
-        trees.add(continueTree);
-
-        interpreter.interpret(trees);
-    }
-
-     */
-/*
-    @Test
-    public void testing_readInput() throws AssignationError, NotDefinedError, IncompatibilityError, ConstantVariableError, ValueNotFoundError, EmptyContentError, IllogicalConditionalError {
-        Interpreter_2 interpreter = new Interpreter_2(new ClassicResult());
-
-        ArrayList<AbstractSyntaxTree> trees = new ArrayList<>();
-        AbstractSyntaxTree start = new AbstractSyntaxTree();
-
-        Node n1 = new ReadInputNode("Please enter a Boolean");
-        Node n2 = new NameNode("value");
-        Node n3 = new TypeNode("Boolean");
-        Node n4 = new DeclareNode(new ArrayList<>(Arrays.asList(n3,n2)));
-        start.addSentence(new ConstantNode(new ArrayList<>(Arrays.asList(n4,n1))));
-
-        trees.add(start);
-
-        interpreter.interpret(trees);
-        ClassicResult classicResult = (ClassicResult) interpreter.getResult();
-        classicResult.showInputs();
-    }
-
- */
-
     static Lexer lexerV1;
     static Lexer lexerV2;
     static Parser parserV1;
@@ -156,7 +33,275 @@ public class InterpreterTest {
     }
 
     @Test
-    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, AssignationException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException, ExpectedTokenException {
+    public void test001_Declare_AssignV1() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+        InputProvider string1 = new StringInput("let firstName: string = \"Miguel\"; ");
+        List<Token> tokens = lexerV1.lex(string1);
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV1 interpreter = new InterpreterV1(result);
+
+        interpreter.interpret(ast);
+
+        assertTrue(interpreter.getTypes().containsKey("firstName"));
+        assertEquals("string", interpreter.getTypes().get("firstName"));
+        assertEquals("Miguel", interpreter.getValues().get("firstName"));
+
+    }
+
+    @Test
+    public void test002_Declare_then_AssignV1() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+        InputProvider string1 = new StringInput("let x: number; " +
+                "x = 1 + 2;");
+        List<Token> tokens = lexerV1.lex(string1);
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV1 interpreter = new InterpreterV1(result);
+
+        interpreter.interpret(ast);
+
+        assertEquals("3", interpreter.getValues().get("x"));
+
+    }
+
+    @Test
+    public void test003_Assign_VariableV1() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+        InputProvider string1 = new StringInput("let first_name: string = \"Miguel\"; " +
+                "let y: string;" +
+                "y = first_name;");
+        List<Token> tokens = lexerV1.lex(string1);
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV1 interpreter = new InterpreterV1(result);
+
+        interpreter.interpret(ast);
+
+        assertEquals("Miguel", interpreter.getValues().get("y"));
+
+    }
+
+    @Test
+    public void test004_Assign_Declare_VariableV1() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException {
+        InputProvider string1 = new StringInput("let x: number = 100; " +
+                "let y: number = x;");
+        List<Token> tokens = lexerV1.lex(string1);
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV1 interpreter = new InterpreterV1(result);
+
+        interpreter.interpret(ast);
+
+        assertEquals("100", interpreter.getValues().get("x"));
+        assertEquals("100", interpreter.getValues().get("y"));
+
+    }
+
+    @Test
+    public void test005_PrintlnV1() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException {
+        InputProvider string1 = new StringInput("let x:number = 2;" +
+                "println(x);");
+        List<Token> tokens = lexerV1.lex(string1);
+        AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV1 interpreter = new InterpreterV1(result);
+
+        interpreter.interpret(ast);
+
+        assertEquals("2", ((ClassicResult) interpreter.getResult()).getPrintElements().get(0));
+
+    }
+
+    @Test
+    public void test001_Declare_AssignV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let firstName: string = \"Miguel\"; ");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result, null);
+
+        interpreter.interpret(ast);
+
+        assertTrue(interpreter.getTypes().containsKey("firstName"));
+        assertEquals("string", interpreter.getTypes().get("firstName"));
+        assertEquals("Miguel", interpreter.getValues().get("firstName"));
+
+    }
+
+    @Test
+    public void test002_Declare_then_AssignV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let x: number; " +
+                "x = 1 + 2;");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result,null);
+
+        interpreter.interpret(ast);
+
+        assertEquals("3", interpreter.getValues().get("x"));
+
+    }
+
+    @Test
+    public void test003_Assign_VariableV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let first_name: string = \"Miguel\"; " +
+                "let y: string;" +
+                "y = first_name;");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result, null);
+
+        interpreter.interpret(ast);
+
+        assertEquals("Miguel", interpreter.getValues().get("y"));
+
+    }
+
+    @Test
+    public void test004_Assign_Declare_VariableV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let x: number = 100; " +
+                "let y: number = x;");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result,null);
+
+        interpreter.interpret(ast);
+
+        assertEquals("100", interpreter.getValues().get("x"));
+        assertEquals("100", interpreter.getValues().get("y"));
+
+    }
+
+    @Test
+    public void test005_PrintlnV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let x:number = 3;" +
+                "println(6/3-1*x);");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result, null);
+
+        interpreter.interpret(ast);
+
+        assertEquals("-1", ((ClassicResult) interpreter.getResult()).getPrintElements().get(0));
+
+    }
+    @Test
+    public void test006_Boolean() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let x:boolean = true;");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+
+        InterpreterV2 interpreter = new InterpreterV2(result, null);
+
+        interpreter.interpret(ast);
+
+        assertEquals("true", interpreter.getValues().get("x"));
+    }
+
+    @Test
+    public void test007_If() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("if(true){" +
+                "println(\"x\");" +
+                "}else{" +
+                "println(\"y\");" +
+                "}");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+        Result result = new ClassicResult();
+        Input input = new ClassicInput("");
+
+        InterpreterV2 interpreter = new InterpreterV2(result, input);
+
+        interpreter.interpret(ast);
+
+        assertEquals(1, ((ClassicResult) interpreter.getResult()).getPrintElements().size());
+        assertEquals("x", ((ClassicResult) interpreter.getResult()).getPrintElements().get(0));
+    }
+
+    @Test
+    public void test008_If_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let cond:boolean = false;" +
+                "if(cond){" +
+                "println(\"x\");" +
+                "}else{" +
+                "println(\"y\");" +
+                "}");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+        Result result = new ClassicResult();
+        Input input = new ClassicInput("");
+
+        InterpreterV2 interpreter = new InterpreterV2(result, input);
+
+        interpreter.interpret(ast);
+
+        assertEquals(1, ((ClassicResult) interpreter.getResult()).getPrintElements().size());
+        assertEquals("y", ((ClassicResult) interpreter.getResult()).getPrintElements().get(0));
+    }
+
+    @Test
+    public void test009_ReadInput() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("const x:string = readInput(\"Enter your Name\");" +
+                "let y:string = \"Mendez\";");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+        Input input = new ClassicInput("Nacho");
+
+        InterpreterV2 interpreter = new InterpreterV2(result, input);
+
+        interpreter.interpret(ast);
+
+        assertEquals("Nacho", interpreter.getValues().get("x"));
+
+        assertEquals(1, interpreter.getConstants().size());
+        assertEquals("x", interpreter.getConstants().get(0));
+    }
+
+    @Test
+    public void test010_Assign_ReadInput() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, ConstantVariableException, VariableDoesntExistsException, IllogicalConditionalException, UndefinedConstException {
+        InputProvider string1 = new StringInput("let x:string;" +
+                "x = readInput(\"Enter your Name\");");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        Result result = new ClassicResult();
+        Input input = new ClassicInput("Nacho");
+
+        InterpreterV2 interpreter = new InterpreterV2(result, input);
+
+        interpreter.interpret(ast);
+
+        assertEquals("Nacho", interpreter.getValues().get("x"));
+    }
+
+    @Test
+    public void sandbox() throws UnclosedParenthesesException, UnclosedStringLiteralException, UnexpectedTokenException, IncompatibilityException, DividedByZeroException, InterpretException, IncompatibleOperationException, NotDefinedException, VariableDoesntExistsException, ConstantVariableException, IllogicalConditionalException, UnclosedBracesException, ExpectedTokenException, UndefinedConstException {
         List<Token> tokens = lexerV2.lex(new StringInput("const x:string = \"Name\"; let y:string; y = x; if(true){ println(\"true\" + 1); }else{ println(\"false\"); }"));
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 

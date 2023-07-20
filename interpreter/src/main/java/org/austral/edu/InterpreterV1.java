@@ -26,7 +26,7 @@ public class InterpreterV1 {
          this.result = result;
     }
 
-    public void interpret(AbstractSyntaxTree ast) throws AssignationException, IncompatibilityException, NotDefinedException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(AbstractSyntaxTree ast) throws IncompatibilityException, NotDefinedException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         for (Node sentence: ast.getChildren()) {
             for (InterpreterStrategyV1 interpreter : strategies) {
                 if (interpreter.validate(sentence)) {
@@ -39,5 +39,13 @@ public class InterpreterV1 {
 
     public Result getResult() {
         return result;
+    }
+
+    public HashMap<String, String> getTypes() {
+        return types;
+    }
+
+    public HashMap<String, String> getValues() {
+        return values;
     }
 }

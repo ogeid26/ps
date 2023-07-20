@@ -20,7 +20,7 @@ public class IdentifierInterpreterV1 implements InterpreterStrategyV1 {
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, IncompatibilityException, NotDefinedException, ValueNotFoundException, EmptyContentException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws IncompatibilityException, NotDefinedException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         AssignNode assignNode = (AssignNode) node;
         IdentifierNode nameNode = assignNode.getIdentifierNode();
 

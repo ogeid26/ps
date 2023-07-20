@@ -20,7 +20,7 @@ public class PrintInterpreterV2 implements InterpreterStrategyV2 {
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         Node valueNode = ((PrintNode) node).getExpressionNode().solve(values, types);
         result.savePrintElement(valueNode.getContent());
     }

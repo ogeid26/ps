@@ -39,7 +39,7 @@ public class InterpreterV2 {
         this.input = input;
     }
 
-    public void interpret(AbstractSyntaxTree ast) throws IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, InterpretException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(AbstractSyntaxTree ast) throws IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, InterpretException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UndefinedConstException {
         for (Node sentence: ast.getChildren()) {
             for (InterpreterStrategyV2 interpreter : strategies) {
                 if (interpreter.validate(sentence)) {
@@ -52,5 +52,21 @@ public class InterpreterV2 {
 
     public Result getResult() {
         return result;
+    }
+
+    public HashMap<String, String> getTypes() {
+        return types;
+    }
+
+    public HashMap<String, String> getValues() {
+        return values;
+    }
+
+    public ArrayList<String> getConstants() {
+        return constants;
+    }
+
+    public Input getInput() {
+        return input;
     }
 }

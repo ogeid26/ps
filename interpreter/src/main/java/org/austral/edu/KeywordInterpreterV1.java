@@ -19,7 +19,7 @@ public class KeywordInterpreterV1 implements InterpreterStrategyV1 {
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws AssignationException, IncompatibilityException, ValueNotFoundException, EmptyContentException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, Result result) throws IncompatibilityException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         if (isAssignDeclare(node)){
 
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;

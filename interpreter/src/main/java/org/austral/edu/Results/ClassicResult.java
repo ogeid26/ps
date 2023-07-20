@@ -26,4 +26,12 @@ public class ClassicResult implements Result{
             System.out.println(readInput);
         }
     }
+
+    public ArrayList<String> getPrintElements() {
+        return printElements;
+    }
+
+    public ArrayList<String> getReadElements() {
+        return readElements;
+    }
 }

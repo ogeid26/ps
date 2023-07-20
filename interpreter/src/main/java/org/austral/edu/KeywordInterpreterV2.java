@@ -15,11 +15,11 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
 
     @Override
     public boolean validate(Node node) {
-        return (isAssignDeclare(node) || isDeclare(node) || isConstant(node) || isDeclareReader(node));
+        return (isAssignDeclare(node) || isDeclare(node) || isDeclareReader(node));
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws AssignationException, IncompatibilityException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws IncompatibilityException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UndefinedConstException {
         if (isAssignDeclare(node)){
 
             AssignDeclareNode assignDeclareNode = (AssignDeclareNode) node;
@@ -30,7 +30,7 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
 
             if (declareNode.getTypeNode().getContent().equals(valueNode.getType())){
                 values.put(declareNode.getNameNode().getContent(), valueNode.getContent());
-                if (declareNode.getKeywordNode().getContent().equals("const"))
+                if (isConstant(declareNode.getKeywordNode()))
                     constants.add(declareNode.getNameNode().getContent());
             }else{
                 throw new IncompatibilityException();
@@ -45,7 +45,7 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
             result.savePrintElement(readerNode.getContent());
             String value = input.input();
 
-            if (declareNode.getKeywordNode().getContent().equals("const"))
+            if (isConstant(declareNode.getKeywordNode()))
                 constants.add(declareNode.getNameNode().getContent());
 
             String type = declareNode.getTypeNode().getContent();
@@ -67,7 +67,11 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
             }
         } else {
             DeclareNode declareNode = (DeclareNode) node;
-            types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
+            if(isConstant(declareNode.getKeywordNode())){
+                throw new UndefinedConstException();
+            }else {
+                types.put(declareNode.getNameNode().getContent(), declareNode.getTypeNode().getContent());
+            }
         }
     }
 
@@ -84,7 +88,7 @@ public class KeywordInterpreterV2 implements InterpreterStrategyV2 {
     }
 
     private boolean isConstant(Node node) {
-        return node.getType().equals("Constant");
+        return node.getContent().equals("const");
     }
 
     private boolean isDeclareReader(Node node) {

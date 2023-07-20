@@ -29,7 +29,7 @@ public class FunctionInterpreter implements InterpreterStrategyV2 {
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, AssignationException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UndefinedConstException {
         for (InterpreterStrategyV2 strategy: strategies) {
             if (strategy.validate(node)){
                 strategy.interpret(node,types,values, constants, result, input);

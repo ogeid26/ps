@@ -14,5 +14,5 @@ import java.util.HashMap;
 public interface InterpreterStrategyV2 {
     boolean validate(Node node);
 
-    void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException;
+    void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws InterpretException, IncompatibilityException, NotDefinedException, ConstantVariableException, IllogicalConditionalException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException, UndefinedConstException;
 }

@@ -31,7 +31,7 @@ public class IdentifierInterpreterV2 implements InterpreterStrategyV2 {
     }
 
     @Override
-    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws IncompatibilityException, NotDefinedException, ConstantVariableException, AssignationException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
+    public void interpret(Node node, HashMap<String,String> types, HashMap<String,String> values, ArrayList<String> constants, Result result, Input input) throws IncompatibilityException, NotDefinedException, ConstantVariableException, DividedByZeroException, IncompatibleOperationException, VariableDoesntExistsException {
         if (isAssign(node)) {
             AssignNode assignNode = (AssignNode) node;
             IdentifierNode nameNode = assignNode.getIdentifierNode();

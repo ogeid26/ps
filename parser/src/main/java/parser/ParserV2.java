@@ -56,6 +56,7 @@ public class ParserV2 extends Parser {
         }
         if (recentCloses)
             subLists.add(subList);
+            subList = new ArrayList<>();
         if (!subList.isEmpty())
             subLists.add(subList);
         return subLists;

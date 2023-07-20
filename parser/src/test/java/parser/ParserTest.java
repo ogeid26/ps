@@ -32,9 +32,19 @@ public class ParserTest {
 
     @Test
     public void test001_Declare_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
-        InputProvider string1 = new StringInput("let name: string = \"Miguel\"; ");
+        InputProvider string1 = new StringInput("let firstName: string = \"Miguel\"; ");
         List<Token> tokens = lexerV1.lex(string1);
         AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        assertTrue(ast.getChildren().get(0) instanceof AssignDeclareNode);
+
+        assertTrue(((AssignDeclareNode) ast.getChildren().get(0)).getDeclareNode() instanceof DeclareNode);
+        assertEquals("string", ((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(0)).getDeclareNode()).getTypeNode().getContent());
+        assertEquals("firstName", ((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(0)).getDeclareNode()).getNameNode().getContent());
+
+        assertTrue(((AssignDeclareNode) ast.getChildren().get(0)).getExpressionNode() instanceof LiteralNode);
+        assertEquals( "Miguel", ((LiteralNode) ((AssignDeclareNode) ast.getChildren().get(0)).getExpressionNode()).value.getContent());
+
         printNode(ast);
 
     }
@@ -42,20 +52,35 @@ public class ParserTest {
     @Test
     public void test002_Declare_then_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
         InputProvider string1 = new StringInput("let x: number; " +
-                "x = 1 + 2;");
+                "x = (1 + 2);");
         List<Token> tokens = lexerV1.lex(string1);
         AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        assertEquals("number",ast.getChildren().get(0).getChildren().get(0).getContent());
+        assertEquals("x",ast.getChildren().get(0).getChildren().get(1).getContent());
+
+        assertEquals("x",ast.getChildren().get(1).getChildren().get(0).getContent());
+
+        assertEquals("Sum",ast.getChildren().get(1).getChildren().get(1).getType());
+
+        assertEquals("1",((LiteralNode) (((AdditionNode) (ast.getChildren().get(1).getChildren().get(1))).getLeft())).value.getContent());
+        assertEquals("2",((LiteralNode) (((AdditionNode) (ast.getChildren().get(1).getChildren().get(1))).getRight())).value.getContent());
+
         printNode(ast);
 
     }
 
     @Test
     public void test003_Assign_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
-        InputProvider string1 = new StringInput("let name: string = \"Miguel\"; " +
+        InputProvider string1 = new StringInput("let first_name: string = \"Miguel\"; " +
                 "let y: string;" +
-                "y = name;");
+                "y = first_name;");
         List<Token> tokens = lexerV1.lex(string1);
         AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        assertEquals("y",((AssignNode) ast.getChildren().get(2)).getIdentifierNode().getContent());
+        assertEquals("first_name", (((LiteralNode)(((AssignNode) ast.getChildren().get(2)).getExpressionNode()))).value.getContent());
+
         printNode(ast);
 
     }
@@ -66,31 +91,31 @@ public class ParserTest {
                 "let y: number = x;");
         List<Token> tokens = lexerV1.lex(string1);
         AbstractSyntaxTree ast = parserV1.parse(tokens);
+
+        assertEquals("number",((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(1)).getDeclareNode()).getTypeNode().getContent());
+        assertEquals("y", ((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(1)).getDeclareNode()).getNameNode().getContent());
+        assertEquals("x", ((LiteralNode) ((AssignDeclareNode) ast.getChildren().get(1)).getExpressionNode()).value.getContent());
+
         printNode(ast);
 
     }
 
     @Test
     public void test005_Println() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
-        InputProvider string1 = new StringInput("let x:string = 2;" +
+        InputProvider string1 = new StringInput("let x:number = 2;" +
                 "println(6/3-1*x);");
         List<Token> tokens = lexerV2.lex(string1);
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
-        assertTrue(ast.children.get(1) instanceof PrintNode);
+        assertEquals( "Print", ast.children.get(1).getType());
 
-        assertTrue(ast.children.get(1).getChildren().get(0) instanceof SubtractionNode);
+        assertEquals( "6",((LiteralNode)((DivisionNode)((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft()).getLeft()).value.getContent());
 
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft() instanceof DivisionNode);
+        assertEquals("3",( (LiteralNode)((DivisionNode)((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft()).getRight()).value.getContent());
 
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft().getLeft() instanceof LiteralNode);
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft().getRight() instanceof LiteralNode);
+        assertEquals("1",((LiteralNode)((MultiplicationNode)((SubtractionNode) ast.children.get(1).getChildren().get(0)).getRight()).getLeft()).value.getContent());
 
-
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getRight() instanceof MultiplicationNode);
-
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft().getLeft() instanceof LiteralNode);
-        assertTrue(((SubtractionNode) ast.children.get(1).getChildren().get(0)).getLeft().getRight() instanceof LiteralNode);
+        assertEquals( "x",((LiteralNode)((MultiplicationNode)((SubtractionNode) ast.children.get(1).getChildren().get(0)).getRight()).getRight()).value.getContent());
 
         printNode(ast);
 
@@ -100,20 +125,29 @@ public class ParserTest {
         InputProvider string1 = new StringInput("let x:boolean = true;");
         List<Token> tokens = lexerV2.lex(string1);
         AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        assertEquals("boolean", ((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(0)).getDeclareNode()).getTypeNode().getContent());
+        assertEquals("x", ((DeclareNode) ((AssignDeclareNode) ast.getChildren().get(0)).getDeclareNode()).getNameNode().getContent());
+
+        assertEquals("true", ((LiteralNode) ((AssignDeclareNode) ast.getChildren().get(0)).getExpressionNode()).value.getContent());
+
         printNode(ast);
     }
 
     @Test
     public void test007_If() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
         InputProvider string1 = new StringInput("if(true){" +
-                "println(\"x\");" +
+                    "println(\"x\");" +
                 "}else{" +
-                "println(\"y\");" +
+                    "println(\"y\");" +
                 "}");
         List<Token> tokens = lexerV2.lex(string1);
         AbstractSyntaxTree ast = parserV2.parse(tokens);
 
-        assertTrue(ast.children.get(0) instanceof IfNode);
+        assertEquals("true",ast.getChildren().get(0).getContent());
+
+        assertEquals("x",((LiteralNode) ((PrintNode) ((IfNode) ast.getChildren().get(0)).getTrueTree().getChildren().get(0)).getExpressionNode()).value.getContent());
+        assertEquals("y",((LiteralNode) ((PrintNode) ((IfNode) ast.getChildren().get(0)).getFalseTree().getChildren().get(0)).getExpressionNode()).value.getContent());
 
         printNode(ast);
     }
@@ -123,6 +157,27 @@ public class ParserTest {
         InputProvider string1 = new StringInput("const x:string = readInput(\"Enter your Name\");");
         List<Token> tokens = lexerV2.lex(string1);
         AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        assertEquals("string", ((DeclareNode) ((DeclareReaderNode) ast.getChildren().get(0)).getDeclareNode()).getTypeNode().getContent());
+        assertEquals("x",((DeclareNode) ((DeclareReaderNode) ast.getChildren().get(0)).getDeclareNode()).getNameNode().getContent());
+
+        assertEquals("Enter your Name",((ReaderNode) ((DeclareReaderNode) ast.getChildren().get(0)).getReaderNode()).getContent());
+
+        printNode(ast);
+
+    }
+
+    @Test
+    public void test009_Assign_ReadInput() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, UnexpectedTokenException, ExpectedTokenException {
+        InputProvider string1 = new StringInput("let x:number;" +
+                "x = readInput(\"Enter value\");");
+        List<Token> tokens = lexerV2.lex(string1);
+        AbstractSyntaxTree ast = parserV2.parse(tokens);
+
+        assertEquals("x", ((IdentifierNode) ((AssignReaderNode) ast.getChildren().get(1)).getIdentifierNode()).getContent());
+
+        assertEquals("Enter value", ((ReaderNode) ((AssignReaderNode) ast.getChildren().get(1)).getReaderNode()).getContent());
+
         printNode(ast);
 
     }
