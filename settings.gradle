@@ -5,4 +5,5 @@ include 'parser'
 include 'interpreter'
 include 'cli'
 include 'formatter'
+include 'linter'
 

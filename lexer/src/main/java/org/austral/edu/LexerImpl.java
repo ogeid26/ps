@@ -1,8 +1,6 @@
 package org.austral.edu;
 
-import exceptions.UnclosedBracesException;
-import exceptions.UnclosedParenthesesException;
-import exceptions.UnclosedStringLiteralException;
+import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public abstract class LexerImpl implements Lexer {
 
     @Override
     public List<Token> lex(InputProvider provider) throws
-            UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+            UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         String input = provider.getContent();
         List<Token> tokens = new ArrayList<>();
 
@@ -49,7 +47,7 @@ public abstract class LexerImpl implements Lexer {
                     break;
                 }
                 if (currentChar == '{') {
-                    if (!checkNextParentheses(input, i))
+                    if (!checkNextBraces(input, i))
                         throw new UnclosedBracesException(col, row);
                     break;
                 }
@@ -108,10 +106,33 @@ public abstract class LexerImpl implements Lexer {
     }
 
     private boolean checkNextParentheses(String input, int i) {
-        return (input.indexOf(')') != -1);
+        String rest = input.substring(i+1);
+        int duplicate = rest.indexOf("(");
+        int objective = rest.indexOf(')');
+        if (duplicate != -1) {
+            if (objective < duplicate) {
+                return (objective != -1);
+            } else {
+                return checkNextParentheses(rest,objective);
+            }
+        }else{
+            return (objective != -1);
+        }
     }
     private boolean checkNextBraces(String input, int i) {
-        return (input.indexOf('}') != -1);
-    }}
+        String rest = input.substring(i+1);
+        int duplicate = rest.indexOf("{");
+        int objective = rest.indexOf('}');
+        if (duplicate != -1) {
+            if (objective < duplicate) {
+                return (objective != -1);
+            } else {
+                return checkNextBraces(rest,objective);
+            }
+        }else{
+            return (objective != -1);
+        }
+    }
+}
 
 

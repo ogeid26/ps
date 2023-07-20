@@ -1,8 +1,6 @@
 package org.austral.edu;
 
-import exceptions.UnclosedBracesException;
-import exceptions.UnclosedParenthesesException;
-import exceptions.UnclosedStringLiteralException;
+import exceptions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,14 +12,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class LexerTest {
 
     @Test
-    public void test001_Declare_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test001_Declare_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("let firstName: string = \"Miguel\"; ");
-        Lexer lexer = new LexerV1();
+        Lexer lexer = new LexerExclusive();
         List<Token> tokens =  lexer.lex(string1);
 
         List<TokenType> types = new ArrayList<>();
@@ -48,10 +47,10 @@ public class LexerTest {
     }
 
     @Test
-    public void test002_Declare_then_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test002_Declare_then_Assign() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("let x: number; " +
                 "x = 1 + 2;");
-        Lexer lexer = new LexerV1();
+        Lexer lexer = new LexerExclusive();
         List<Token> tokens =  lexer.lex(string1);
 
         List<TokenType> types = new ArrayList<>();
@@ -79,11 +78,11 @@ public class LexerTest {
     }
 
     @Test
-    public void test003_Assign_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test003_Assign_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("let first_name: string = \"Miguel\"; " +
                 "let y: string;" +
                 "y = first_name;");
-        Lexer lexer = new LexerV1();
+        Lexer lexer = new LexerExclusive();
         List<Token> tokens =  lexer.lex(string1);
 
         List<TokenType> types = new ArrayList<>();
@@ -114,10 +113,10 @@ public class LexerTest {
     }
 
     @Test
-    public void test004_Assign_Declare_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test004_Assign_Declare_Variable() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("let x: number = 100; " +
                 "let y: number = x;");
-        Lexer lexer = new LexerV1();
+        Lexer lexer = new LexerExclusive();
         List<Token> tokens =  lexer.lex(string1);
 
         List<TokenType> types = new ArrayList<>();
@@ -147,7 +146,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test005_Println() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test005_Println() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("println(6/3-1*2);");
         Lexer lexer = new LexerV2();
         List<Token> tokens =  lexer.lex(string1);
@@ -176,7 +175,7 @@ public class LexerTest {
 
     }
     @Test
-    public void test006_Boolean() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test006_Boolean() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("let x:boolean = true;");
         Lexer lexer = new LexerV2();
         List<Token> tokens =  lexer.lex(string1);
@@ -205,7 +204,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test007_If() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test007_If() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("if(true){" +
                 "x;" +
                 "}else{" +
@@ -240,7 +239,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test008_ReadInput() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test008_ReadInput() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         InputProvider string1 = new StringInput("const x:string = readInput(\"Enter your Name\");");
         Lexer lexer = new LexerV2();
         List<Token> tokens =  lexer.lex(string1);
@@ -270,6 +269,58 @@ public class LexerTest {
 
     }
 
+    @Test
+    public void test010_Missing_bracket() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("if(true){" +
+                "x;" +
+                "else{" +
+                "y;" +
+                "}");
+        Lexer lexer = new LexerV2();
+
+        assertThrows(UnclosedBracesException.class, () -> lexer.lex(string1));
+    }
+
+    @Test
+    public void test011_Missing_parenthesis() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("println(1;");
+        Lexer lexer = new LexerV2();
+
+        assertThrows(UnclosedParenthesesException.class, () -> lexer.lex(string1));
+    }
+
+    @Test
+    public void test011_Unclosed_strings() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("let x:string = \"name;");
+        Lexer lexer = new LexerV2();
+
+        assertThrows(UnclosedStringLiteralException.class, () -> lexer.lex(string1));
+    }
+
+    @Test
+    public void test012_Unclosed_stringsV2() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("let x:string = 'name;");
+        Lexer lexer = new LexerV2();
+
+        assertThrows(UnclosedStringLiteralException.class, () -> lexer.lex(string1));
+    }
+
+    @Test
+    public void test013_Case() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("let my.Name:string = \"name\";");
+        Lexer lexer = new LexerV2();
+
+        assertThrows(WrongCaseException.class, () -> lexer.lex(string1));
+    }
+
+    @Test
+    public void test014_Wrong_Type() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException {
+        InputProvider string1 = new StringInput("const my.Name:string = \"name\";");
+        Lexer lexer = new LexerExclusive();
+
+        assertThrows(UnknownTokenException.class, () -> lexer.lex(string1));
+    }
+
    @Test
     public  void test_002() throws IOException {
         Lexer lexer = new LexerV1();
@@ -290,7 +341,7 @@ public class LexerTest {
     }
 
     @Test
-    public void test_003() throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public void test_003() throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         LexerStreamInputHandler test = new LexerStreamInputHandler();
         InputStream stream = new FileInputStream("test.txt");
 
@@ -303,8 +354,8 @@ public class LexerTest {
     }
 
     @Test
-    public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
-        StringInput txt2 = new StringInput("let x:number = readInput(\"Hola\" + \"Amigo\");");
+    public void test_004() throws UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
+        FileInput txt2 = new FileInput("test.txt");
         Lexer lexer = new LexerV2();
 
         List<Token> tokens = lexer.lex(txt2);
@@ -319,7 +370,7 @@ public class LexerTest {
     @Test
     public void test_005() {
         Lexer lexer = new LexerV1();
-        UnclosedParenthesesException exception = Assertions.assertThrows(UnclosedParenthesesException.class, () -> lexer.lex(new StringInput("println('Hi';")));
+        UnclosedParenthesesException exception = assertThrows(UnclosedParenthesesException.class, () -> lexer.lex(new StringInput("println('Hi';")));
         System.out.println(exception.getMessage());
     }
 }

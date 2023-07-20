@@ -1,8 +1,6 @@
 package formatter;
 
-import exceptions.UnclosedBracesException;
-import exceptions.UnclosedParenthesesException;
-import exceptions.UnclosedStringLiteralException;
+import exceptions.*;
 import org.austral.edu.*;
 import org.json.JSONObject;
 
@@ -23,7 +21,7 @@ public class Formatter extends LexerImpl {
         this.tokenizer = tokenizer;
     }
 
-    public void format() throws IOException, UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException {
+    public void format() throws IOException, UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         setRules();
         lex(new FileInput(pathFile));
 

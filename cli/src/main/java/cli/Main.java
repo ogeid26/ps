@@ -1,9 +1,9 @@
 package cli;
 
 import ast.AbstractSyntaxTree;
-import exceptions.UnclosedBracesException;
-import exceptions.UnclosedParenthesesException;
-import exceptions.UnclosedStringLiteralException;
+import exceptions.*;
+import linter.Linter;
+import linter.TokenizerAnalyzer;
 import org.austral.edu.*;
 import org.austral.edu.Results.CLIInput;
 import org.austral.edu.Results.CLIResult;
@@ -29,7 +29,7 @@ public class Main {
     static InterpreterV1 interpreterV1 = new InterpreterV1(result);
     static InterpreterV2 interpreterV2 = new InterpreterV2(result, input);
 
-    public static void main(String[] args) throws UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException, IOException {
+    public static void main(String[] args) throws UnclosedBracesException, UnclosedParenthesesException, UnclosedStringLiteralException, IOException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
 
         System.out.println("----- Welcome to PrintScript CLI -----");
         System.out.println();
@@ -44,8 +44,9 @@ public class Main {
                 case "1": interpretCode(new FileInput(path));
                 case "2": validateCode(new FileInput(path));
                 case "3": path = getValidFile();
-                case "4": exit = true;
-                case "5": (new Formatter(path, new TokenizerFormatter())).format();
+                case "4": (new Formatter(path, new TokenizerFormatter())).format();
+                case "5": (new Linter(path, new TokenizerAnalyzer())).lint();
+                case "6": exit = true;
             }
         }
     }
@@ -70,8 +71,9 @@ public class Main {
         System.out.println("1) Interpret it.");
         System.out.println("2) Validate it.");
         System.out.println("3) Change snippet.");
-        System.out.println("4) Exit.");
-        System.out.println("5) Formatter.");
+        System.out.println("4) Formatter.");
+        System.out.println("5) Linter.");
+        System.out.println("6) Exit.");
         System.out.println("\nChoose:");
         String option = scanner.nextLine();
         while (!List.of("1","2","3","4","5").contains(option)) {

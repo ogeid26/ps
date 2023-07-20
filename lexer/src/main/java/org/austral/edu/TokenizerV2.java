@@ -1,11 +1,15 @@
 package org.austral.edu;
 
+import exceptions.ExpressionDetectedException;
+import exceptions.UnknownTokenException;
+import exceptions.WrongCaseException;
+
 import java.util.ArrayList;
 
 public class TokenizerV2 extends TokenizerV1 {
 
     @Override
-    public Token tokenize(String currentString, int from, int fromCol, int col, int row) {
+    public Token tokenize(String currentString, int from, int fromCol, int col, int row) throws ExpressionDetectedException, ExpressionDetectedException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         Token token = super.tokenize(currentString, from, fromCol, col, row);
         if (token.tokenType.equals(TokenTypeV1.IDENTIFIER)) {
             for (TokenTypeV2 type: TokenTypeV2.values()) {
@@ -19,7 +23,7 @@ public class TokenizerV2 extends TokenizerV1 {
         }
         if (token.tokenType == TokenTypeV1.IDENTIFIER){
             if (!checkCase(token.content)){
-                throw new RuntimeException("Case Error");
+                throw new WrongCaseException();
             }
         }
         return token;

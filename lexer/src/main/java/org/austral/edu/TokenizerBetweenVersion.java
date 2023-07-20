@@ -1,7 +1,11 @@
 package org.austral.edu;
 
+import exceptions.ExpressionDetectedException;
+import exceptions.UnknownTokenException;
+import exceptions.WrongCaseException;
+
 public class TokenizerBetweenVersion extends TokenizerV1{
-    public Token tokenize(String currentString, int from, int fromCol, int col, int row) {
+    public Token tokenize(String currentString, int from, int fromCol, int col, int row) throws ExpressionDetectedException, UnknownTokenException, WrongCaseException {
 
         Token token = super.tokenize(currentString, from, fromCol, col, row);
 
@@ -11,7 +15,7 @@ public class TokenizerBetweenVersion extends TokenizerV1{
                     continue;
                 }
                 if (type.getName().equals(currentString)) {
-                    throw new RuntimeException("Invalid keyword");
+                    throw new UnknownTokenException(currentString, col, row);
                 }
             }
         }

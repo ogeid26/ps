@@ -1,9 +1,13 @@
 package org.austral.edu;
 
+import exceptions.ExpressionDetectedException;
+import exceptions.UnknownTokenException;
+import exceptions.WrongCaseException;
+
 public class TokenizerV1 implements Tokenizer {
 
     @Override
-    public Token tokenize(String currentString, int from, int fromCol, int col, int row) {
+    public Token tokenize(String currentString, int from, int fromCol, int col, int row) throws ExpressionDetectedException, ExpressionDetectedException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         for (TokenTypeV1 type: TokenTypeV1.values()) {
             if (type.getName().equals(""))
                 continue;

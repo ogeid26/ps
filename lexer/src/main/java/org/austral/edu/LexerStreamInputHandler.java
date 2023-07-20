@@ -1,7 +1,5 @@
 package org.austral.edu;
-import exceptions.UnclosedBracesException;
-import exceptions.UnclosedParenthesesException;
-import exceptions.UnclosedStringLiteralException;
+import exceptions.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LexerStreamInputHandler {
-    public List<Token> process(InputStream inputStream) throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException {
+    public List<Token> process(InputStream inputStream) throws IOException, UnclosedStringLiteralException, UnclosedParenthesesException, UnclosedBracesException, ExpressionDetectedException, UnknownTokenException, WrongCaseException {
         StringBuilder stringBuilder = new StringBuilder();
         int currentChar = inputStream.read();
         stringBuilder.append((char) currentChar);
